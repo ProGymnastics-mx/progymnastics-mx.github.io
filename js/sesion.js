@@ -55,7 +55,7 @@
   }
 
   async function salir(raiz) {
-    if (DB.DEMO) localStorage.removeItem("pg_demo_uid");
+    if (DB.DEMO) { localStorage.removeItem("pg_demo_uid"); location.href = raiz + "index.html?demo"; return; }
     else await auth().signOut();
     location.href = raiz + "index.html";
   }

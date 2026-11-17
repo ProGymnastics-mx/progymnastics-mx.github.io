@@ -26,13 +26,8 @@ window.CLUB = {
   asistencia: { verde: 0.85, amarillo: 0.70 }
 };
 
-/* Proyecto de Firebase del club (PENDIENTE).
-   Mientras sea null, la app funciona en MODO DEMOSTRACIÓN: los datos se guardan solo en
-   este navegador y se entra eligiendo un perfil. Al crear el proyecto, pegar aquí su
-   configuración web (Consola de Firebase → Configuración del proyecto → Tus apps → Web). */
-window.FIREBASE_CONFIG = null;
-/* Ejemplo:
-window.FIREBASE_CONFIG = {
-  apiKey: "…", authDomain: "progymnastics-mx.firebaseapp.com", projectId: "progymnastics-mx"
-};
-*/
+/* Proyecto de Firebase: el de Manu (akc-con-reporte), 17-nov-2026. Lo comparte con las apps de AKC,
+   por eso todo ProGymnastics va en colecciones con prefijo "pg_" (pg_usuarios, pg_pagos…), sin tocar las de AKC.
+   Con null la app funcionaría en modo demostración; también se puede ver la demo abriendo la app con ?demo */
+window.FIREBASE_CONFIG = { apiKey: "AIzaSyBNRAkDXLlw5fyiT01-ZfUyB0A7ShsAxyg", authDomain: "akc-con-reporte.firebaseapp.com", projectId: "akc-con-reporte" };
+window.COLECCION_PREFIJO = "pg_";

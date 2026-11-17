@@ -15,17 +15,19 @@ pero sin servidor PHP.
 | Equipo | OWNER y ADMIN | Atletas (grupo, nivel, mensualidad, alta, baja) y accesos (invitaciones por correo). |
 
 ## Modo demostración
-Mientras `FIREBASE_CONFIG` sea `null` en `js/config.js`, la app funciona sin nube: se entra eligiendo un perfil
+Abriendo la app con `?demo` (o con `FIREBASE_CONFIG = null`), funciona sin nube: se entra eligiendo un perfil
 y los datos (inventados) se guardan solo en ese navegador.
 
-## Poner en marcha con Firebase
-1. Crear un proyecto en https://console.firebase.google.com (p. ej. `progymnastics-mx`).
-2. Authentication → Método de acceso → activar **Correo electrónico/contraseña**.
-3. Firestore Database → Crear base de datos (modo producción, región `nam5` o `us-central`).
-4. Firestore → Reglas → pegar `firestore.rules` y publicar.
-5. Configuración del proyecto → Tus apps → Web → copiar la configuración en `FIREBASE_CONFIG` (`js/config.js`).
-6. Authentication → Configuración → Dominios autorizados → agregar `<usuario>.github.io`.
-7. Primeras cuentas: en Firestore crear a mano dos documentos en la colección `invitaciones`, cada uno con id = el
+## Firebase (proyecto `akc-con-reporte`, el de Manu)
+La app usa el mismo proyecto de Firebase que las apps de AKC. Todo lo de ProGymnastics va en colecciones con
+prefijo `pg_` (`COLECCION_PREFIJO` en `js/config.js`), así que no toca nada de AKC. La demostración sigue
+disponible abriendo la app con `?demo`.
+
+Pasos en la consola (https://console.firebase.google.com/project/akc-con-reporte):
+1. Authentication → Método de acceso → activar **Correo electrónico/contraseña**.
+2. Authentication → Configuración → Dominios autorizados → agregar `josemanueljaimemorales.github.io`.
+3. Firestore → Reglas → **agregar** (no reemplazar) lo de `firestore.rules`, siguiendo las instrucciones de su encabezado.
+4. Primeras cuentas: en Firestore crear la colección `pg_invitaciones` con dos documentos, cada uno con id = el
    correo en minúsculas y los campos `nombre` (texto), `rol` (texto) y `atletas` (arreglo vacío):
    - el del desarrollador con `rol` = `SUPER` (control total; nadie lo puede quitar ni cambiar desde la app);
    - el del dueño del club con `rol` = `OWNER`.
@@ -33,5 +35,5 @@ y los datos (inventados) se guardan solo en ese navegador.
    Desde ahí todo lo demás se invita en **Equipo → Accesos**. (Los correos no se escriben en este repo: es público.)
 
 ## Datos (Firestore)
-`usuarios/<uid>`, `invitaciones/<correo>`, `atletas/<id>`, `asistencia/<fecha>_<grupo>_<atletaId>`,
-`pagos/<id>`, `avisos/<id>`, `eventos/<id>`. Detalle de cada campo al inicio de cada `app.js`.
+`pg_usuarios/<uid>`, `pg_invitaciones/<correo>`, `pg_atletas/<id>`, `pg_asistencia/<fecha>_<grupo>_<atletaId>`,
+`pg_pagos/<id>`, `pg_avisos/<id>`, `pg_eventos/<id>` (en el código se escriben sin `pg_`; `js/db.js` lo agrega). Detalle de cada campo al inicio de cada `app.js`.
