@@ -11,7 +11,7 @@
   const staff = Sesion.esStaff(u);
   UI.encabezado(staff ? "Reportes " + SEC : "Mi reporte", RAIZ, u, RAIZ + SEC.toLowerCase() + "/");
   const app = document.getElementById("app");
-  const esc = UI.esc, E = PG_EFIC;
+  const esc = UI.esc, E = PG_EFIC.seccion(SEC);
   const mios = new Set(Sesion.gruposDe(u, SEC).map((g) => g.id));
   const atletas = (await Sesion.atletasVisibles(u)).filter((a) => a.activo !== false && Sesion.seccionDeGrupo(a.grupo) === SEC && (!staff || mios.has(a.grupo)));
   let catalogo = null;
@@ -79,13 +79,24 @@
     const ult = calc[0];
 
     // Normativos
-    let normHTML = `<p class="nota">Aún sin evaluar.</p>`, normTotal = null;
+    let normHTML = `<p class="nota">Aún sin evaluar.</p>`, normTotal = null, etapaHTML = "";
     if (catalogo) {
       const est = (norm && norm.estados) || {};
       let tc = 0, tt = 0;
       const filas = catalogo.aparatos.map((ap) => { const els = ap.clasificaciones.flatMap((c) => c.elementos); const c = els.filter((e) => est[e.k] === "C").length; tc += c; tt += els.length; return { n: ap.nombre, p: els.length ? c / els.length : 0 }; });
       normTotal = tt ? tc / tt : null;
       if (norm) normHTML = `<div class="barras">${filas.map((f) => `<div class="b"><span>${esc(f.n)}</span><span class="pista"><span style="width:${pct(f.p)}"></span></span><span class="num">${pct(f.p)}</span></div>`).join("")}</div>`;
+      // ¿En qué etapa va? Por aparato: la primera clasificación (en el orden del catálogo, de lo básico a lo avanzado) con menos
+      // del 80 % consolidado es la que está trabajando; se listan sus elementos en proceso y en proyección.
+      if (norm) etapaHTML = `<ul class="lista">${catalogo.aparatos.map((ap) => {
+        const actual = ap.clasificaciones.find((c) => c.elementos.filter((e) => est[e.k] === "C").length < 0.8 * c.elementos.length);
+        if (!actual) return `<li><div class="fila-lista"><span class="icono" style="background:var(--verde)">${UI.icono("check")}</span><span class="txt"><b>${esc(ap.nombre)}</b><small>Domina todas las etapas de los normativos.</small></span></div></li>`;
+        const c = actual.elementos.filter((e) => est[e.k] === "C").length;
+        const proc = actual.elementos.filter((e) => est[e.k] === "EP").map((e) => e.n), proy = actual.elementos.filter((e) => est[e.k] === "P").map((e) => e.n);
+        const corto = (l) => l.slice(0, 3).map((x) => esc(x.length > 60 ? x.slice(0, 58) + "…" : x)).join(" · ") + (l.length > 3 ? ` y ${l.length - 3} más` : "");
+        return `<li><div class="fila-lista"><span class="icono" style="background:var(--indigo)">${UI.icono("lista")}</span><span class="txt"><b>${esc(ap.nombre)}: ${esc(actual.nombre)}</b>
+          <small>${c} de ${actual.elementos.length} consolidados en esta etapa${proc.length ? ` · En proceso: ${corto(proc)}` : ""}${proy.length ? ` · Próximos: ${corto(proy)}` : ""}</small></span></div></li>`;
+      }).join("")}</ul>`;
     }
 
     // Asistencia
@@ -93,6 +104,10 @@
     const mes = asisDe(UI.mesActual() + "-01"), anio = asisDe(UI.hoy().slice(0, 4) + "-01-01");
     const semA = (p) => (p == null ? "gris" : p >= CLUB.asistencia.verde ? "ok" : p >= CLUB.asistencia.amarillo ? "warn" : "bad");
 
+    // En GAF los normativos van primero (Manu: «en qué momento está su hija»); en GAV, al final.
+    const PRIMERO_NORM = SEC === "GAF";
+    const normBloque = (etapaHTML ? `<div class="grupo-lista" style="padding:0"><h3>¿En qué etapa va? (normativos)</h3>${etapaHTML}</div>` : "")
+      + `<div class="grupo-lista" style="padding:0"><h3>Normativos (consolidado por aparato)</h3><div class="panel">${normHTML}</div></div>`;
     app.innerHTML = `
       ${staff || atletas.length > 1 ? `<a class="btn chico volver-lista" href="#" style="margin-bottom:12px">‹ Atletas</a>` : ""}
       <div class="panel" style="display:flex;align-items:center;gap:14px">
@@ -107,6 +122,7 @@
         <div class="kpi"><span>Asistencia del mes</span><b><span class="etiqueta ${semA(mes.p)}" style="font-size:20px">${pct(mes.p)}</span></b><small class="nota">${mes.n} clase(s) · año ${pct(anio.p)}</small></div>
       </div>
 
+${PRIMERO_NORM ? normBloque : ""}
       <div class="grupo-lista" style="padding:0"><h3>Competencias</h3>
         ${calc.length ? `<div class="panel" style="margin-bottom:12px"><div class="tendencia">${calc.slice(0, 8).reverse().map(({ r, c }) => `<div><b style="color:var(--fg)">${c.ef.toFixed(0)}%</b><i class="" style="height:${Math.max(6, c.ef)}%;background:var(--${{ V: "verde", A: "naranja", R: "rojo" }[E.semEf(c.ef)]})"></i><small>${esc(r.copa)}</small></div>`).join("")}</div>
           <p class="nota" style="margin:8px 0 0">Eficiencia en cada copa (NF ÷ nota de partida, promedio de los aparatos que presentó).</p></div>
@@ -130,8 +146,7 @@
           : `<p class="nota" style="margin:0">Su entrenador aún no captura su rutina.</p>`}
       </div></div>
 
-      <div class="grupo-lista" style="padding:0"><h3>Normativos (consolidado por aparato)</h3><div class="panel">${normHTML}</div></div>
-
+${PRIMERO_NORM ? "" : normBloque}
       <div class="acciones no-imprimir" style="margin-top:20px"><button class="btn chico" type="button" onclick="print()">Imprimir reporte</button></div>`;
     const v = app.querySelector(".volver-lista"); if (v) v.onclick = (e) => { e.preventDefault(); location.hash = ""; };
   }

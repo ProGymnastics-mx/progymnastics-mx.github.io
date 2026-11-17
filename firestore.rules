@@ -88,6 +88,11 @@ service cloud.firestore {
     }
 
     // Nota de partida de la rutina de cada atleta (la publica el Editor de rutinas) para su reporte.
+    // Rutinas femeniles (editor de GAF): un solo documento "estado". Solo el staff.
+    match /pg_rutinas_gaf/{doc} {
+      allow read, write: if pgStaff();
+    }
+
     match /pg_rutinas_vista/{atletaId} {
       allow get: if pgStaff() || pgMio(atletaId);
       allow list, write: if pgStaff();

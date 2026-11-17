@@ -1,12 +1,22 @@
 /* Eficiencia por competencia — mismas reglas que la App GAV de AKC (Manu, 14-nov-2026), sin nombres de atletas.
  * Por aparato presentado: % = NF ÷ (la NP más alta entre la de la rutina y la del juez) × 100, nunca más de 100.
  * Eficiencia = promedio de los aparatos que presentó (los que no presentó no cuentan). AA = suma de NF.
- * Obligatorios = niveles 3 a 6; libres = 7, 8, 9, 10 y FIG.
+ * GAV: obligatorios = niveles 3 a 6; libres = 7, 8, 9, 10 y FIG (6 aparatos).
+ * GAF: obligatorios = niveles 1 a 5 (compulsorias USAG); libres = 6 a 10, Junior FIG y FIG (salto, barras, viga y piso).
+ * PG_EFIC.seccion("GAF") cambia los aparatos y el corte; por omisión, GAV.
  * Resultado (r): {np: {AP: NP del juez}, nf: {AP: nota final}, ref: {AP: NP de la rutina}, lugar, part, nivel, tipo}.
  */
 (function () {
   "use strict";
-  const APS = [["PISO", "Piso"], ["ARZON", "Arzón"], ["ANILLOS", "Anillos"], ["SALTO", "Salto"], ["PARALELAS", "Paralelas"], ["FIJA", "Barra fija"]];
+  const SECCIONES = {
+    GAV: { aps: [["PISO", "Piso"], ["ARZON", "Arzón"], ["ANILLOS", "Anillos"], ["SALTO", "Salto"], ["PARALELAS", "Paralelas"], ["FIJA", "Barra fija"]], maxObl: 6,
+           titulos: { L: "LIBRES · NIVELES 7, 8, 9, 10 Y FIG", O: "OBLIGATORIOS · NIVELES 3 A 6" } },
+    GAF: { aps: [["SALTO", "Salto"], ["BARRAS", "Barras"], ["VIGA", "Viga"], ["PISO", "Piso"]], maxObl: 5,
+           titulos: { L: "LIBRES · NIVELES 6 A 10, JUNIOR FIG Y FIG", O: "OBLIGATORIOS · NIVELES 1 A 5" } }
+  };
+  let SEC = SECCIONES.GAV;
+  const APS = [...SEC.aps]; // se reemplaza en sitio con seccion()
+  function seccion(id) { SEC = SECCIONES[id] || SECCIONES.GAV; APS.splice(0, APS.length, ...SEC.aps); return api; }
 
   function calcular(r) {
     const ap = {}; let suma = 0, n = 0, aa = 0;
@@ -26,7 +36,7 @@
     const t = String(nivel == null ? "" : nivel).toUpperCase();
     if (/FIG|JR|JUV|MAY|ELITE|ÉLITE/.test(t)) return "L";
     const m = t.match(/\d+/);
-    if (m) return Number(m[0]) <= 6 ? "O" : "L";
+    if (m) return Number(m[0]) <= SEC.maxObl ? "O" : "L";
     return tipo === "O" ? "O" : "L";
   }
   const nivelTexto = (nivel) => { const t = String(nivel == null ? "" : nivel).trim(); return /^\d+$/.test(t) ? "Nivel " + t : t.replace(/^N(?=\d)/i, "Nivel "); };
@@ -98,11 +108,12 @@
       h += `<tr class="prom"><td colspan="3" class="pt">Promedio del aparato</td>${APS.map(([k]) => prom[k] == null ? `<td class="np0">—</td>` : `<td><div class="p s-${semPct(g, prom[k])}">${prom[k].toFixed(1)}%</div><div class="np0">${orden.indexOf(k) + 1}.º</div></td>`).join("")}<td></td><td><div class="p s-${semEf(efP)}">${efP.toFixed(1)}%</div></td><td></td></tr>`;
       return h + "</tbody></table></div>";
     };
-    return `<div class="efc">${tabla("L", "LIBRES · NIVELES 7, 8, 9, 10 Y FIG")}${tabla("O", "OBLIGATORIOS · NIVELES 3 A 6")}
+    return `<div class="efc">${tabla("L", SEC.titulos.L)}${tabla("O", SEC.titulos.O)}
 <p class="ley"><b>% del aparato</b> = NF ÷ la NP más alta entre la de la rutina y la del juez (máx. 100%). Libres: verde ≥ 85%, amarillo 75–84.9%, rojo &lt; 75%. Obligatorios: verde ≥ 90%, amarillo 80–89.9%, rojo &lt; 80%.
 <b>NP del juez</b> en obligatorios: verde 9.9–10, amarillo 9.6–9.8, rojo ≤ 9.5. <b>Ded.</b> = NP del juez − NF: obligatorios verde ≤ 1.0, amarillo &gt; 1.0, rojo ≥ 1.8; libres verde &lt; 1.5, amarillo 1.5–1.99, rojo ≥ 2.
 <b>Eficiencia</b> = promedio de los aparatos que presentó: verde ≥ 85%, amarillo 75–84.9%, rojo &lt; 75%. * = sin NP de rutina (se usa la del juez).</p></div>`;
   }
 
-  window.PG_EFIC = { APS, calcular, grupo, nivelTexto, ranking, concentrado, semPct, semEf, f1, f3 };
+  const api = { APS, seccion, calcular, grupo, nivelTexto, ranking, concentrado, semPct, semEf, f1, f3 };
+  window.PG_EFIC = api;
 })();
