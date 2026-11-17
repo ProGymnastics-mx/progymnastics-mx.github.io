@@ -1,14 +1,15 @@
-/* Equipo (solo OWNER y ADMIN): atletas y accesos.
+/* Equipo (solo SUPER, OWNER y ADMIN): atletas y accesos.
    atletas/<id> = {nombre, grupo, nivel, nacimiento, cuota, activo, notas}
    Accesos: invitaciones/<correo> = {nombre, rol, atletas[]}; al crear su cuenta con ese correo, la persona
-   recibe usuarios/<uid> con ese perfil. ADMIN no puede dar ni quitar el perfil OWNER. */
+   recibe usuarios/<uid> con ese perfil. ADMIN no puede dar ni quitar el perfil OWNER.
+   El perfil SUPER (Desarrollador) no se da, edita ni quita desde aquí: solo desde la consola de Firebase. */
 (async function () {
   const RAIZ = "../../";
   const u = await Sesion.requerir(RAIZ, "equipo");
   UI.encabezado("Equipo", RAIZ, u);
   const app = document.getElementById("app");
   const esc = UI.esc, $ = (id) => document.getElementById(id);
-  const ROLES = Object.keys(Sesion.ROLES).filter((r) => u.rol === "OWNER" || r !== "OWNER");
+  const ROLES = Object.keys(Sesion.ROLES).filter((r) => r !== "SUPER" && (Sesion.esOwner(u) || r !== "OWNER"));
   let atletas = [], usuarios = [], invitaciones = [];
 
   app.innerHTML = `
@@ -123,7 +124,7 @@
     usuarios.sort((a, b) => orden.indexOf(a.rol) - orden.indexOf(b.rol) || a.nombre.localeCompare(b.nombre, "es"));
     const fila = (x, tipo) => `<tr><td>${esc(x.nombre)}<br><small class="nota">${esc(x.email || x.id)}</small></td><td>${esc(Sesion.ROLES[x.rol] || x.rol)}</td>
       <td>${esc((x.atletas || []).map(nombreAtleta).join(", ")) || '<span class="nota">—</span>'}</td>
-      <td class="num">${x.rol === "OWNER" && u.rol !== "OWNER" ? "" : `<button class="btn chico" data-${tipo}="${esc(x.id)}">Editar</button>`}</td></tr>`;
+      <td class="num">${x.rol === "SUPER" || (x.rol === "OWNER" && !Sesion.esOwner(u)) ? "" : `<button class="btn chico" data-${tipo}="${esc(x.id)}">Editar</button>`}</td></tr>`;
     $("u-lista").innerHTML = usuarios.length ? `<table><thead><tr><th>Nombre</th><th>Perfil</th><th>Atletas</th><th></th></tr></thead><tbody>${usuarios.map((x) => fila(x, "usuario")).join("")}</tbody></table>` : `<p class="vacio">Sin cuentas.</p>`;
     $("i-lista").innerHTML = invitaciones.length ? `<table><thead><tr><th>Nombre</th><th>Perfil</th><th>Atletas</th><th></th></tr></thead><tbody>${invitaciones.map((x) => fila(x, "invitacion")).join("")}</tbody></table>` : `<p class="vacio">No hay invitaciones pendientes.</p>`;
   }

@@ -49,6 +49,7 @@
       b.atletas[id] = { nombre: n, grupo: g[i % g.length], nivel: "", nacimiento: "", cuota: 1500, desde, activo: true, creado: new Date().toISOString() };
     });
     b.usuarios = {
+      "demo-super": { nombre: "Desarrollador (demo)", email: "super@demo", rol: "SUPER", atletas: [] },
       "demo-owner": { nombre: "Dueño (demo)", email: "owner@demo", rol: "OWNER", atletas: [] },
       "demo-admin": { nombre: "Administración (demo)", email: "admin@demo", rol: "ADMIN", atletas: [] },
       "demo-coach": { nombre: "Coach (demo)", email: "coach@demo", rol: "COACH", atletas: [] },
