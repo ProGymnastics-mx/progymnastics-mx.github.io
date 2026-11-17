@@ -1,5 +1,6 @@
 /* Normativos (como los de aguilaskc.net, con estilo de iPhone): qué domina cada atleta por aparato.
-   Catálogo: catalogo-<sección>.json (aparato → clasificación → elementos con id estable "k"), sin datos de atletas.
+   Catálogo: catalogo-<sección>.json (aparato → clasificación → elementos con id estable "k" y referencia "ref" opcional),
+   sin datos de atletas. GAV: el de AKC. GAF: fundamentos USAG + elementos A-C del Código FIG femenil (ver su campo fuente).
    Avances: normativos/<atletaId> = {estados: {<k>: "C"|"EP"|"P"|"NA"}, actualizado, por}. Sin registro = No adquirido.
    C Consolidado (dominado según el entrenador), EP En proceso, P Proyección (previsto para desarrollar), NA No adquirido.
    % dominio = consolidados ÷ elementos del catálogo (igual que la ficha del Excel de AKC).
@@ -53,6 +54,7 @@
     .seg-ap button { flex: 1 0 auto; min-width: 84px; }
     .avatar { flex: none; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--relleno); color: var(--muted); font-size: 14px; font-weight: 600; }
     .elem { display: block !important; padding: 10px 16px !important; }
+    .elem .ref { display: block; margin-top: 2px; font-size: 12px; color: var(--muted); }
     .elem .nom { display: flex; justify-content: space-between; gap: 10px; align-items: center; font-size: 16px; }
     .marcar { display: flex; gap: 2px; margin-top: 8px; padding: 2px; border-radius: 9px; background: var(--relleno); }
     .marcar button { flex: 1; min-height: 32px; border: 0; border-radius: 7px; background: transparent; color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer; }
@@ -149,7 +151,7 @@
       ${ap.clasificaciones.map((c) => { const els = c.elementos.filter(visibles); return els.length ? `
         <div class="grupo-lista" style="padding:0"><h3>${esc(c.nombre)}</h3><ul class="lista">
         ${els.map((e) => { const v = estado(id, e.k); return `<li><div class="fila-lista elem">
-          <div class="nom"><span>${esc(e.n)}</span>${staff ? `<span class="etiqueta ${EST[v].c} solo-print" style="display:none">${EST[v].t}</span>` : `<span class="etiqueta ${EST[v].c}">${EST[v].t}</span>`}</div>
+          <div class="nom"><span>${esc(e.n)}${e.ref ? `<small class="ref">${esc(e.ref)}</small>` : ""}</span>${staff ? `<span class="etiqueta ${EST[v].c} solo-print" style="display:none">${EST[v].t}</span>` : `<span class="etiqueta ${EST[v].c}">${EST[v].t}</span>`}</div>
           ${staff ? `<div class="marcar" role="group" aria-label="Estado de ${esc(e.n)}">${ESTADOS.map((x) => `<button type="button" data-k="${esc(e.k)}" data-v="${x.k}" aria-pressed="${v === x.k}" title="${x.t}">${x.corto}</button>`).join("")}</div>` : ""}
         </div></li>`; }).join("")}</ul></div>` : ""; }).join("") || `<p class="vacio">No hay elementos con ese filtro.</p>`}
       ${staff ? `<div class="panel acciones-masa" style="margin-top:20px"><div class="fila">
