@@ -38,6 +38,16 @@ con módulos de **pagos** y **asistencia**. Responder en español, claro y sin r
   abajo, colores del sistema de iOS (variables `--verde`, `--azul`…) e íconos de línea propios (`UI.icono`). Modo claro y oscuro,
   áreas seguras (`viewport-fit=cover`) y metas para instalarla en la pantalla de inicio. Todo módulo nuevo sigue este estilo.
 
+- **Notificaciones (Manu, 17-nov-2026: «celular y correo»)**: `js/avisos.js` (cliente), `sw.js` (service worker SOLO de notificaciones,
+  sin caché), `modulos/notificaciones/` (activar en el celular y lista de avisos; fila con contador en el inicio). Al registrar un
+  pago, administración crea `pg_notificaciones` («Pago registrado» o, con método Tarjeta, «Cargo a tu tarjeta»). La tarea de GitHub
+  Actions `.github/workflows/notificaciones.yml` (cada 15 min, `tools/notificaciones/enviar.mjs` con firebase-admin) crea las llaves
+  VAPID (privada en `pg_config`, que nadie lee; pública en `pg_config_publica`), los recordatorios de mensualidad (3 días antes, el
+  día límite y un día después; 9 a 21 h CDMX) y envía los pendientes por correo (Gmail del club) y Web Push a tutores/atletas ligados.
+  Secretos: FIREBASE_SERVICE_ACCOUNT, GMAIL_USER, GMAIL_APP_PASSWORD (ver `tools/notificaciones/README.md`). Pantalla bloqueada:
+  texto corto sin nombres ni montos (`push`); el detalle va en correo y en la app. **Sin pago en línea** (Manu, 17-nov-2026): los papás
+  pagan en efectivo, transferencia o tarjeta directamente en administración, que lo registra en la app y eso dispara la confirmación.
+
 ## Etapas pedidas por Manu (17-nov-2026)
 1. ✅ Estructura: inicio, secciones, herramientas administrativas y acceso; vistas por perfil (admin y coach primero).
    ✅ Normativos GAV (`modulos/normativos/`, `catalogo-gav.json` con ids estables `PISO-001`…, avances en `pg_normativos/<atletaId>`).

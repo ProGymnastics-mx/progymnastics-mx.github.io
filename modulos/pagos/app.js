@@ -201,7 +201,10 @@
     $("p-ok").disabled = true;
     try {
       const id = await DB.guardar("pagos", null, datos);
-      $("dlg").close(); UI.aviso(`Pago de ${UI.dinero(monto)} registrado.`);
+      // Aviso al papá/atleta (correo y celular; lo envía la tarea automática del club).
+      let avisado = true;
+      try { await Avisos.porPago({ ...datos, id }, porId[datos.atletaId]); } catch (x) { avisado = false; console.warn("No se creó el aviso del pago", x); }
+      $("dlg").close(); UI.aviso(`Pago de ${UI.dinero(monto)} registrado.${avisado ? " Se le avisará a la familia." : ""}`);
       if (datos.periodo !== $("f-mes").value) $("f-mes").value = datos.periodo;
       await cargar();
       if (confirm("¿Imprimir recibo?")) recibo({ ...datos, id });
