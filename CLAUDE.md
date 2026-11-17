@@ -33,8 +33,9 @@ con módulos de **pagos** y **asistencia**. Responder en español, claro y sin r
 - Colores del logo: amarillo `#ffcb0b` y negro.
 - **Diseño de iPhone (cliente, vía Manu, 17-nov-2026):** que se vea y se sienta como app de iOS, fácil y accesible. `css/app.css`
   usa el lenguaje de iOS: letra del sistema, fondo agrupado (#f2f2f7 / negro), celdas redondeadas, barra traslúcida con «‹ Atrás»
-  y título grande (`UI.encabezado`), inicio como pantalla de inicio del iPhone (íconos de color), secciones y herramientas como
-  listas de Ajustes (`PaginaMenu`), control segmentado en pestañas, interruptores en casillas, ventanas como hoja que sube desde
+  y título grande (`UI.encabezado`), **inicio con tarjetas anchas** (todo el ancho, ícono grande, nombre y una línea) y **secciones y
+  herramientas como la pantalla de inicio del iPhone** (`PaginaMenu`: íconos grandes de color con solo su nombre corto `c`, 3 por fila
+  en celular; en tableta todo más grande) — Manu, 17-nov-2026: «íconos más grandes, menos texto», control segmentado en pestañas, interruptores en casillas, ventanas como hoja que sube desde
   abajo, colores del sistema de iOS (variables `--verde`, `--azul`…) e íconos de línea propios (`UI.icono`). Modo claro y oscuro,
   áreas seguras (`viewport-fit=cover`) y metas para instalarla en la pantalla de inicio. Todo módulo nuevo sigue este estilo.
 
