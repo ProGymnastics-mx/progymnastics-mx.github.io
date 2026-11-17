@@ -29,7 +29,8 @@ window.tarjetasSeccion = function (sec) {
       !staff && { href: "../modulos/pagos/" + q, icono: "tarjeta", color: "azul", t: "Mis pagos", s: "Mensualidades y recibos" },
       { href: "../modulos/avisos/" + q, icono: "megafono", color: "naranja", t: "Avisos", s: "Lo más reciente de " + sec },
       { href: "../modulos/calendario/" + q, icono: "calendario", color: "rojo", t: "Calendario", s: "Competencias, eventos y días sin clase" },
-      { icono: "lista", color: "indigo", t: "Normativos", s: sec === "GAF" ? "Salto, barras, viga y piso" : "Nivel de cada atleta por aparato", pronto: true },
+      sec === "GAF" ? { icono: "lista", color: "indigo", t: "Normativos", s: "Salto, barras, viga y piso", pronto: true }
+                    : { href: "../modulos/normativos/" + q, icono: "lista", color: "indigo", t: "Normativos", s: staff ? "Qué domina cada atleta por aparato" : "Qué domina por aparato" },
       staff && { icono: "lapiz", color: "cafe", t: "Editor de rutinas", s: "Rutinas y notas de partida", pronto: true },
       staff && { icono: "trofeo", color: "morado", t: "Competencias", s: "Resultados de cada copa", pronto: true },
       { icono: "grafica", color: "turquesa", t: staff ? "Reportes para papás" : "Mi reporte", s: "Avance, competencias y estadísticas", pronto: true }

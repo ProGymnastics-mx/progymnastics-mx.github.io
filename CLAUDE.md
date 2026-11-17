@@ -25,7 +25,8 @@ con módulos de **pagos** y **asistencia**. Responder en español, claro y sin r
 - `modulos/<nombre>/index.html + app.js`: asistencia, pagos, equipo, avisos, calendario.
 - **Firebase = `akc-con-reporte` (el de Manu, compartido con AKC; Manu, 17-nov-2026).** Todo va en colecciones `pg_*`
   (`COLECCION_PREFIJO`); nunca tocar colecciones ni reglas de AKC. `?demo` abre el modo demostración.
-- `firestore.rules`: reglas de seguridad (se AGREGAN a las de AKC, no las reemplazan); cualquier permiso nuevo en `sesion.js` se refleja también aquí.
+- `firestore.rules`: reglas COMPLETAS del proyecto (incluye el bloque abierto de AKC, que no se toca): Manu las copia enteras a la consola
+  cada vez que cambian. Cualquier permiso o colección nueva en la app se refleja aquí y se prueba en el emulador antes de entregarlas.
 - Colores del logo: amarillo `#ffcb0b` y negro.
 - **Diseño de iPhone (cliente, vía Manu, 17-nov-2026):** que se vea y se sienta como app de iOS, fácil y accesible. `css/app.css`
   usa el lenguaje de iOS: letra del sistema, fondo agrupado (#f2f2f7 / negro), celdas redondeadas, barra traslúcida con «‹ Atrás»
@@ -36,6 +37,7 @@ con módulos de **pagos** y **asistencia**. Responder en español, claro y sin r
 
 ## Etapas pedidas por Manu (17-nov-2026)
 1. ✅ Estructura: inicio, secciones, herramientas administrativas y acceso; vistas por perfil (admin y coach primero).
+   ✅ Normativos GAV (`modulos/normativos/`, `catalogo-gav.json` con ids estables `PISO-001`…, avances en `pg_normativos/<atletaId>`).
 2. GAV: traer de aguilaskc.net (`Kids-Center-Gimnasia/AguilasKC`, `gav/app/`) Normativos, Editor de rutinas, Calendario,
    Competencias (subir resultados, notas de partida, eficiencia) y Reportes para papás. **No** Fuerza ni Plan anual
    (Manu aún no sabe si se los mandarán). Sin datos ni nombres de atletas de AKC: los atletas son los de `pg_atletas`.

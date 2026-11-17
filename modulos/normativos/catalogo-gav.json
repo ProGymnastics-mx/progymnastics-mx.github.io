@@ -1,0 +1,1191 @@
+{
+ "seccion": "GAV",
+ "fuente": "Catálogo de Normativos GAV (elementos por aparato y clasificación), sin datos de atletas.",
+ "aparatos": [
+  {
+   "id": "PISO",
+   "nombre": "Piso",
+   "clasificaciones": [
+    {
+     "nombre": "Posiciones básicas y fuerza",
+     "elementos": [
+      {
+       "k": "PISO-001",
+       "n": "Postura de pie firme"
+      },
+      {
+       "k": "PISO-002",
+       "n": "Parado de hombros"
+      },
+      {
+       "k": "PISO-003",
+       "n": "Parado de antebrazos"
+      },
+      {
+       "k": "PISO-004",
+       "n": "Parado de cabeza"
+      },
+      {
+       "k": "PISO-005",
+       "n": "Parado de manos en apoyo"
+      },
+      {
+       "k": "PISO-006",
+       "n": "Parado de Manos"
+      },
+      {
+       "k": "PISO-007",
+       "n": "Split"
+      },
+      {
+       "k": "PISO-008",
+       "n": "Squat"
+      },
+      {
+       "k": "PISO-009",
+       "n": "Equilibrio a un pie (arabesca)"
+      },
+      {
+       "k": "PISO-010",
+       "n": "L sit"
+      },
+      {
+       "k": "PISO-011",
+       "n": "Sustentación en Arco"
+      },
+      {
+       "k": "PISO-012",
+       "n": "Soporte en escuadra endo"
+      },
+      {
+       "k": "PISO-013",
+       "n": "Kato de fuerza"
+      },
+      {
+       "k": "PISO-014",
+       "n": "Rodada Kato"
+      }
+     ]
+    },
+    {
+     "nombre": "Acrobatico hacía delante",
+     "elementos": [
+      {
+       "k": "PISO-015",
+       "n": "Rodada adelanté"
+      },
+      {
+       "k": "PISO-016",
+       "n": "Vuelta de carro"
+      },
+      {
+       "k": "PISO-017",
+       "n": "Redondilla"
+      },
+      {
+       "k": "PISO-018",
+       "n": "Resorte a 2 pies"
+      },
+      {
+       "k": "PISO-019",
+       "n": "Resorte a 1 pie"
+      },
+      {
+       "k": "PISO-020",
+       "n": "Mortal adelante en C"
+      },
+      {
+       "k": "PISO-021",
+       "n": "Resorte 1 a 2"
+      },
+      {
+       "k": "PISO-022",
+       "n": "Mortal adelante en V"
+      },
+      {
+       "k": "PISO-023",
+       "n": "Mortal extendido"
+      },
+      {
+       "k": "PISO-024",
+       "n": "Mortal rebote mortal"
+      },
+      {
+       "k": "PISO-025",
+       "n": "Doble mortal en C adelanté"
+      }
+     ]
+    },
+    {
+     "nombre": "Acrobatico hacía atrás",
+     "elementos": [
+      {
+       "k": "PISO-026",
+       "n": "Rodada atras"
+      },
+      {
+       "k": "PISO-027",
+       "n": "Rodada atrás a parado de manos"
+      },
+      {
+       "k": "PISO-028",
+       "n": "Flic flac"
+      },
+      {
+       "k": "PISO-029",
+       "n": "Doble flic"
+      },
+      {
+       "k": "PISO-030",
+       "n": "Mortal atras en C desde Redondilla"
+      },
+      {
+       "k": "PISO-031",
+       "n": "Mortal atras en C desde Flic flac"
+      },
+      {
+       "k": "PISO-032",
+       "n": "Mortal en V atras"
+      },
+      {
+       "k": "PISO-033",
+       "n": "Mortal extendido atras"
+      },
+      {
+       "k": "PISO-034",
+       "n": "Power flic (Tempo)"
+      },
+      {
+       "k": "PISO-035",
+       "n": "Doble mortal atrás en C"
+      }
+     ]
+    },
+    {
+     "nombre": "Acrobatico con giro",
+     "elementos": [
+      {
+       "k": "PISO-036",
+       "n": "Mortal extendido atras con 1/2 giro"
+      },
+      {
+       "k": "PISO-037",
+       "n": "Mortal extendido atras con un giro"
+      },
+      {
+       "k": "PISO-038",
+       "n": "Mortal agrupado adelanté con 1/2 giro"
+      },
+      {
+       "k": "PISO-039",
+       "n": "Mortal agrupado adelanté con 1 giro"
+      },
+      {
+       "k": "PISO-040",
+       "n": "Varani"
+      },
+      {
+       "k": "PISO-041",
+       "n": "Mortal extendido adelanté con 1 giro"
+      },
+      {
+       "k": "PISO-042",
+       "n": "Mortal extendido atras con 1 1/2 giro"
+      },
+      {
+       "k": "PISO-043",
+       "n": "Mortal extendido atrás con 2 giros"
+      },
+      {
+       "k": "PISO-044",
+       "n": "Mortal extendido adelante con 1 1/2 giro"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ARZON",
+   "nombre": "Arzón",
+   "clasificaciones": [
+    {
+     "nombre": "Hongo",
+     "elementos": [
+      {
+       "k": "ARZON-001",
+       "n": "Posturas básicas de apoyo e impulso"
+      },
+      {
+       "k": "ARZON-002",
+       "n": "1/4 de circulo"
+      },
+      {
+       "k": "ARZON-003",
+       "n": "1/2 de circulo"
+      },
+      {
+       "k": "ARZON-004",
+       "n": "3/4 de circulo"
+      },
+      {
+       "k": "ARZON-005",
+       "n": "1 circulo"
+      },
+      {
+       "k": "ARZON-006",
+       "n": "2 circulos"
+      },
+      {
+       "k": "ARZON-007",
+       "n": "3 circulos"
+      },
+      {
+       "k": "ARZON-008",
+       "n": "4 circulos"
+      },
+      {
+       "k": "ARZON-009",
+       "n": "5 circulos"
+      },
+      {
+       "k": "ARZON-010",
+       "n": "Salida finlandesa"
+      },
+      {
+       "k": "ARZON-011",
+       "n": "Splindle"
+      },
+      {
+       "k": "ARZON-012",
+       "n": "Thomas Flair"
+      },
+      {
+       "k": "ARZON-013",
+       "n": "Cheka"
+      },
+      {
+       "k": "ARZON-014",
+       "n": "Stöckli"
+      },
+      {
+       "k": "ARZON-015",
+       "n": "Splindle con thomas"
+      },
+      {
+       "k": "ARZON-016",
+       "n": "Rusa"
+      }
+     ]
+    },
+    {
+     "nombre": "Caballo sin arzon",
+     "elementos": [
+      {
+       "k": "ARZON-017",
+       "n": "1/2 Circulo"
+      },
+      {
+       "k": "ARZON-018",
+       "n": "Circulo"
+      },
+      {
+       "k": "ARZON-019",
+       "n": "Thomas Flair"
+      },
+      {
+       "k": "ARZON-020",
+       "n": "1/4 de Kehr"
+      },
+      {
+       "k": "ARZON-021",
+       "n": "1/2 Splindle"
+      },
+      {
+       "k": "ARZON-022",
+       "n": "Salida finlandesa"
+      },
+      {
+       "k": "ARZON-023",
+       "n": "Cheka"
+      },
+      {
+       "k": "ARZON-024",
+       "n": "Stöckli"
+      },
+      {
+       "k": "ARZON-025",
+       "n": "1/2 Magyar"
+      },
+      {
+       "k": "ARZON-026",
+       "n": "1/2 Sivado"
+      },
+      {
+       "k": "ARZON-027",
+       "n": "Rusa"
+      },
+      {
+       "k": "ARZON-028",
+       "n": "Doble rusa"
+      },
+      {
+       "k": "ARZON-029",
+       "n": "Magyar"
+      },
+      {
+       "k": "ARZON-030",
+       "n": "Sivado"
+      }
+     ]
+    },
+    {
+     "nombre": "Caballo con arzones",
+     "elementos": [
+      {
+       "k": "ARZON-031",
+       "n": "Balanceo pendular"
+      },
+      {
+       "k": "ARZON-032",
+       "n": "Tijera falsa"
+      },
+      {
+       "k": "ARZON-033",
+       "n": "Tijera"
+      },
+      {
+       "k": "ARZON-034",
+       "n": "Circulo sobre arzones"
+      },
+      {
+       "k": "ARZON-035",
+       "n": "Tijera circulo"
+      },
+      {
+       "k": "ARZON-036",
+       "n": "Bajada lateral"
+      },
+      {
+       "k": "ARZON-037",
+       "n": "Circulo en grupa"
+      },
+      {
+       "k": "ARZON-038",
+       "n": "Circulo lateral en grupa"
+      },
+      {
+       "k": "ARZON-039",
+       "n": "Circulo frontal en grupa"
+      },
+      {
+       "k": "ARZON-040",
+       "n": "1/4 de Kehr en grupa"
+      },
+      {
+       "k": "ARZON-041",
+       "n": "1/2 Splindle en grupa"
+      },
+      {
+       "k": "ARZON-042",
+       "n": "Salida finlandesa"
+      },
+      {
+       "k": "ARZON-043",
+       "n": "Cheka sobre arzones"
+      },
+      {
+       "k": "ARZON-044",
+       "n": "Stöckli sobre arzones"
+      },
+      {
+       "k": "ARZON-045",
+       "n": "Rusa en grupa"
+      },
+      {
+       "k": "ARZON-046",
+       "n": "Doble rusa en grupa"
+      },
+      {
+       "k": "ARZON-047",
+       "n": "Circulo sobre un arzon"
+      },
+      {
+       "k": "ARZON-048",
+       "n": "Magyar"
+      },
+      {
+       "k": "ARZON-049",
+       "n": "Sivado"
+      },
+      {
+       "k": "ARZON-050",
+       "n": "Roth"
+      },
+      {
+       "k": "ARZON-051",
+       "n": "Salida Kolyvanov"
+      },
+      {
+       "k": "ARZON-052",
+       "n": "Tongfei"
+      },
+      {
+       "k": "ARZON-053",
+       "n": "Splindle en grupa (Magyar)"
+      },
+      {
+       "k": "ARZON-054",
+       "n": "Circulo a 1/2 Stockly sobre un arzon"
+      },
+      {
+       "k": "ARZON-055",
+       "n": "Wugonian"
+      },
+      {
+       "k": "ARZON-056",
+       "n": "Sohn"
+      },
+      {
+       "k": "ARZON-057",
+       "n": "Bezugo"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ANILLOS",
+   "nombre": "Anillos",
+   "clasificaciones": [
+    {
+     "nombre": "Elementos de fuerza",
+     "elementos": [
+      {
+       "k": "ANILLOS-001",
+       "n": "L sit en suspension"
+      },
+      {
+       "k": "ANILLOS-002",
+       "n": "Dominada"
+      },
+      {
+       "k": "ANILLOS-003",
+       "n": "Vela"
+      },
+      {
+       "k": "ANILLOS-004",
+       "n": "Plancha dorsal"
+      },
+      {
+       "k": "ANILLOS-005",
+       "n": "Hercules"
+      },
+      {
+       "k": "ANILLOS-006",
+       "n": "L sit en apoyo"
+      },
+      {
+       "k": "ANILLOS-007",
+       "n": "Plancha agrupada"
+      },
+      {
+       "k": "ANILLOS-008",
+       "n": "Parado de hombros"
+      },
+      {
+       "k": "ANILLOS-009",
+       "n": "L sit a Parado de manos (Kato)"
+      },
+      {
+       "k": "ANILLOS-010",
+       "n": "Semidisloque desde suspension estática"
+      },
+      {
+       "k": "ANILLOS-011",
+       "n": "Escuadra abierta"
+      },
+      {
+       "k": "ANILLOS-012",
+       "n": "Plancha abierta (Pajaro)"
+      },
+      {
+       "k": "ANILLOS-013",
+       "n": "Cristo"
+      },
+      {
+       "k": "ANILLOS-014",
+       "n": "Plancha cerrada"
+      },
+      {
+       "k": "ANILLOS-015",
+       "n": "Hirondell (Maltesse)"
+      }
+     ]
+    },
+    {
+     "nombre": "Elementos de vuelo",
+     "elementos": [
+      {
+       "k": "ANILLOS-016",
+       "n": "Balanceos a 45°"
+      },
+      {
+       "k": "ANILLOS-017",
+       "n": "Balanceos a la horizontal"
+      },
+      {
+       "k": "ANILLOS-018",
+       "n": "Balanceos por encima de la horizontal"
+      },
+      {
+       "k": "ANILLOS-019",
+       "n": "Inglesa a L sit"
+      },
+      {
+       "k": "ANILLOS-020",
+       "n": "Inlocada"
+      },
+      {
+       "k": "ANILLOS-021",
+       "n": "Semidisloque desde sandwich"
+      },
+      {
+       "k": "ANILLOS-022",
+       "n": "Dislocada"
+      },
+      {
+       "k": "ANILLOS-023",
+       "n": "Salida de mortal extendido atrás"
+      },
+      {
+       "k": "ANILLOS-024",
+       "n": "Azteca"
+      },
+      {
+       "k": "ANILLOS-025",
+       "n": "Kip L sit"
+      },
+      {
+       "k": "ANILLOS-026",
+       "n": "Subida de pecho"
+      },
+      {
+       "k": "ANILLOS-027",
+       "n": "Salida de mortal agrupado hacia adelante"
+      },
+      {
+       "k": "ANILLOS-028",
+       "n": "Salida de doble mortal agrupado hacía atrás"
+      },
+      {
+       "k": "ANILLOS-029",
+       "n": "Molino"
+      },
+      {
+       "k": "ANILLOS-030",
+       "n": "Gigante"
+      },
+      {
+       "k": "ANILLOS-031",
+       "n": "Deltchev"
+      },
+      {
+       "k": "ANILLOS-032",
+       "n": "Honma"
+      },
+      {
+       "k": "ANILLOS-033",
+       "n": "Salida de multiple mortal"
+      },
+      {
+       "k": "ANILLOS-034",
+       "n": "Yamawaki"
+      },
+      {
+       "k": "ANILLOS-035",
+       "n": "Jonasson"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "SALTO",
+   "nombre": "Salto",
+   "clasificaciones": [
+    {
+     "nombre": "Acciones sin tabla de salto",
+     "elementos": [
+      {
+       "k": "SALTO-001",
+       "n": "Carrera"
+      },
+      {
+       "k": "SALTO-002",
+       "n": "Entrada a botador"
+      },
+      {
+       "k": "SALTO-003",
+       "n": "Salto Vertical"
+      },
+      {
+       "k": "SALTO-004",
+       "n": "Salto del tigre"
+      },
+      {
+       "k": "SALTO-005",
+       "n": "Salto mortal agrupado"
+      },
+      {
+       "k": "SALTO-006",
+       "n": "Resorte a caer en placha con altura"
+      },
+      {
+       "k": "SALTO-007",
+       "n": "Resorte a altura"
+      }
+     ]
+    },
+    {
+     "nombre": "Saltos",
+     "elementos": [
+      {
+       "k": "SALTO-008",
+       "n": "Resorte de brazos"
+      },
+      {
+       "k": "SALTO-009",
+       "n": "Redondilla"
+      },
+      {
+       "k": "SALTO-010",
+       "n": "Yamashita"
+      },
+      {
+       "k": "SALTO-011",
+       "n": "Tsukahara agrupada"
+      },
+      {
+       "k": "SALTO-012",
+       "n": "Resorte mortal agrupado"
+      },
+      {
+       "k": "SALTO-013",
+       "n": "Tsukahara carpada"
+      },
+      {
+       "k": "SALTO-014",
+       "n": "Tsukahara extendida"
+      },
+      {
+       "k": "SALTO-015",
+       "n": "Tsukahara con medio giro"
+      },
+      {
+       "k": "SALTO-016",
+       "n": "Entrada de kasa a mortal agrup adelanté"
+      },
+      {
+       "k": "SALTO-017",
+       "n": "Kasamatsu"
+      },
+      {
+       "k": "SALTO-018",
+       "n": "Kasamatsu extendido"
+      },
+      {
+       "k": "SALTO-019",
+       "n": "Resorte mortal carpado"
+      },
+      {
+       "k": "SALTO-020",
+       "n": "Cuervo"
+      },
+      {
+       "k": "SALTO-021",
+       "n": "Tsukahara con giro y medio"
+      },
+      {
+       "k": "SALTO-022",
+       "n": "Akopian"
+      },
+      {
+       "k": "SALTO-023",
+       "n": "Yourchenko"
+      },
+      {
+       "k": "SALTO-024",
+       "n": "Yourchenko extendido"
+      },
+      {
+       "k": "SALTO-025",
+       "n": "Yourchenko con 1/2 giro"
+      },
+      {
+       "k": "SALTO-026",
+       "n": "Yourchenko con 1 giro"
+      },
+      {
+       "k": "SALTO-027",
+       "n": "Driggs"
+      },
+      {
+       "k": "SALTO-028",
+       "n": "Resorte mortal extendido con giro"
+      },
+      {
+       "k": "SALTO-029",
+       "n": "Roche"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "PARALELAS",
+   "nombre": "Paralelas",
+   "clasificaciones": [
+    {
+     "nombre": "Elementos en suspension",
+     "elementos": [
+      {
+       "k": "PARALELAS-001",
+       "n": "Vuelos a 45°"
+      },
+      {
+       "k": "PARALELAS-002",
+       "n": "Vuelos a la horizontal"
+      },
+      {
+       "k": "PARALELAS-003",
+       "n": "Vuelos por encima de la paralela"
+      },
+      {
+       "k": "PARALELAS-004",
+       "n": "Vuelo a soporte braquial"
+      },
+      {
+       "k": "PARALELAS-005",
+       "n": "Alemana a L sit (kip)"
+      },
+      {
+       "k": "PARALELAS-006",
+       "n": "Inglesa a L sit"
+      },
+      {
+       "k": "PARALELAS-007",
+       "n": "Moy braquial"
+      },
+      {
+       "k": "PARALELAS-008",
+       "n": "Moy al apoyo"
+      },
+      {
+       "k": "PARALELAS-009",
+       "n": "Salida de mortal extendido por punta"
+      },
+      {
+       "k": "PARALELAS-010",
+       "n": "Balleston aleman"
+      },
+      {
+       "k": "PARALELAS-011",
+       "n": "Felgue a suspension"
+      },
+      {
+       "k": "PARALELAS-012",
+       "n": "Felgue a Lsit"
+      },
+      {
+       "k": "PARALELAS-013",
+       "n": "Gigante"
+      },
+      {
+       "k": "PARALELAS-014",
+       "n": "Salida de doble mortal agrupado por punta"
+      },
+      {
+       "k": "PARALELAS-015",
+       "n": "Tipelt"
+      },
+      {
+       "k": "PARALELAS-016",
+       "n": "Felgue a manos"
+      },
+      {
+       "k": "PARALELAS-017",
+       "n": "Bhavsar"
+      },
+      {
+       "k": "PARALELAS-018",
+       "n": "Gigante diamidov"
+      }
+     ]
+    },
+    {
+     "nombre": "Elementos en apoyo",
+     "elementos": [
+      {
+       "k": "PARALELAS-019",
+       "n": "Soporte extendido"
+      },
+      {
+       "k": "PARALELAS-020",
+       "n": "Plancha agrupada"
+      },
+      {
+       "k": "PARALELAS-021",
+       "n": "L sit"
+      },
+      {
+       "k": "PARALELAS-022",
+       "n": "Vuelos a 45°"
+      },
+      {
+       "k": "PARALELAS-023",
+       "n": "Vuelos a la horizontal"
+      },
+      {
+       "k": "PARALELAS-024",
+       "n": "Parada de manos"
+      },
+      {
+       "k": "PARALELAS-025",
+       "n": "Vuelos a parado de manos"
+      },
+      {
+       "k": "PARALELAS-026",
+       "n": "L sit a parado de manos (Kato)"
+      },
+      {
+       "k": "PARALELAS-027",
+       "n": "Salida frontal a medio giro"
+      },
+      {
+       "k": "PARALELAS-028",
+       "n": "Parado de manos a descenso braquial"
+      },
+      {
+       "k": "PARALELAS-029",
+       "n": "Cambio sencillo"
+      },
+      {
+       "k": "PARALELAS-030",
+       "n": "Cambio interno"
+      },
+      {
+       "k": "PARALELAS-031",
+       "n": "Salida de mortal agrupado hacia adelanté"
+      },
+      {
+       "k": "PARALELAS-032",
+       "n": "Salida de mortal agrupado hacia atrás"
+      },
+      {
+       "k": "PARALELAS-033",
+       "n": "Salidas de mortal extendido ad o at por lateral"
+      },
+      {
+       "k": "PARALELAS-034",
+       "n": "Parado de manos sobre una barra"
+      },
+      {
+       "k": "PARALELAS-035",
+       "n": "Cambio completo sobre una barra"
+      },
+      {
+       "k": "PARALELAS-036",
+       "n": "Stutkhere"
+      },
+      {
+       "k": "PARALELAS-037",
+       "n": "Diamidov"
+      },
+      {
+       "k": "PARALELAS-038",
+       "n": "Salida de dobles mortales adelanté o atrás"
+      },
+      {
+       "k": "PARALELAS-039",
+       "n": "Healy"
+      },
+      {
+       "k": "PARALELAS-040",
+       "n": "Peters"
+      },
+      {
+       "k": "PARALELAS-041",
+       "n": "Makuts"
+      },
+      {
+       "k": "PARALELAS-042",
+       "n": "Diamidov con medio"
+      },
+      {
+       "k": "PARALELAS-043",
+       "n": "Gatson"
+      }
+     ]
+    },
+    {
+     "nombre": "Elementos en apoyo braquial",
+     "elementos": [
+      {
+       "k": "PARALELAS-044",
+       "n": "Vuelos a 45°"
+      },
+      {
+       "k": "PARALELAS-045",
+       "n": "Vuelos a la horizontal"
+      },
+      {
+       "k": "PARALELAS-046",
+       "n": "Vuelos por encima de la paralela"
+      },
+      {
+       "k": "PARALELAS-047",
+       "n": "Subida de pecho"
+      },
+      {
+       "k": "PARALELAS-048",
+       "n": "Subida de pecho desde la parada de manos"
+      },
+      {
+       "k": "PARALELAS-049",
+       "n": "Balleston aleman braquial a inglesa"
+      },
+      {
+       "k": "PARALELAS-050",
+       "n": "Corte frontal a endo a manos"
+      },
+      {
+       "k": "PARALELAS-051",
+       "n": "Corte posterior a L sit"
+      },
+      {
+       "k": "PARALELAS-052",
+       "n": "Impulso a manos desde braquial"
+      },
+      {
+       "k": "PARALELAS-053",
+       "n": "Honma braquial"
+      },
+      {
+       "k": "PARALELAS-054",
+       "n": "Honma (Yamawaki)"
+      },
+      {
+       "k": "PARALELAS-055",
+       "n": "Braquial a Diamidov"
+      },
+      {
+       "k": "PARALELAS-056",
+       "n": "Braquial a Stutkhere"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "FIJA",
+   "nombre": "Barra fija",
+   "clasificaciones": [
+    {
+     "nombre": "Elementos de vuelo y soltadas",
+     "elementos": [
+      {
+       "k": "FIJA-001",
+       "n": "Soporte de colgado"
+      },
+      {
+       "k": "FIJA-002",
+       "n": "Cambios de tomas en suspension"
+      },
+      {
+       "k": "FIJA-003",
+       "n": "Balanceos a 45°"
+      },
+      {
+       "k": "FIJA-004",
+       "n": "Balanceos a la horizontal"
+      },
+      {
+       "k": "FIJA-005",
+       "n": "Balanceos por encima de la barra"
+      },
+      {
+       "k": "FIJA-006",
+       "n": "Fly agrupado desde balanceo"
+      },
+      {
+       "k": "FIJA-007",
+       "n": "3/4  de gigante"
+      },
+      {
+       "k": "FIJA-008",
+       "n": "3/4 de molino"
+      },
+      {
+       "k": "FIJA-009",
+       "n": "Salida Fly extendido desde balanceo"
+      },
+      {
+       "k": "FIJA-010",
+       "n": "Gigante"
+      },
+      {
+       "k": "FIJA-011",
+       "n": "Molino"
+      },
+      {
+       "k": "FIJA-012",
+       "n": "Salida Fly extendido desde gigante"
+      },
+      {
+       "k": "FIJA-013",
+       "n": "Cambio sencillo"
+      },
+      {
+       "k": "FIJA-014",
+       "n": "Cambio directo"
+      },
+      {
+       "k": "FIJA-015",
+       "n": "Salida de doble mortal atrás en C"
+      },
+      {
+       "k": "FIJA-016",
+       "n": "Gigante saltado"
+      },
+      {
+       "k": "FIJA-017",
+       "n": "Voronin"
+      },
+      {
+       "k": "FIJA-018",
+       "n": "Tkachev"
+      },
+      {
+       "k": "FIJA-019",
+       "n": "Gienger"
+      },
+      {
+       "k": "FIJA-020",
+       "n": "Quast"
+      },
+      {
+       "k": "FIJA-021",
+       "n": "Tkachev en V (Samiloglu)"
+      },
+      {
+       "k": "FIJA-022",
+       "n": "Zou li min"
+      },
+      {
+       "k": "FIJA-023",
+       "n": "Jager"
+      },
+      {
+       "k": "FIJA-024",
+       "n": "Kovacs"
+      },
+      {
+       "k": "FIJA-025",
+       "n": "Tkachev extendido"
+      },
+      {
+       "k": "FIJA-026",
+       "n": "Kolman"
+      },
+      {
+       "k": "FIJA-027",
+       "n": "Cassina"
+      },
+      {
+       "k": "FIJA-028",
+       "n": "Gaylord"
+      }
+     ]
+    },
+    {
+     "nombre": "Acercamiento a la barra",
+     "elementos": [
+      {
+       "k": "FIJA-029",
+       "n": "Subida de estómago"
+      },
+      {
+       "k": "FIJA-030",
+       "n": "Descolgada"
+      },
+      {
+       "k": "FIJA-031",
+       "n": "Vuelta atrás"
+      },
+      {
+       "k": "FIJA-032",
+       "n": "Alemana"
+      },
+      {
+       "k": "FIJA-033",
+       "n": "Alemana a impulso"
+      },
+      {
+       "k": "FIJA-034",
+       "n": "Impulso a parada de manos"
+      },
+      {
+       "k": "FIJA-035",
+       "n": "Alemana a la horizontal"
+      },
+      {
+       "k": "FIJA-036",
+       "n": "Salvada a manos"
+      },
+      {
+       "k": "FIJA-037",
+       "n": "Alemana a parada de manos"
+      },
+      {
+       "k": "FIJA-038",
+       "n": "Salvada desdé gigante"
+      },
+      {
+       "k": "FIJA-039",
+       "n": "Endo"
+      },
+      {
+       "k": "FIJA-040",
+       "n": "Stalder"
+      },
+      {
+       "k": "FIJA-041",
+       "n": "Endo cerrado"
+      },
+      {
+       "k": "FIJA-042",
+       "n": "Adler"
+      },
+      {
+       "k": "FIJA-043",
+       "n": "Adler con medio"
+      },
+      {
+       "k": "FIJA-044",
+       "n": "Stalder cerrado"
+      },
+      {
+       "k": "FIJA-045",
+       "n": "Piatti"
+      },
+      {
+       "k": "FIJA-046",
+       "n": "Adler con giro"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "nota": "Cada elemento tiene un id estable (k). Para agregar elementos, ponlos al final de su aparato con el siguiente número; no cambies ni reutilices ids, porque los avances de cada atleta se guardan con ellos."
+}
