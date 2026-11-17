@@ -58,8 +58,9 @@ service cloud.firestore {
       allow write: if pgAdmin();
     }
 
+    // Asistencia: la ven todos los miembros (Reporte de asistencia de cada sección; Manu, 17-nov-2026). Solo el staff toma lista.
     match /pg_asistencia/{id} {
-      allow read: if pgStaff() || (resource != null && pgMio(resource.data.atletaId));
+      allow read: if pgMiembro();
       allow write: if pgStaff();
     }
 

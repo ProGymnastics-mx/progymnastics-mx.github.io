@@ -1,4 +1,7 @@
 /* Asistencia: el staff toma lista por grupo y fecha; todos ven el tablero (tutor y atleta, solo lo suyo).
+   ?vista=reporte = Reporte de asistencia de la sección (?s=GAV|GAF) con todos sus atletas, para TODOS los miembros
+   (atletas, papás y entrenadores; Manu, 17-nov-2026, como el tablero de asistencias de aguilaskc.net). Papá y atleta ven
+   además el día por día de los suyos. Cada registro guarda el nombre del atleta para que el reporte lo muestre a todos.
    Un registro por atleta y clase: asistencia/<fecha>_<grupo>_<atletaId> = {fecha, grupo, atletaId, estado}.
    Estados: P presente, R retardo, S salida temprana (los tres cuentan como asistencia), F falta, J falta justificada
    (cuenta como falta). Clase cancelada = sin registros (no cuenta ni como impartida ni como falta), como aguilaskc.net. */
@@ -7,8 +10,8 @@
   const u = await Sesion.requerir(RAIZ);
   // ?s=GAV|GAF: dentro de una sección (solo sus grupos, y los del coach). ?vista=reporte: reporte de todo el club (administración).
   const SEC = Sesion.seccionActual();
-  const REPORTE = Sesion.param("vista") === "reporte" && Sesion.esAdmin(u);
-  UI.encabezado(REPORTE ? "Reporte de asistencias" : SEC ? "Asistencia " + SEC : "Asistencia", RAIZ, u);
+  const REPORTE = Sesion.param("vista") === "reporte";
+  UI.encabezado(REPORTE ? "Reporte de asistencia" + (SEC ? " " + SEC : "") : SEC ? "Asistencia " + SEC : "Asistencia", RAIZ, u);
   const app = document.getElementById("app");
   const esc = UI.esc;
   const ESTADOS = [
@@ -17,8 +20,9 @@
   ];
   const ASISTIO = new Set(["P", "R", "S"]);
   const staff = Sesion.puede.tomarAsistencia(u);
-  const misGrupos = REPORTE ? CLUB.grupos : Sesion.gruposDe(u, SEC);
+  const misGrupos = REPORTE ? Sesion.gruposDeSeccion(SEC) : Sesion.gruposDe(u, SEC);
   const idsMios = new Set(misGrupos.map((g) => g.id));
+  const mios = new Set(staff ? [] : u.atletas || []); // tutor/atleta: sus atletas (resaltados y con día por día)
   let atletas = await Sesion.atletasVisibles(u);
   const porId = Object.fromEntries(atletas.map((a) => [a.id, a]));
 
@@ -117,7 +121,7 @@
       const ops = [];
       ids.forEach((id) => {
         if (marcas[id]) ops.push({ tipo: "guardar", col: "asistencia", id: docId(fecha, grupo, id), unir: false,
-          datos: { fecha, grupo, atletaId: id, estado: marcas[id], por: u.uid, actualizado: new Date().toISOString() } });
+          datos: { fecha, grupo, atletaId: id, nombre: (porId[id] || {}).nombre || "", estado: marcas[id], por: u.uid, actualizado: new Date().toISOString() } });
         else if (previos[id]) ops.push({ tipo: "borrar", col: "asistencia", id: docId(fecha, grupo, id) });
       });
       $("l-guardar").disabled = true;
@@ -146,8 +150,8 @@
           <label>Periodo <select id="t-tipo"><option value="mes">Mes</option><option value="anio">Año</option></select></label>
           <label id="t-mes-l">Mes <input type="month" id="t-mes" value="${hoy.slice(0, 7)}"></label>
           <label id="t-anio-l" hidden>Año <input type="number" id="t-anio" value="${hoy.slice(0, 4)}" min="2020" max="2100"></label>
-          ${staff ? `<label>Grupo <select id="t-grupo"><option value="">${REPORTE ? "Todo el club" : "Todos mis grupos"}</option>
-            ${REPORTE ? CLUB.secciones.map((x) => `<option value="S:${esc(x.id)}">Todo ${esc(x.id)}</option>`).join("") : ""}
+          ${staff || REPORTE ? `<label>Grupo <select id="t-grupo"><option value="">${REPORTE ? (SEC ? "Todo " + esc(SEC) : "Todo el club") : "Todos mis grupos"}</option>
+            ${REPORTE && !SEC ? CLUB.secciones.map((x) => `<option value="S:${esc(x.id)}">Todo ${esc(x.id)}</option>`).join("") : ""}
             ${UI.opcionesGrupos(misGrupos)}</select></label>` : ""}
           <button class="btn chico" type="button" onclick="print()">Imprimir</button>
         </div></div>
@@ -164,14 +168,14 @@
     const tipo = $("t-tipo").value;
     const desde = tipo === "mes" ? $("t-mes").value + "-01" : $("t-anio").value + "-01-01";
     const hasta = tipo === "mes" ? $("t-mes").value + "-31" : $("t-anio").value + "-12-31";
-    const grupo = staff ? $("t-grupo").value : "";
+    const grupo = $("t-grupo") ? $("t-grupo").value : "";
     let regs;
-    if (staff) regs = await DB.listar("asistencia", [["fecha", ">=", desde], ["fecha", "<=", hasta]]);
+    if (staff || REPORTE) regs = await DB.listar("asistencia", [["fecha", ">=", desde], ["fecha", "<=", hasta]]);
     else regs = (await Promise.all((u.atletas || []).map((id) => DB.listar("asistencia", [["atletaId", "==", id]])))).flat()
       .filter((r) => r.fecha >= desde && r.fecha <= hasta);
     if (grupo.startsWith("S:")) regs = regs.filter((r) => Sesion.seccionDeGrupo(r.grupo) === grupo.slice(2));
     else if (grupo) regs = regs.filter((r) => r.grupo === grupo);
-    else if (staff) regs = regs.filter((r) => idsMios.has(r.grupo));
+    else if (staff || REPORTE) regs = regs.filter((r) => idsMios.has(r.grupo));
     if (!staff && SEC) regs = regs.filter((r) => Sesion.seccionDeGrupo(r.grupo) === SEC);
 
     const por = {};
@@ -181,7 +185,7 @@
       if (ASISTIO.has(r.estado)) o.asis++; else o.faltas++;
       if (r.estado === "J") o.just++; if (r.estado === "R") o.ret++; if (r.estado === "S") o.sal++;
     });
-    const filas = Object.values(por).map((o) => ({ ...o, nombre: (porId[o.id] || {}).nombre || "(atleta borrado)", pct: o.ses ? o.asis / o.ses : null }))
+    const filas = Object.values(por).map((o) => ({ ...o, nombre: (porId[o.id] || {}).nombre || (o.regs.find((r) => r.nombre) || {}).nombre || "(sin nombre)", pct: o.ses ? o.asis / o.ses : null }))
       .sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
     const T = filas.reduce((t, o) => { t.ses += o.ses; t.asis += o.asis; t.ret += o.ret; t.sal += o.sal; return t; }, { ses: 0, asis: 0, ret: 0, sal: 0 });
     const pct = (x) => (x == null ? "—" : Math.round(x * 100) + "%");
@@ -196,13 +200,13 @@
     $("t-titulo").textContent = `Asistencia individual · ${periodo}`;
     $("t-tabla").innerHTML = filas.length ? `<table><thead><tr><th>Atleta</th><th class="num">Clases</th><th class="num">Asistidas</th>
       <th class="num">Faltas</th><th class="num">Justif.</th><th class="num">Retardos</th><th class="num">Salidas</th><th class="num">Asistencia</th></tr></thead><tbody>
-      ${filas.map((o) => `<tr><td>${esc(o.nombre)}</td><td class="num">${o.ses}</td><td class="num">${o.asis}</td><td class="num">${o.faltas}</td>
+      ${filas.map((o) => `<tr><td>${mios.has(o.id) ? `<b>${esc(o.nombre)}</b>` : esc(o.nombre)}</td><td class="num">${o.ses}</td><td class="num">${o.asis}</td><td class="num">${o.faltas}</td>
         <td class="num">${o.just}</td><td class="num">${o.ret}</td><td class="num">${o.sal}</td>
         <td class="num"><span class="etiqueta ${color(o.pct)}">${pct(o.pct)}</span></td></tr>`).join("")}</tbody></table>`
       : `<p class="vacio">No hay asistencia registrada en ${esc(periodo)}.</p>`;
 
     // Tutor y atleta: detalle por día.
-    $("t-detalle").innerHTML = staff ? "" : filas.map((o) => `
+    $("t-detalle").innerHTML = staff ? "" : filas.filter((o) => mios.has(o.id)).map((o) => `
       <div class="panel"><h2>${esc(o.nombre)} · día por día</h2><div class="tabla-wrap"><table><tbody>
       ${o.regs.sort((a, b) => b.fecha.localeCompare(a.fecha)).map((r) => { const e = ESTADOS.find((x) => x.k === r.estado) || { t: r.estado, c: "gris" };
         return `<tr><td>${UI.fecha(r.fecha)}</td><td>${esc(UI.grupo(r.grupo))}</td><td class="num"><span class="etiqueta ${e.c}">${e.t}</span></td></tr>`; }).join("")}
