@@ -75,7 +75,9 @@
     },
     async guardar(col, id, datos, op = {}) {
       const b = base(); b[col] = b[col] || {}; id = id || nuevoId();
-      b[col][id] = op.unir === false ? limpiar(datos) : { ...(b[col][id] || {}), ...limpiar(datos) };
+      // Igual que Firestore con merge: los objetos anidados se unen, no se reemplazan.
+      const unir = (x, y) => { const r = { ...(x || {}) }; for (const [k, v] of Object.entries(y)) r[k] = v && typeof v === "object" && !Array.isArray(v) && r[k] && typeof r[k] === "object" && !Array.isArray(r[k]) ? unir(r[k], v) : v; return r; };
+      b[col][id] = op.unir === false ? limpiar(datos) : unir(b[col][id], limpiar(datos));
       escribirDemo(); return id;
     },
     async borrar(col, id) { const b = base(); if (b[col]) delete b[col][id]; escribirDemo(); },

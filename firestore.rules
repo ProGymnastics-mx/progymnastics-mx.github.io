@@ -1,15 +1,19 @@
 rules_version = '2';
-// Reglas de Firestore de ProGymnastics México (colecciones pg_*), en el proyecto akc-con-reporte que comparte con AKC.
-// NO reemplazar las reglas de AKC: en Consola de Firebase → Firestore → Reglas, copiar las funciones y los bloques
-// "match /pg_…" de abajo DENTRO del "match /databases/{database}/documents" que ya existe, y conservar todo lo de AKC.
-// Si las reglas actuales tienen una regla abierta para todo, como
-//     match /{document=**} { allow read, write: if true; }
-// cambiarla por esta, para que lo de AKC siga igual pero no abra las colecciones pg_ (pagos y datos de familias):
-//     match /{coleccion}/{document=**} { allow read, write: if !coleccion.matches('pg_.*'); }
+// Reglas de Firestore del proyecto akc-con-reporte (compartido entre las apps de AKC y ProGymnastics).
+// SE COPIA COMPLETO a Consola de Firebase → Firestore → Reglas → Publicar (reemplaza todo lo que haya ahí).
+// - AKC: todas sus colecciones siguen abiertas como siempre (primer bloque).
+// - ProGymnastics: colecciones pg_*, cerradas por perfil.
 // Perfiles: SUPER (Desarrollador), OWNER, ADMIN (administración), COACH, TUTOR, ATLETA (ver js/sesion.js).
 // SUPER solo se da creando a mano su invitación en la consola; desde la app nadie lo da, cambia ni quita.
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // ===== AKC: igual que antes (todo abierto), excepto las colecciones pg_ =====
+    match /{coleccion}/{document=**} {
+      allow read, write: if !coleccion.matches('pg_.*');
+    }
+
+    // ===== ProGymnastics (colecciones pg_) =====
     function pgDentro() { return request.auth != null; }
     function pgYo() { return get(/databases/$(database)/documents/pg_usuarios/$(request.auth.uid)).data; }
     function pgMiembro() { return pgDentro() && exists(/databases/$(database)/documents/pg_usuarios/$(request.auth.uid)); }
@@ -68,6 +72,13 @@ service cloud.firestore {
       allow read: if pgMiembro();
       allow create: if pgStaff() && request.resource.data.autorUid == request.auth.uid;
       allow delete: if pgAdmin() || (pgStaff() && resource.data.autorUid == request.auth.uid);
+    }
+
+    // Normativos: un documento por atleta. Staff lee y marca; tutor y atleta leen solo el suyo.
+    match /pg_normativos/{atletaId} {
+      allow get: if pgStaff() || pgMio(atletaId);
+      allow list: if pgStaff();
+      allow write: if pgStaff();
     }
 
     match /pg_eventos/{id} {
