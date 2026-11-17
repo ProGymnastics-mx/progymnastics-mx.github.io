@@ -13,8 +13,11 @@ con módulos de **pagos** y **asistencia**. Responder en español, claro y sin r
   (tutor/atleta), Mis pagos (tutor/atleta), Avisos, Calendario y, en gris «Próximamente»: Normativos, Editor de rutinas,
   Competencias y Reportes para papás. Los módulos reciben `?s=GAV|GAF` y solo muestran esa sección (y lo de todo el club);
   «Volver» regresa a la sección.
-- `admin/`: Herramientas administrativas = Pagos, Registro de atletas (`equipo?vista=atletas`), Bajas (`equipo?vista=bajas`,
-  `atletas.baja = {fecha, motivo}`) y Reporte de asistencias (`asistencia?vista=reporte`, todo el club). Los módulos reciben `?v=admin`.
+- `admin/`: Herramientas administrativas (solo administración) = Pagos, Registro de atletas (`equipo?vista=atletas`) y Bajas
+  (`equipo?vista=bajas`, `atletas.baja = {fecha, motivo}`). Los módulos reciben `?v=admin`.
+- **Reporte de asistencia** (`asistencia?s=GAV&vista=reporte`): en cada sección, para TODOS (atletas, papás y entrenadores; Manu,
+  17-nov-2026), con todos los atletas de la sección; papá/atleta ven además el día por día de los suyos. Por eso `pg_asistencia` la
+  lee cualquier miembro y cada registro guarda el `nombre` del atleta.
 - Administración de acceso = `equipo?vista=accesos`. Un COACH lleva `secciones` ([] = GAV y GAF) y `grupos` ([] = todos los
   de sus secciones): solo entra a esas secciones y toma lista de esos grupos.
 - Cada grupo de `CLUB.grupos` pertenece a una sección (`seccion`); la sección de un atleta es la de su grupo.

@@ -24,8 +24,8 @@ window.tarjetasSeccion = function (sec) {
   return (u) => {
     const staff = Sesion.esStaff(u);
     return [
-      staff ? { href: "../modulos/asistencia/" + q, icono: "check", color: "verde", t: "Tomar asistencia", s: "Lista por grupo y tablero de tus grupos" }
-            : { href: "../modulos/asistencia/" + q, icono: "check", color: "verde", t: "Asistencia", s: "Clases asistidas y faltas" },
+      staff && { href: "../modulos/asistencia/" + q, icono: "check", color: "verde", t: "Tomar asistencia", s: "Lista por grupo y tablero de tus grupos" },
+      { href: "../modulos/asistencia/" + q + "&vista=reporte", icono: "barras", color: "cian", t: "Reporte de asistencia", s: staff ? "Asistencia de todos los atletas de " + sec : "Asistencia del grupo y día por día de tu atleta" },
       !staff && { href: "../modulos/pagos/" + q, icono: "tarjeta", color: "azul", t: "Mis pagos", s: "Mensualidades y recibos" },
       { href: "../modulos/avisos/" + q, icono: "megafono", color: "naranja", t: "Avisos", s: "Lo más reciente de " + sec },
       { href: "../modulos/calendario/" + q, icono: "calendario", color: "rojo", t: "Calendario", s: "Competencias, eventos y días sin clase" },

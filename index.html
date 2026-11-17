@@ -112,7 +112,7 @@
       const secs = Sesion.seccionesDe(u, atletas);
       const tarjetas = CLUB.secciones.filter((x) => secs.includes(x.id)).map((x) =>
         ({ href: x.id.toLowerCase() + "/", ico: x.id, texto: true, t: x.id, s: x.nombre }));
-      if (Sesion.puede.herramientasAdmin(u)) tarjetas.push({ href: "admin/", icono: "carpeta", color: "gris", t: "Herramientas", s: "Pagos, altas, bajas y reporte de asistencias" });
+      if (Sesion.puede.herramientasAdmin(u)) tarjetas.push({ href: "admin/", icono: "carpeta", color: "gris", t: "Herramientas", s: "Pagos, altas y bajas" });
       if (Sesion.puede.accesos(u)) tarjetas.push({ href: "modulos/equipo/?vista=accesos", icono: "candado", color: "azul", t: "Acceso", s: "Administración de acceso: quién entra y qué puede ver" });
       $("menu").innerHTML = tarjetas.length ? tarjetas.map((m) =>
         `<a class="tarjeta" href="${m.href}" aria-label="${UI.esc(m.t + ": " + m.s)}"><span class="ico${m.texto ? " texto" : ""}" style="${m.color ? `background:var(--${m.color})` : ""}" aria-hidden="true">${m.texto ? UI.esc(m.ico) : UI.icono(m.icono)}</span><strong>${UI.esc(m.t)}</strong></a>`).join("")
