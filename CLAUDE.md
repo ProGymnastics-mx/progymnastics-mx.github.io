@@ -1,6 +1,7 @@
 # App ProGymnastics México — guía para Claude
 
-App web (HTML/JS sin build) del club ProGymnastics México. Se publica con GitHub Pages desde `main`.
+App web (HTML/JS sin build) del club ProGymnastics México. Se publica con GitHub Pages desde `main` en **https://progymnastics-mx.github.io/** (repo `ProGymnastics-mx/progymnastics-mx.github.io`;
+Manu lo pasó a la organización el 17-nov-2026 para que su nombre no salga en el enlace; ese dominio está autorizado en Firebase Authentication).
 La pidió Manu (José Manuel Jaime Morales, 17-nov-2026): "clonar aguilaskc.net con la modalidad de la App GAV AKC (Firebase)",
 con módulos de **pagos** y **asistencia**. Responder en español, claro y sin relleno.
 
