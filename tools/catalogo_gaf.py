@@ -50,6 +50,8 @@ FUND = {
 }
 SALTOS_CODIGO = ["1.00","1.01","1.02","1.10","1.20","1.40","2.10","2.20","2.30","3.10","3.11","3.12","3.20","3.30",
                  "4.10","4.11","4.12","4.20","4.30","4.31","4.32","4.33","4.35","5.10","5.20"]
+SALTO_MAX = 4.4  # Manu, 17-nov-2026: solo saltos de valor 4.4 o menos (quedan fuera 4.33 y 4.35 Amanar)
+LETRAS = ("A", "B")  # Manu, 17-nov-2026: barras, viga y piso solo con elementos A y B (sin C), ~45 por aparato como en GAV
 NOMBRE = {"SALTO": "Salto", "BARRAS": "Barras", "VIGA": "Viga", "PISO": "Piso"}
 
 def limpia(d):
@@ -65,12 +67,13 @@ for ap in ["SALTO", "BARRAS", "VIGA", "PISO"]:
         els = []
         for num in SALTOS_CODIGO:
             e = E["SALTO|" + num]
+            if e["v"] > SALTO_MAX: continue
             ref = f"FIG {num} · {e['v']:.1f}" + (f" · {e['nom']}" if e.get("nom") else "")
             els.append({"n": limpia(e["d"]), "ref": ref})
         clas.append({"nombre": "Saltos del Código FIG", "elementos": els})
     else:
         for g, gn in sorted(G[ap].items(), key=lambda x: int(x[0])):
-            els = sorted([e for e in E.values() if e["ap"] == ap and e["g"] == int(g) and e.get("l") in ("A", "B", "C") and e.get("d")],
+            els = sorted([e for e in E.values() if e["ap"] == ap and e["g"] == int(g) and e.get("l") in LETRAS and e.get("d")],
                          key=lambda e: ("ABC".index(e["l"]), e["n"]))
             if not els: continue
             nombre = re.sub(r"^\d\.000\s*[―—–-]\s*", "", gn["es"]).strip().capitalize()
@@ -83,7 +86,7 @@ for ap in ["SALTO", "BARRAS", "VIGA", "PISO"]:
     aparatos.append({"id": ap, "nombre": NOMBRE[ap], "clasificaciones": clas})
 
 cat = {"seccion": "GAF",
-       "fuente": "Normativos GAF de ProGymnastics (versión inicial, 17-nov-2026, para revisar con los entrenadores): fundamentos de la progresión de las compulsorias USAG (niveles 1-5) y de salto USAG (niveles 6-7), y los elementos A, B y C del Código de Puntuación FIG femenil 2025-2028 con su descripción oficial en español (traducción UPAG); en salto, los saltos principales del Código con su valor.",
+       "fuente": "Normativos GAF de ProGymnastics (versión inicial, 17-nov-2026, para revisar con los entrenadores): fundamentos de la progresión de las compulsorias USAG (niveles 1-5) y de salto USAG (niveles 6-7), y los elementos A y B del Código de Puntuación FIG femenil 2025-2028 con su descripción oficial en español (traducción UPAG); en salto, los saltos principales del Código con valor de hasta 4.4. Lista reducida por Manu (17-nov-2026) a lo sugerido «Sí» y «Revisar».",
        "nota": "Cada elemento tiene un id estable (k). Para agregar elementos, ponlos al final de su aparato con el siguiente número; no cambies ni reutilices ids, porque los avances de cada atleta se guardan con ellos.",
        "aparatos": aparatos}
 json.dump(cat, open(out, "w"), ensure_ascii=False, indent=1)
