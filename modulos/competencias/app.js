@@ -10,7 +10,7 @@
   UI.encabezado("Competencias " + SEC, RAIZ, u, RAIZ + SEC.toLowerCase() + "/");
   const app = document.getElementById("app");
   const esc = UI.esc, $ = (id) => document.getElementById(id);
-  const E = PG_EFIC;
+  const E = PG_EFIC.seccion(SEC); // aparatos y cortes de la sección (GAV o GAF)
 
   const mios = new Set(Sesion.gruposDe(u, SEC).map((g) => g.id));
   const atletas = (await Sesion.atletasVisibles(u)).filter((a) => a.activo !== false && Sesion.seccionDeGrupo(a.grupo) === SEC && mios.has(a.grupo));

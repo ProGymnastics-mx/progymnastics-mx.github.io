@@ -71,7 +71,12 @@ con módulos de **pagos** y **asistencia**. Responder en español, claro y sin r
    2025-28 con su descripción UPAG, número y letra en `ref`). Manu (17-nov-2026) lo redujo de 371 a lo sugerido «Sí» + «Revisar»
    (quitó los C y los saltos de más de 4.4). Fuente de datos: `Jueceofemenil/app/datos/elementos_fig_wag.json`. Versión inicial: revisarla con
    los entrenadores del club; para agregar, al final de su aparato con id nuevo (ids `GAF-<APARATO>-NNN`, nunca reutilizarlos).
-   Pendiente en GAF: editor de rutinas, competencias y reportes (necesitan las reglas femeniles; base: módulo femenil de APPBKA).
+   ✅ GAF completo (Manu, 17-nov-2026): **Editor de rutinas** `modulos/rutinas-gaf/` = el editor femenil de APPBKA/Jueceofemenil
+   (misma lógica: USAG N6-N10 Development 2026-30, Junior FIG y FIG GAF 2025-28; datos en `datos/`), con atletas de GAF del club,
+   guardado en `pg_rutinas_gaf/estado` (solo staff), sin rutina EJEMPLO ni «Mi cuenta», y NP por atleta en `pg_rutinas_vista`.
+   **Competencias** y **Reportes** son los mismos módulos con `?s=GAF`: `PG_EFIC.seccion("GAF")` pone salto, barras, viga y piso y
+   obligatorios = niveles 1-5 (libres 6-10, Junior y FIG). El reporte trae «¿En qué etapa va?» (por aparato, la primera
+   clasificación de Normativos con < 80 % consolidado, con lo que tiene en proceso y lo próximo); en GAF va hasta arriba.
 4. Vistas de papá y atleta.
 Cada colección nueva (`pg_normativos`, `pg_rutinas`…) necesita su bloque en `firestore.rules`, y Manu debe pegar las reglas
 otra vez en la consola; sin eso Firestore la rechaza.

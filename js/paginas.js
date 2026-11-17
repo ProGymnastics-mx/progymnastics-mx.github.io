@@ -18,7 +18,7 @@ window.PaginaMenu = async function ({ raiz, titulo, subtitulo, permiso, seccion,
     grupo(subtitulo, todas.filter((t) => !t.pronto)) + grupo("Próximamente", todas.filter((t) => t.pronto));
 };
 
-// Módulos de una sección (GAV o GAF). Lo marcado pronto llega en las siguientes etapas.
+// Módulos de una sección (GAV o GAF). Lo marcado pronto: true sale en gris con «Próximamente».
 window.tarjetasSeccion = function (sec) {
   const q = "?s=" + sec;
   return (u) => {
@@ -30,12 +30,11 @@ window.tarjetasSeccion = function (sec) {
       { href: "../modulos/avisos/" + q, icono: "megafono", color: "naranja", t: "Avisos", s: "Lo más reciente de " + sec },
       { href: "../modulos/calendario/" + q, icono: "calendario", color: "rojo", t: "Calendario", s: "Competencias, eventos y días sin clase" },
       { href: "../modulos/normativos/" + q, icono: "lista", color: "indigo", t: "Normativos", s: sec === "GAF" ? "Salto, barras, viga y piso" : staff ? "Qué domina cada atleta por aparato" : "Qué domina por aparato" },
-      staff && (sec === "GAV" ? { href: "../modulos/rutinas/editor.html", icono: "lapiz", color: "cafe", t: "Editor de rutinas", s: "Libres y obligatorios con su nota de partida" }
-                              : { icono: "lapiz", color: "cafe", t: "Editor de rutinas", s: "Rutinas y notas de partida", pronto: true }),
-      staff && (sec === "GAV" ? { href: "../modulos/competencias/" + q, icono: "trofeo", color: "morado", t: "Competencias", s: "Resultados, eficiencia y el más eficiente de cada copa" }
-                              : { icono: "trofeo", color: "morado", t: "Competencias", s: "Resultados de cada copa", pronto: true }),
-      sec === "GAV" ? { href: "../modulos/reportes/" + q, icono: "grafica", color: "turquesa", t: staff ? "Reportes para papás" : "Mi reporte", s: "Competencias, rutina, normativos y asistencia" }
-                    : { icono: "grafica", color: "turquesa", t: staff ? "Reportes para papás" : "Mi reporte", s: "Avance, competencias y estadísticas", pronto: true }
+      staff && { href: sec === "GAF" ? "../modulos/rutinas-gaf/editor.html" : "../modulos/rutinas/editor.html", icono: "lapiz", color: "cafe", t: "Editor de rutinas",
+                 s: sec === "GAF" ? "USAG niveles 6 a 10, Junior FIG y FIG con su nota de partida" : "Libres y obligatorios con su nota de partida" },
+      staff && { href: "../modulos/competencias/" + q, icono: "trofeo", color: "morado", t: "Competencias", s: "Nota de partida, nota final y eficiencia de cada copa" },
+      { href: "../modulos/reportes/" + q, icono: "grafica", color: "turquesa", t: staff ? "Reportes para papás" : "Mi reporte",
+        s: sec === "GAF" ? "En qué etapa va, competencias, rutina y asistencia" : "Competencias, rutina, normativos y asistencia" }
     ];
   };
 };
