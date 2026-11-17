@@ -52,8 +52,13 @@ con módulos de **pagos** y **asistencia**. Responder en español, claro y sin r
 2. GAV: traer de aguilaskc.net (`Kids-Center-Gimnasia/AguilasKC`, `gav/app/`) Normativos, Editor de rutinas, Calendario,
    Competencias (subir resultados, notas de partida, eficiencia) y Reportes para papás. **No** Fuerza ni Plan anual
    (Manu aún no sabe si se los mandarán). Sin datos ni nombres de atletas de AKC: los atletas son los de `pg_atletas`.
-3. GAF: crear Normativos femeniles de salto, barras, viga y piso con la misma lógica que los varoniles, basados en el
-   programa USAG y el Código FIG femenil (fuentes: repos `APPBKA` —módulo femenil— y `Jueceofemenil`).
+3. ✅ GAF: Normativos femeniles (`modulos/normativos/catalogo-gaf.json`, 269 elementos ≈ los 267 de GAV; generado con
+   `tools/catalogo_gaf.py`): salto 35 (fundamentos de carrera/trampolín, progresión USAG de salto L6-7 y saltos del Código de valor
+   ≤ 4.4), barras 61, viga 86 y piso 87 (fundamentos de las compulsorias USAG L1-5 + elementos **A y B** del Código FIG femenil
+   2025-28 con su descripción UPAG, número y letra en `ref`). Manu (17-nov-2026) lo redujo de 371 a lo sugerido «Sí» + «Revisar»
+   (quitó los C y los saltos de más de 4.4). Fuente de datos: `Jueceofemenil/app/datos/elementos_fig_wag.json`. Versión inicial: revisarla con
+   los entrenadores del club; para agregar, al final de su aparato con id nuevo (ids `GAF-<APARATO>-NNN`, nunca reutilizarlos).
+   Pendiente en GAF: editor de rutinas, competencias y reportes (necesitan las reglas femeniles; base: módulo femenil de APPBKA).
 4. Vistas de papá y atleta.
 Cada colección nueva (`pg_normativos`, `pg_rutinas`…) necesita su bloque en `firestore.rules`, y Manu debe pegar las reglas
 otra vez en la consola; sin eso Firestore la rechaza.

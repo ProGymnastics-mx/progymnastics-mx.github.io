@@ -29,8 +29,7 @@ window.tarjetasSeccion = function (sec) {
       !staff && { href: "../modulos/pagos/" + q, icono: "tarjeta", color: "azul", t: "Mis pagos", s: "Mensualidades y recibos" },
       { href: "../modulos/avisos/" + q, icono: "megafono", color: "naranja", t: "Avisos", s: "Lo más reciente de " + sec },
       { href: "../modulos/calendario/" + q, icono: "calendario", color: "rojo", t: "Calendario", s: "Competencias, eventos y días sin clase" },
-      sec === "GAF" ? { icono: "lista", color: "indigo", t: "Normativos", s: "Salto, barras, viga y piso", pronto: true }
-                    : { href: "../modulos/normativos/" + q, icono: "lista", color: "indigo", t: "Normativos", s: staff ? "Qué domina cada atleta por aparato" : "Qué domina por aparato" },
+      { href: "../modulos/normativos/" + q, icono: "lista", color: "indigo", t: "Normativos", s: sec === "GAF" ? "Salto, barras, viga y piso" : staff ? "Qué domina cada atleta por aparato" : "Qué domina por aparato" },
       staff && (sec === "GAV" ? { href: "../modulos/rutinas/editor.html", icono: "lapiz", color: "cafe", t: "Editor de rutinas", s: "Libres y obligatorios con su nota de partida" }
                               : { icono: "lapiz", color: "cafe", t: "Editor de rutinas", s: "Rutinas y notas de partida", pronto: true }),
       staff && (sec === "GAV" ? { href: "../modulos/competencias/" + q, icono: "trofeo", color: "morado", t: "Competencias", s: "Resultados, eficiencia y el más eficiente de cada copa" }

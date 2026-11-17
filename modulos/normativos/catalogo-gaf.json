@@ -1,0 +1,1501 @@
+{
+ "seccion": "GAF",
+ "fuente": "Normativos GAF de ProGymnastics (versión inicial, 17-nov-2026, para revisar con los entrenadores): fundamentos de la progresión de las compulsorias USAG (niveles 1-5) y de salto USAG (niveles 6-7), y los elementos A y B del Código de Puntuación FIG femenil 2025-2028 con su descripción oficial en español (traducción UPAG); en salto, los saltos principales del Código con valor de hasta 4.4. Lista reducida por Manu (17-nov-2026) a lo sugerido «Sí» y «Revisar».",
+ "nota": "Cada elemento tiene un id estable (k). Para agregar elementos, ponlos al final de su aparato con el siguiente número; no cambies ni reutilices ids, porque los avances de cada atleta se guardan con ellos.",
+ "aparatos": [
+  {
+   "id": "SALTO",
+   "nombre": "Salto",
+   "clasificaciones": [
+    {
+     "nombre": "Carrera y entrada al trampolín",
+     "elementos": [
+      {
+       "k": "GAF-SALTO-001",
+       "n": "Carrera con brazos coordinados (aceleración progresiva)",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-SALTO-002",
+       "n": "Entrada al trampolín (hurdle) con despegue de dos pies",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-SALTO-003",
+       "n": "Rebote en trampolín a salto extendido sobre colchón",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-SALTO-004",
+       "n": "Rebote en trampolín a posición agrupada",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-SALTO-005",
+       "n": "Rebote en trampolín a posición carpada abierta",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-SALTO-006",
+       "n": "Rebote al apoyo agrupado sobre colchón elevado",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-SALTO-007",
+       "n": "Rebote al parado de manos y caída de espalda plana en colchones (flat back)",
+       "ref": "Fundamento"
+      }
+     ]
+    },
+    {
+     "nombre": "Progresión USAG de salto",
+     "elementos": [
+      {
+       "k": "GAF-SALTO-008",
+       "n": "Inversión adelante (paloma) sobre pila de colchones, cuerpo extendido",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-SALTO-009",
+       "n": "Inversión adelante sobre la mesa a caer de pie",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-SALTO-010",
+       "n": "Entrada de Tsukahara (¼ – ½ giro) a pila de colchones",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-SALTO-011",
+       "n": "Entrada de rondada al trampolín (entrada Yurchenko) con colchón de seguridad",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-SALTO-012",
+       "n": "Entrada Yurchenko a pila de colchones (caída de espalda)",
+       "ref": "Fundamento"
+      }
+     ]
+    },
+    {
+     "nombre": "Saltos del Código FIG",
+     "elementos": [
+      {
+       "k": "GAF-SALTO-013",
+       "n": "Inversión adelante",
+       "ref": "FIG 1.00 · 1.6"
+      },
+      {
+       "k": "GAF-SALTO-014",
+       "n": "Inversión adelante con ½ giro (180°) en el 2do. vuelo",
+       "ref": "FIG 1.01 · 2.0"
+      },
+      {
+       "k": "GAF-SALTO-015",
+       "n": "Inversión adelante con 1/1 giro (360º) en el 2do. vuelo",
+       "ref": "FIG 1.02 · 2.6"
+      },
+      {
+       "k": "GAF-SALTO-016",
+       "n": "Yamashita",
+       "ref": "FIG 1.10 · 2.0"
+      },
+      {
+       "k": "GAF-SALTO-017",
+       "n": "Inversión con ½ giro (180º) en el 1er. vuelo – y repulsión de salida",
+       "ref": "FIG 1.20 · 1.6"
+      },
+      {
+       "k": "GAF-SALTO-018",
+       "n": "Rondada flic-flac en el 1er. vuelo – y repulsión de salida",
+       "ref": "FIG 1.40 · 2.0"
+      },
+      {
+       "k": "GAF-SALTO-019",
+       "n": "Inversión adelante – mortal adelante agrupado en el 2do. vuelo",
+       "ref": "FIG 2.10 · 3.6"
+      },
+      {
+       "k": "GAF-SALTO-020",
+       "n": "Inversión adelante – mortal adelante carpado en el 2do vuelo",
+       "ref": "FIG 2.20 · 3.8"
+      },
+      {
+       "k": "GAF-SALTO-021",
+       "n": "Inversión adelante – mortal adelante extendido en el 2do. vuelo",
+       "ref": "FIG 2.30 · 4.4 · Evdokimova"
+      },
+      {
+       "k": "GAF-SALTO-022",
+       "n": "Tsukahara agrupado",
+       "ref": "FIG 3.10 · 3.2 · Tourischeva"
+      },
+      {
+       "k": "GAF-SALTO-023",
+       "n": "Tsukahara agrupado con ½ giro (180°)",
+       "ref": "FIG 3.11 · 3.4"
+      },
+      {
+       "k": "GAF-SALTO-024",
+       "n": "Tsukahara agrupado con 1/1 giro (360°)",
+       "ref": "FIG 3.12 · 3.8 · Kim"
+      },
+      {
+       "k": "GAF-SALTO-025",
+       "n": "Tsukahara carpado",
+       "ref": "FIG 3.20 · 3.4"
+      },
+      {
+       "k": "GAF-SALTO-026",
+       "n": "Tsukahara extendido",
+       "ref": "FIG 3.30 · 3.8"
+      },
+      {
+       "k": "GAF-SALTO-027",
+       "n": "Rondada flic-flac – mortal atrás agrupado en el 2do. vuelo",
+       "ref": "FIG 4.10 · 3.0 · Yurchenko"
+      },
+      {
+       "k": "GAF-SALTO-028",
+       "n": "Rondada flic-flac – mortal atrás agrupado con ½ giro (180º) en el 2do. vuelo",
+       "ref": "FIG 4.11 · 3.2"
+      },
+      {
+       "k": "GAF-SALTO-029",
+       "n": "Rondada flic-flac – mortal atrás agrupado con 1/1 giro (360º) en el 2do. vuelo",
+       "ref": "FIG 4.12 · 3.6"
+      },
+      {
+       "k": "GAF-SALTO-030",
+       "n": "Rondada flic-flac – mortal atrás carpado en el 2do. vuelo",
+       "ref": "FIG 4.20 · 3.2"
+      },
+      {
+       "k": "GAF-SALTO-031",
+       "n": "Rondada flic-flac – mortal atrás extendido en el 2do. vuelo",
+       "ref": "FIG 4.30 · 3.6"
+      },
+      {
+       "k": "GAF-SALTO-032",
+       "n": "Rondada flic-flac – mortal atrás extendido con ½ giro (180º) en el 2do. vuelo",
+       "ref": "FIG 4.31 · 3.8"
+      },
+      {
+       "k": "GAF-SALTO-033",
+       "n": "Rondada flic-flac – mortal atrás extendido con 1/1 giro (360º) en el 2do. vuelo",
+       "ref": "FIG 4.32 · 4.2"
+      },
+      {
+       "k": "GAF-SALTO-034",
+       "n": "Rondada flic-flac con ½ giro (180º) en el 1er. vuelo – mortal adelante agrupado en el 2do. vuelo",
+       "ref": "FIG 5.10 · 3.8 · Ivantcheva"
+      },
+      {
+       "k": "GAF-SALTO-035",
+       "n": "Rondada flic-flac con ½ giro (180º) en el 1er. vuelo – mortal adelante carpado en el 2do. vuelo",
+       "ref": "FIG 5.20 · 4.0 · Omelianchik"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "BARRAS",
+   "nombre": "Barras",
+   "clasificaciones": [
+    {
+     "nombre": "Fundamentos",
+     "elementos": [
+      {
+       "k": "GAF-BARRAS-001",
+       "n": "Suspensión en barra (10 seg.)",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-BARRAS-002",
+       "n": "Apoyo frontal en barra baja (pecho hueco)",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-BARRAS-003",
+       "n": "Balanceo en suspensión con toma firme",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-BARRAS-004",
+       "n": "Elevación de rodillas al pecho en suspensión",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-BARRAS-005",
+       "n": "Elevación de piernas carpadas a tocar la barra en suspensión",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-BARRAS-006",
+       "n": "Salto al apoyo frontal en barra baja",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-BARRAS-007",
+       "n": "Subida de cadera (pullover)",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-BARRAS-008",
+       "n": "Impulso atrás (cast) a la horizontal",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-BARRAS-009",
+       "n": "Impulso atrás 45° sobre la horizontal",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-BARRAS-010",
+       "n": "Paso de pierna al apoyo a horcajadas (pasar una pierna)",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-BARRAS-011",
+       "n": "Vuelta de molino (mill circle) en apoyo a horcajadas",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-BARRAS-012",
+       "n": "Deslizamiento (glide) con cuerpo extendido",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-BARRAS-013",
+       "n": "Balanceo con golpe (tap swing) en barra alta",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-BARRAS-014",
+       "n": "Salida de sub-balanceo desde barra baja",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-BARRAS-015",
+       "n": "Salto de barra baja a barra alta",
+       "ref": "Fundamento"
+      }
+     ]
+    },
+    {
+     "nombre": "Entradas",
+     "elementos": [
+      {
+       "k": "GAF-BARRAS-016",
+       "n": "Kip al apoyo en BI, o Deslizamiento con ½ giro (180°) y kip al apoyo en BI",
+       "ref": "FIG 1.101 · A"
+      },
+      {
+       "k": "GAF-BARRAS-017",
+       "n": "Salto con ½ giro (180º), kip al apoyo en BI",
+       "ref": "FIG 1.102 · A"
+      },
+      {
+       "k": "GAF-BARRAS-018",
+       "n": "Deslizamiento en BI (o balanceo ad. en BS) y pasaje de piernas entre brazos al apoyo dorsal (kip de espaldas); o corte atrás con piernas separadas a la suspensión en la misma banda",
+       "ref": "FIG 1.103 · A"
+      },
+      {
+       "k": "GAF-BARRAS-019",
+       "n": "Salto a la suspensión en BS – también con toma palmar – kip al apoyo",
+       "ref": "FIG 1.104 · A"
+      },
+      {
+       "k": "GAF-BARRAS-020",
+       "n": "Frente a BS – salto con 1/1 giro (360º) a la suspensión en BS",
+       "ref": "FIG 1.105 · A"
+      },
+      {
+       "k": "GAF-BARRAS-021",
+       "n": "Salto con piernas separadas con repulsión de manos sobre BI al agarre en BS",
+       "ref": "FIG 1.106 · A"
+      },
+      {
+       "k": "GAF-BARRAS-022",
+       "n": "Salto con 1/1 giro (360º) y kip al apoyo en BI",
+       "ref": "FIG 1.202 · B"
+      },
+      {
+       "k": "GAF-BARRAS-023",
+       "n": "Contra kip desde: – deslizamiento ad. en BI – balanceo ad. en BS, pasaje de piernas entre brazos a la suspensión carpada invertida, balanceo atrás, vuelta atrás sentada (carpada) al apoyo dorsal",
+       "ref": "FIG 1.203 · B"
+      },
+      {
+       "k": "GAF-BARRAS-024",
+       "n": "Mirando BS – salto con ½ giro (180º) – kip al apoyo en BS",
+       "ref": "FIG 1.204 · B"
+      },
+      {
+       "k": "GAF-BARRAS-025",
+       "n": "Salto libre con piernas separadas sobre BI a la suspensión en BS",
+       "ref": "FIG 1.206 · B"
+      },
+      {
+       "k": "GAF-BARRAS-026",
+       "n": "Mortal adelante agrupado, carpado o con piernas separadas sobre BI a la suspensión cubital en BI",
+       "ref": "FIG 1.207 · B"
+      },
+      {
+       "k": "GAF-BARRAS-027",
+       "n": "Rondada frente a BI – vuelo hacia atrás (con piernas separadas) pasando por apoyo libre con piernas separadas en BI",
+       "ref": "FIG 1.208 · B"
+      },
+      {
+       "k": "GAF-BARRAS-028",
+       "n": "Salto al apoyo invertido en BI con cadera flexionada y luego extendida, también con ½ giro (180º) en la vertical, piernas juntas o separadas",
+       "ref": "FIG 1.210 · B"
+      }
+     ]
+    },
+    {
+     "nombre": "Impulsos atrás y vueltas libres",
+     "elementos": [
+      {
+       "k": "GAF-BARRAS-029",
+       "n": "Impulso atrás al apoyo invertido con piernas separadas o con cuerpo carpado, también con cambio-saltado de tomas",
+       "ref": "FIG 2.101 · A"
+      },
+      {
+       "k": "GAF-BARRAS-030",
+       "n": "Vuelta adelante (cadera tocando la barra)",
+       "ref": "FIG 2.104 · A"
+      },
+      {
+       "k": "GAF-BARRAS-031",
+       "n": "Vuelta atrás (cadera tocando la barra)",
+       "ref": "FIG 2.105 · A"
+      },
+      {
+       "k": "GAF-BARRAS-032",
+       "n": "Impulso atrás al apoyo invertido con piernas juntas y cadera extendida; también con cambio-saltado de tomas, también con ½ giro (180º) piernas juntas o separadas",
+       "ref": "FIG 2.201 · B"
+      },
+      {
+       "k": "GAF-BARRAS-033",
+       "n": "Apoyo facial en BS – pasaje carpado con vuelo o pasaje libre adelante con piernas separadas sobre BS y ½ giro (180º), a la suspensión en BS",
+       "ref": "FIG 2.202 · B"
+      },
+      {
+       "k": "GAF-BARRAS-034",
+       "n": "Sub-balanceo libre en BI con suelta y contramovimiento adelante en el vuelo a la suspensión en BS",
+       "ref": "FIG 2.206 · B"
+      }
+     ]
+    },
+    {
+     "nombre": "Gran vuelta (giant circles)",
+     "elementos": [
+      {
+       "k": "GAF-BARRAS-035",
+       "n": "Gran vuelta atrás en toma dorsal, o a un brazo (Liu), también con ½ giro (180º) al apoyo invertido",
+       "ref": "FIG 3.201 · B · Liu"
+      },
+      {
+       "k": "GAF-BARRAS-036",
+       "n": "Gran vuelta adelante con toma palmar, dorsal o mixta, también con piernas separadas o cuerpo carpado en la fase de ascenso, también con ½ giro (180º) al apoyo invertido",
+       "ref": "FIG 3.206 · B"
+      }
+     ]
+    },
+    {
+     "nombre": "Vueltas stalder",
+     "elementos": [
+      {
+       "k": "GAF-BARRAS-037",
+       "n": "Vuelta libre adelante con piernas separadas al apoyo libre",
+       "ref": "FIG 4.101 · A"
+      },
+      {
+       "k": "GAF-BARRAS-038",
+       "n": "Vuelta libre adelante con piernas separadas en toma cubital al apoyo libre",
+       "ref": "FIG 4.103 · A"
+      },
+      {
+       "k": "GAF-BARRAS-039",
+       "n": "Vuelta libre atrás con piernas separadas al apoyo libre",
+       "ref": "FIG 4.104 · A"
+      },
+      {
+       "k": "GAF-BARRAS-040",
+       "n": "Apoyo dorsal – vuelta sentada (carpada) adelante al apoyo dorsal",
+       "ref": "FIG 4.106 · A"
+      },
+      {
+       "k": "GAF-BARRAS-041",
+       "n": "Apoyo dorsal – vuelta atrás sentada (carpada) al apoyo dorsal",
+       "ref": "FIG 4.107 · A"
+      },
+      {
+       "k": "GAF-BARRAS-042",
+       "n": "Kip en BS pasando por el apoyo libre con piernas separadas – impulso / elevación al apoyo invertido y ½ giro (180º) en la",
+       "ref": "FIG 4.201 · B"
+      },
+      {
+       "k": "GAF-BARRAS-043",
+       "n": "Mirando hacia adentro – Stalder atrás con suelta y contramovimiento adelante en el vuelo a la suspensión en BS",
+       "ref": "FIG 4.205 · B"
+      },
+      {
+       "k": "GAF-BARRAS-044",
+       "n": "Vuelta libre carpada atrás en BI con contramovimiento en el vuelo a la suspensión en BS",
+       "ref": "FIG 4.208 · B"
+      }
+     ]
+    },
+    {
+     "nombre": "Vueltas carpadas",
+     "elementos": [
+      {
+       "k": "GAF-BARRAS-045",
+       "n": "Apoyo dorsal en BI o BS – vuelta sentada (carpada) adelante y corte atrás a la suspensión en la misma banda",
+       "ref": "FIG 5.101 · A"
+      },
+      {
+       "k": "GAF-BARRAS-046",
+       "n": "Sub-balanceo atrás (balanceo invertido carpado), dislocación (Schleudern) a la suspensión en BS",
+       "ref": "FIG 5.104 · A"
+      },
+      {
+       "k": "GAF-BARRAS-047",
+       "n": "Vuelta con apoyo de plantas adelante (carpada o piernas separadas)",
+       "ref": "FIG 5.105 · A"
+      },
+      {
+       "k": "GAF-BARRAS-048",
+       "n": "Vuelta con apoyo de plantas adelante en toma cubital (carpada o piernas separadas)",
+       "ref": "FIG 5.106 · A"
+      },
+      {
+       "k": "GAF-BARRAS-049",
+       "n": "Vuelta con apoyo de plantas atrás (carpada o piernas separadas)",
+       "ref": "FIG 5.108 · A"
+      },
+      {
+       "k": "GAF-BARRAS-050",
+       "n": "Apoyo dorsal en BS – vuelta atrás sentada con suelta a la suspensión en BI",
+       "ref": "FIG 5.202 · B"
+      },
+      {
+       "k": "GAF-BARRAS-051",
+       "n": "Sub-balanceo en BI (apoyo de pies) con contramovimiento adelante en vuelo a la suspensión en BS",
+       "ref": "FIG 5.207 · B"
+      }
+     ]
+    },
+    {
+     "nombre": "Salidas",
+     "elementos": [
+      {
+       "k": "GAF-BARRAS-052",
+       "n": "Desde BS – sub-balanceo con ½ giro (180º) ó 1/1 giro (360º) a posición de pie",
+       "ref": "FIG 6.101 · A"
+      },
+      {
+       "k": "GAF-BARRAS-053",
+       "n": "Desde BS – sub-balanceo libre con ½ giro (180º) ó 1/1 giro (360º) a posición de pie",
+       "ref": "FIG 6.102 · A"
+      },
+      {
+       "k": "GAF-BARRAS-054",
+       "n": "Balanceo adelante y mortal atrás agrupado, carpado o extendido",
+       "ref": "FIG 6.104 · A"
+      },
+      {
+       "k": "GAF-BARRAS-055",
+       "n": "Balanceo atrás y mortal adelante agrupado, carpado o extendido o vuelta libre adelante con piernas separadas en BS y mortal adelante agrupado",
+       "ref": "FIG 6.108 · A"
+      },
+      {
+       "k": "GAF-BARRAS-056",
+       "n": "Desde BS – sub-balanceo con mortal adelante agrupado o carpado",
+       "ref": "FIG 6.201 · B"
+      },
+      {
+       "k": "GAF-BARRAS-057",
+       "n": "Balanceo adelante y mortal atrás agrupado o extendido con ½ giro (180º) o 1/1 giro (360°)",
+       "ref": "FIG 6.204 · B"
+      },
+      {
+       "k": "GAF-BARRAS-058",
+       "n": "Balanceo adelante y doble mortal atrás agrupado",
+       "ref": "FIG 6.205 · B"
+      },
+      {
+       "k": "GAF-BARRAS-059",
+       "n": "Balanceo atrás y mortal adelante agrupado o extendido con ½ giro (180º) ó 1/1 giro (360°)",
+       "ref": "FIG 6.208 · B"
+      },
+      {
+       "k": "GAF-BARRAS-060",
+       "n": "Vuelta atrás (también libre) en BI o BS – ángel",
+       "ref": "FIG 6.209 · B"
+      },
+      {
+       "k": "GAF-BARRAS-061",
+       "n": "En BS – mortal adelante agrupado",
+       "ref": "FIG 6.210 · B"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "VIGA",
+   "nombre": "Viga",
+   "clasificaciones": [
+    {
+     "nombre": "Fundamentos",
+     "elementos": [
+      {
+       "k": "GAF-VIGA-001",
+       "n": "Caminar adelante en relevé",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-VIGA-002",
+       "n": "Caminar hacia atrás",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-VIGA-003",
+       "n": "Chassé lateral",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-VIGA-004",
+       "n": "Pasos de punta (kick steps) a 45°",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-VIGA-005",
+       "n": "Relevé en dos pies (2 seg.)",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-VIGA-006",
+       "n": "Passé (retiré) en relevé (2 seg.)",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-VIGA-007",
+       "n": "Balanza (arabesque) a 45° (2 seg.)",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-VIGA-008",
+       "n": "Escuadra sentada (V-sit) 2 seg.",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-VIGA-009",
+       "n": "Posición de cuclillas y ½ giro en cuclillas",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-VIGA-010",
+       "n": "½ giro (pivote) en relevé sobre dos pies",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-VIGA-011",
+       "n": "Salto extendido",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-VIGA-012",
+       "n": "Salto tijera (paso tijera)",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-VIGA-013",
+       "n": "Rol adelante con apoyo de manos",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-VIGA-014",
+       "n": "Parado de manos en viga baja",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-VIGA-015",
+       "n": "Salida en salto extendido",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-VIGA-016",
+       "n": "Salida en salto agrupado",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-VIGA-017",
+       "n": "Salida de rondada",
+       "ref": "Fundamento"
+      }
+     ]
+    },
+    {
+     "nombre": "Entradas",
+     "elementos": [
+      {
+       "k": "GAF-VIGA-018",
+       "n": "Salto desde una pierna-en la recepción debe mostrar posición de arabesque (pierna mín. a la",
+       "ref": "FIG 1.101 · A"
+      },
+      {
+       "k": "GAF-VIGA-019",
+       "n": "Salto del ladrón- despegue de una pierna- salto libre sobre la viga, una pr después de la otra al apoyo dorsal- carrera a 90º con respecto a la viga o Salto tijera desde una pierna sobre la viga a sentado sobre muslo transversal – carrera diagonal a la viga",
+       "ref": "FIG 1.102 · A"
+      },
+      {
+       "k": "GAF-VIGA-020",
+       "n": "Pasaje de flanco al apoyo dorsal también con ½ giro (180º)",
+       "ref": "FIG 1.103 · A"
+      },
+      {
+       "k": "GAF-VIGA-021",
+       "n": "Salto con ap. de manos al split frontal o posición carpada piernas separadas (se debe mostrar split sin apoyo de manos como posición final; en carpado el tronco debe tocar la viga)",
+       "ref": "FIG 1.105 · A"
+      },
+      {
+       "k": "GAF-VIGA-022",
+       "n": "Desde posición de pie facial – pasaje de piernas agrupado o carpado al apoyo dorsal",
+       "ref": "FIG 1.106 · A"
+      },
+      {
+       "k": "GAF-VIGA-023",
+       "n": "Inversión lateral con flexión de ambos brazos pasando por apoyo de pecho a horcajadas",
+       "ref": "FIG 1.108 · A"
+      },
+      {
+       "k": "GAF-VIGA-024",
+       "n": "Plancha facial con apoyo de uno o dos brazos flexionados (2 seg.), también con piernas en split transversal",
+       "ref": "FIG 1.111 · A"
+      },
+      {
+       "k": "GAF-VIGA-025",
+       "n": "Salto al apoyo invertido con piernas flexionadas o extendidas – descenso a posición final opcional",
+       "ref": "FIG 1.114 · A"
+      },
+      {
+       "k": "GAF-VIGA-026",
+       "n": "Zancada desde una pierna (180º)",
+       "ref": "FIG 1.201 · B"
+      },
+      {
+       "k": "GAF-VIGA-027",
+       "n": "Salto con ½ giro (180º) al apoyo libre con piernas separadas o salto atrás pasando sobre la viga carpado con piernas separadas al apoyo frontal o a split frontal– carrera a 90º respecto a la viga",
+       "ref": "FIG 1.204 · B"
+      },
+      {
+       "k": "GAF-VIGA-028",
+       "n": "Salto al rol adelante en el extremo o medio de la viga a sentado o cuclillas",
+       "ref": "FIG 1.207 · B"
+      },
+      {
+       "k": "GAF-VIGA-029",
+       "n": "Salto con ½ giro (180º) sobre hombro al apoyo de nuca, ½ giro (180º) al apoyo de pecho",
+       "ref": "FIG 1.208 · B"
+      },
+      {
+       "k": "GAF-VIGA-030",
+       "n": "Salto, elevación o balanceo al apoyo invertido (2 seg.) – descenso a posición final tocando la viga, también con ½ giro (180º) en la",
+       "ref": "FIG 1.210 · B"
+      },
+      {
+       "k": "GAF-VIGA-031",
+       "n": "Salto con cuerpo carpado al apoyo facial libre sobre la horizontal mínimo a 45º (plancha) (2 seg.) - descenso a posición final opcional",
+       "ref": "FIG 1.211 · B"
+      },
+      {
+       "k": "GAF-VIGA-032",
+       "n": "Elevación al apoyo invertido lateral, con flexión-extensión de piernas – salto con ¼ de giro (90º) al apoyo invertido transversal - descenso a posición final opcional",
+       "ref": "FIG 1.213 · B"
+      },
+      {
+       "k": "GAF-VIGA-033",
+       "n": "Inversión lateral con uno o dos brazos",
+       "ref": "FIG 1.214 · B"
+      },
+      {
+       "k": "GAF-VIGA-034",
+       "n": "Inversión adelante con repulsión de manos en el trampolín al apoyo dorsal – o con ¼ de giro (90º) a sentado transversal sobre muslo – carrera a 90º respecto a la viga",
+       "ref": "FIG 1.215 · B"
+      }
+     ]
+    },
+    {
+     "nombre": "Saltos gimnásticos",
+     "elementos": [
+      {
+       "k": "GAF-VIGA-035",
+       "n": "Zancada adelante (separación de piernas 180º)",
+       "ref": "FIG 2.101 · A"
+      },
+      {
+       "k": "GAF-VIGA-036",
+       "n": "Zancada desde una pierna con cambio de piernas a la posición wolf (ángulo de cadera a 45º)",
+       "ref": "FIG 2.105 · A"
+      },
+      {
+       "k": "GAF-VIGA-037",
+       "n": "Salto carpado desde dos piernas desde posición transversal (cadera <90º)",
+       "ref": "FIG 2.107 · A"
+      },
+      {
+       "k": "GAF-VIGA-038",
+       "n": "Sissone, (separación de piernas 180º diagonal/45º del suelo) despegue con dos pies, recepción sobre un pie",
+       "ref": "FIG 2.108 · A"
+      },
+      {
+       "k": "GAF-VIGA-039",
+       "n": "Salto de gato (rodillas sobre la horizontal alternadas)",
+       "ref": "FIG 2.110 · A"
+      },
+      {
+       "k": "GAF-VIGA-040",
+       "n": "Salto wolf desde una o dos piernas desde posición transversal (ángulo de cadera a 45º, rodillas juntas)",
+       "ref": "FIG 2.112 · A"
+      },
+      {
+       "k": "GAF-VIGA-041",
+       "n": "Zancada desde dos piernas (separación de piernas 180ª) desde posición transversal",
+       "ref": "FIG 2.202 · B"
+      },
+      {
+       "k": "GAF-VIGA-042",
+       "n": "Desde dos piernas, salto carpado con piernas separadas (ambas piernas sobre la horizontal) o salto con piernas separadas laterales desde posición transversal",
+       "ref": "FIG 2.203 · B"
+      },
+      {
+       "k": "GAF-VIGA-043",
+       "n": "Salto fouetté con ½ giro (180º) con recepción al arabesque (pierna libre sobre la horizontal)",
+       "ref": "FIG 2.204 · B"
+      },
+      {
+       "k": "GAF-VIGA-044",
+       "n": "Salto desde una pierna con ¼ de giro (90º) a la posición carpada con piernas separadas (ambas piernas sobre horizontal), recepción con uno o dos pies",
+       "ref": "FIG 2.206 · B"
+      },
+      {
+       "k": "GAF-VIGA-045",
+       "n": "Salto carpado desde dos piernas desde posición transversal con ½ giro (180°)",
+       "ref": "FIG 2.207 · B"
+      },
+      {
+       "k": "GAF-VIGA-046",
+       "n": "Sissone a anillo (pie de atrás a la altura de la cabeza, cuerpo arqueado y cabeza hacia atrás, separación de piernas 180º) recepción a un pie, o gacela-anillo desde dos piernas",
+       "ref": "FIG 2.208 · B"
+      },
+      {
+       "k": "GAF-VIGA-047",
+       "n": "Salto desde una pierna con ½ giro (180º), pierna libre extendida a la horizontal durante todo el salto",
+       "ref": "FIG 2.209 · B"
+      },
+      {
+       "k": "GAF-VIGA-048",
+       "n": "Salto de gato con ½ giro (180º)",
+       "ref": "FIG 2.210 · B"
+      },
+      {
+       "k": "GAF-VIGA-049",
+       "n": "Salto agrupado desde una o dos piernas con ½ giro (180º) desde posición transversal (ángulo de cadera y rodillas a 45º)",
+       "ref": "FIG 2.211 · B"
+      },
+      {
+       "k": "GAF-VIGA-050",
+       "n": "Salto wolf desde una o dos piernas con ½ giro (180º) desde posición transversal",
+       "ref": "FIG 2.212 · B"
+      }
+     ]
+    },
+    {
+     "nombre": "Giros gimnásticos",
+     "elementos": [
+      {
+       "k": "GAF-VIGA-051",
+       "n": "1/1 giro (360º) sobre una pierna – pierna libre opcional por debajo de la horizontal",
+       "ref": "FIG 3.101 · A"
+      },
+      {
+       "k": "GAF-VIGA-052",
+       "n": "1½ giro (540º) sobre una pierna – pierna libre opcional por debajo de la horizontal",
+       "ref": "FIG 3.201 · B"
+      },
+      {
+       "k": "GAF-VIGA-053",
+       "n": "½ giro ilusión (180º) pasando por el spagate vertical (separación de piernas 180º) con/sin leve toque de la viga con una mano",
+       "ref": "FIG 3.206 · B"
+      },
+      {
+       "k": "GAF-VIGA-054",
+       "n": "1/1 giro (360°) en posición agrupada sobre una pierna - pierna libre extendida durante todo el giro",
+       "ref": "FIG 3.207 · B"
+      },
+      {
+       "k": "GAF-VIGA-055",
+       "n": "1/1 giro a 1½ giro (360° - 540°) en posición acostada ventral (prona) – se permite el apoyo alternado de manos",
+       "ref": "FIG 3.208 · B"
+      }
+     ]
+    },
+    {
+     "nombre": "Posiciones de mantenimiento y acrobáticos sin vuelo",
+     "elementos": [
+      {
+       "k": "GAF-VIGA-056",
+       "n": "Desde posición sentado sobre rodillas, elevación con onda de cuerpo pasando por equilibrio sobre puntas de pies",
+       "ref": "FIG 4.101 · A"
+      },
+      {
+       "k": "GAF-VIGA-057",
+       "n": "Spagate vertical adelante con apoyo de manos frente a la pierna de apoyo (separación de pr 180º) – Aguja (2 seg.) o equilibrio sobre una pr. sosteniendo la pr. libre ad. con pie sobre la cabeza (2 seg.)",
+       "ref": "FIG 4.102 · A"
+      },
+      {
+       "k": "GAF-VIGA-058",
+       "n": "Impulso al apoyo invertido lateral o transversal (2 seg.), descenso a posición tocando la viga",
+       "ref": "FIG 4.103 · A"
+      },
+      {
+       "k": "GAF-VIGA-059",
+       "n": "Rol atrás con apoyo de manos en la parte superior de la viga - recepción sobre uno o ambos pies",
+       "ref": "FIG 4.105 · A"
+      },
+      {
+       "k": "GAF-VIGA-060",
+       "n": "Inversión lateral, también con apoyo de un brazo o inversión lateral con vuelo antes o después del apoyo de manos",
+       "ref": "FIG 4.107 · A"
+      },
+      {
+       "k": "GAF-VIGA-061",
+       "n": "Inversión adelante, con/sin apoyo alternado de manos",
+       "ref": "FIG 4.108 · A"
+      },
+      {
+       "k": "GAF-VIGA-062",
+       "n": "Inversión atrás, con/sin apoyo alternado de manos, también con descenso a horcajadas",
+       "ref": "FIG 4.109 · A"
+      },
+      {
+       "k": "GAF-VIGA-063",
+       "n": "Apoyo dorsal carpado libre con piernas juntas (2 seg.)",
+       "ref": "FIG 4.202 · B"
+      },
+      {
+       "k": "GAF-VIGA-064",
+       "n": "Impulso al apoyo invertido transversal – rol adelante con o sin apoyo de manos a posición sentada o cuclillas",
+       "ref": "FIG 4.203 · B"
+      },
+      {
+       "k": "GAF-VIGA-065",
+       "n": "Rol adelante sin apoyo de manos a posición sentada o cuclillas",
+       "ref": "FIG 4.204 · B"
+      },
+      {
+       "k": "GAF-VIGA-066",
+       "n": "Rol lateral, agrupado, carpado pr separadas o extendido pasando por el apoyo de nuca, también con ½ giro (180º) sobre hombro",
+       "ref": "FIG 4.206 · B"
+      },
+      {
+       "k": "GAF-VIGA-067",
+       "n": "Rol lateral, carpado con piernas separadas con apoyo de manos - posición final opcional",
+       "ref": "FIG 4.207 · B"
+      },
+      {
+       "k": "GAF-VIGA-068",
+       "n": "Inversión adelante con apoyo de un brazo",
+       "ref": "FIG 4.208 · B"
+      },
+      {
+       "k": "GAF-VIGA-069",
+       "n": "Inversión atrás con apoyo de un brazo",
+       "ref": "FIG 4.209 · B"
+      },
+      {
+       "k": "GAF-VIGA-070",
+       "n": "Desde sentada agrupada con una pierna extendida - inversión atrás",
+       "ref": "FIG 4.210 · B · Garrison"
+      }
+     ]
+    },
+    {
+     "nombre": "Acrobáticos con vuelo",
+     "elementos": [
+      {
+       "k": "GAF-VIGA-071",
+       "n": "Inversión adelante con vuelo, recepción con una o dos piernas (mismo elemento), también con apoyo de un brazo",
+       "ref": "FIG 5.201 · B"
+      },
+      {
+       "k": "GAF-VIGA-072",
+       "n": "Flic-flac con recepción a dos piernas",
+       "ref": "FIG 5.202 · B"
+      },
+      {
+       "k": "GAF-VIGA-073",
+       "n": "Flic-flac a una pierna, también con apoyo de un brazo",
+       "ref": "FIG 5.204 · B"
+      },
+      {
+       "k": "GAF-VIGA-074",
+       "n": "Flic-flac Gainer también con apoyo de un brazo",
+       "ref": "FIG 5.206 · B"
+      },
+      {
+       "k": "GAF-VIGA-075",
+       "n": "Gran fase de vuelo y descenso a horcajadas",
+       "ref": "FIG 5.207 · B"
+      },
+      {
+       "k": "GAF-VIGA-076",
+       "n": "Rondada",
+       "ref": "FIG 5.208 · B"
+      }
+     ]
+    },
+    {
+     "nombre": "Salidas",
+     "elementos": [
+      {
+       "k": "GAF-VIGA-077",
+       "n": "Inversión adelante libre con ½ giro (180°)",
+       "ref": "FIG 6.101 · A"
+      },
+      {
+       "k": "GAF-VIGA-078",
+       "n": "Mortal adelante agrupado o carpado, también con ½ giro (180°)",
+       "ref": "FIG 6.102 · A"
+      },
+      {
+       "k": "GAF-VIGA-079",
+       "n": "Mortal atrás agrupado, carpado o extendido, también con ½ giro (180°) (agrupado o extendido)",
+       "ref": "FIG 6.104 · A"
+      },
+      {
+       "k": "GAF-VIGA-080",
+       "n": "Mortal Gainer agrupado, carpado o extendido por el lateral de la viga, también con ½ giro (180°) (agrupado o extendido)",
+       "ref": "FIG 6.106 · A"
+      },
+      {
+       "k": "GAF-VIGA-081",
+       "n": "Inversión adelante libre con 1/1 giro (360°)",
+       "ref": "FIG 6.201 · B"
+      },
+      {
+       "k": "GAF-VIGA-082",
+       "n": "Mortal adelante extendido, también con ½ giro (180°)",
+       "ref": "FIG 6.202 · B"
+      },
+      {
+       "k": "GAF-VIGA-083",
+       "n": "Salto hacia atrás con ½ giro (180º), mortal adelante agrupado o carpado",
+       "ref": "FIG 6.203 · B"
+      },
+      {
+       "k": "GAF-VIGA-084",
+       "n": "Mortal atrás agrupado o extendido con 1/1 giro (360°)",
+       "ref": "FIG 6.204 · B"
+      },
+      {
+       "k": "GAF-VIGA-085",
+       "n": "Mortal Gainer agrupado o extendido con 1/1 giro (360°) por el lateral de la viga",
+       "ref": "FIG 6.206 · B"
+      },
+      {
+       "k": "GAF-VIGA-086",
+       "n": "Mortal Gainer agrupado o carpado en el extremo de la viga",
+       "ref": "FIG 6.207 · B"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "PISO",
+   "nombre": "Piso",
+   "clasificaciones": [
+    {
+     "nombre": "Posiciones básicas y flexibilidad",
+     "elementos": [
+      {
+       "k": "GAF-PISO-001",
+       "n": "Postura de pie firme (relevé)",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-PISO-002",
+       "n": "Posición de pecho hueco (hollow)",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-PISO-003",
+       "n": "Posición arqueada",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-PISO-004",
+       "n": "Posición agrupada sentada",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-PISO-005",
+       "n": "Posición carpada sentada (L)",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-PISO-006",
+       "n": "Vela (parado de hombros)",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-PISO-007",
+       "n": "Split frontal derecho",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-PISO-008",
+       "n": "Split frontal izquierdo",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-PISO-009",
+       "n": "Split lateral (piernas abiertas)",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-PISO-010",
+       "n": "Puente desde acostada",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-PISO-011",
+       "n": "Bajar a puente desde de pie",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-PISO-012",
+       "n": "Parado de manos (2 seg.)",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-PISO-013",
+       "n": "Parado de manos con rodada adelante",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-PISO-014",
+       "n": "Balanza (arabesque) 2 seg.",
+       "ref": "Fundamento"
+      }
+     ]
+    },
+    {
+     "nombre": "Acrobacia básica",
+     "elementos": [
+      {
+       "k": "GAF-PISO-015",
+       "n": "Rodada adelante agrupada",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-PISO-016",
+       "n": "Rodada adelante con piernas abiertas",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-PISO-017",
+       "n": "Rodada atrás agrupada",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-PISO-018",
+       "n": "Rodada atrás con piernas abiertas",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-PISO-019",
+       "n": "Rodada atrás extendida al parado de manos momentáneo",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-PISO-020",
+       "n": "Rueda de carro",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-PISO-021",
+       "n": "Paso adelante (walkover adelante)",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-PISO-022",
+       "n": "Paso atrás (walkover atrás)",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-PISO-023",
+       "n": "Rondada con rebote",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-PISO-024",
+       "n": "Rondada flic-flac",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-PISO-025",
+       "n": "Rondada flic-flac mortal atrás agrupado",
+       "ref": "Fundamento"
+      }
+     ]
+    },
+    {
+     "nombre": "Danza básica",
+     "elementos": [
+      {
+       "k": "GAF-PISO-026",
+       "n": "Chassé",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-PISO-027",
+       "n": "Salto extendido",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-PISO-028",
+       "n": "Salto extendido con ½ giro (180°)",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-PISO-029",
+       "n": "Salto agrupado",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-PISO-030",
+       "n": "Salto tijera",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-PISO-031",
+       "n": "Zancada a 90°",
+       "ref": "Fundamento"
+      },
+      {
+       "k": "GAF-PISO-032",
+       "n": "½ giro (180°) en relevé sobre un pie",
+       "ref": "Fundamento"
+      }
+     ]
+    },
+    {
+     "nombre": "Saltos gimnásticos",
+     "elementos": [
+      {
+       "k": "GAF-PISO-033",
+       "n": "Zancada adelante desde una pierna (separación de piernas 180º)",
+       "ref": "FIG 1.101 · A"
+      },
+      {
+       "k": "GAF-PISO-034",
+       "n": "Salto agrupado desde dos piernas con separación de piernas al split anteroposterior (180º) durante la fase de vuelo",
+       "ref": "FIG 1.103 · A"
+      },
+      {
+       "k": "GAF-PISO-035",
+       "n": "Zancada adelante desde una pierna con ¼ de giro (90°) a la posición carpada piernas separadas (ambas piernas sobre la horizontal) o piernas separadas laterales, recepción sobre uno o ambos pies",
+       "ref": "FIG 1.104 · A"
+      },
+      {
+       "k": "GAF-PISO-036",
+       "n": "Zancada con cambio de pierna a la posición wolf",
+       "ref": "FIG 1.105 · A"
+      },
+      {
+       "k": "GAF-PISO-037",
+       "n": "Salto carpado desde dos piernas (cadera < 90º)",
+       "ref": "FIG 1.106 · A"
+      },
+      {
+       "k": "GAF-PISO-038",
+       "n": "Desde dos piernas, salto carpado con piernas separadas (ambas piernas sobre la horizontal), o salto con piernas separadas laterales (separación de piernas 180º)",
+       "ref": "FIG 1.107 · A"
+      },
+      {
+       "k": "GAF-PISO-039",
+       "n": "Desde dos piernas, salto carpado con piernas separadas (ambas piernas sobre la horizontal) o salto con piernas separadas laterales, con recepción en apoyo facial; también con ½ giro (180°)",
+       "ref": "FIG 1.108 · A"
+      },
+      {
+       "k": "GAF-PISO-040",
+       "n": "Zancada desde dos piernas (separación de piernas 180º)",
+       "ref": "FIG 1.109 · A"
+      },
+      {
+       "k": "GAF-PISO-041",
+       "n": "Salto extendido desde una o dos piernas con 1/1 giro (360º)",
+       "ref": "FIG 1.110 · A"
+      },
+      {
+       "k": "GAF-PISO-042",
+       "n": "Salto desde una pierna con cambio de piernas alternado (rodillas sobre la horizontal) (Salto de gato)",
+       "ref": "FIG 1.111 · A"
+      },
+      {
+       "k": "GAF-PISO-043",
+       "n": "Salto con ½ (180º) giro y recepción en arabesque con pierna libre sobre la horizontal (Salto fouetté)",
+       "ref": "FIG 1.112 · A"
+      },
+      {
+       "k": "GAF-PISO-044",
+       "n": "Salto desde una o dos piernas con una pierna flexionada y la otra extendida adelante sobre la horizontal, con las rodillas juntas",
+       "ref": "FIG 1.114 · A"
+      },
+      {
+       "k": "GAF-PISO-045",
+       "n": "Zancada desde una pierna con ½ giro (180°)",
+       "ref": "FIG 1.201 · B"
+      },
+      {
+       "k": "GAF-PISO-046",
+       "n": "Salto fouetté con cambio de pierna a split anteroposterior (separación de piernas 180º), también a la posición anillo (tour jeté)",
+       "ref": "FIG 1.202 · B"
+      },
+      {
+       "k": "GAF-PISO-047",
+       "n": "Mariposa (butterfly) adelante, tronco paralelo al suelo levemente arqueado, piernas separadas y pies más altos que la cadera durante el vuelo",
+       "ref": "FIG 1.203 · B"
+      },
+      {
+       "k": "GAF-PISO-048",
+       "n": "Zancada con cambio y ¼ de giro (90º) a la separación lateral o a carpado con piernas separadas (ambas piernas sobre la horizontal)",
+       "ref": "FIG 1.204 · B · Johnson"
+      },
+      {
+       "k": "GAF-PISO-049",
+       "n": "Zancada adelante con cambio de piernas (pierna libre a 45º) al split anteroposterior (separación de 180º después del cambio de piernas) (Zancada con cambio)",
+       "ref": "FIG 1.205 · B"
+      },
+      {
+       "k": "GAF-PISO-050",
+       "n": "Salto desde dos piernas con cuerpo arqueado y cabeza hacia atrás, pies casi tocando la cabeza (Salto oveja)",
+       "ref": "FIG 1.206 · B"
+      },
+      {
+       "k": "GAF-PISO-051",
+       "n": "Desde dos piernas, salto carpado con piernas separadas o salto con piernas separadas laterales con ½ giro (180°)",
+       "ref": "FIG 1.207 · B"
+      },
+      {
+       "k": "GAF-PISO-052",
+       "n": "Desde dos piernas, salto carpado con piernas separadas (ambas piernas sobre la horizontal) o salto con piernas separadas laterales con 1/1 giro (360°) con recepción en apoyo facial",
+       "ref": "FIG 1.208 · B"
+      },
+      {
+       "k": "GAF-PISO-053",
+       "n": "Sissone a anillo (pierna de atrás a la altura de la cabeza, cuerpo arqueado y cabeza hacia atrás, separación de piernas 180º), recepción a un pie",
+       "ref": "FIG 1.209 · B"
+      },
+      {
+       "k": "GAF-PISO-054",
+       "n": "Salto de gato con 1/1 giro (360º)",
+       "ref": "FIG 1.211 · B"
+      },
+      {
+       "k": "GAF-PISO-055",
+       "n": "Salto desde una pierna con 1/1 giro (360º), pierna libre extendida a la horizontal durante todo el salto",
+       "ref": "FIG 1.212 · B"
+      },
+      {
+       "k": "GAF-PISO-056",
+       "n": "Salto agrupado desde una o dos piernas con 1/1 giro (360º)",
+       "ref": "FIG 1.213 · B"
+      },
+      {
+       "k": "GAF-PISO-057",
+       "n": "Salto wolf desde una o dos piernas con 1/1 giro (360º)",
+       "ref": "FIG 1.214 · B"
+      }
+     ]
+    },
+    {
+     "nombre": "Giros gimnásticos",
+     "elementos": [
+      {
+       "k": "GAF-PISO-058",
+       "n": "1/1 giro (360º) sobre una pierna – pierna libre opcional por debajo de la horizontal",
+       "ref": "FIG 2.101 · A"
+      },
+      {
+       "k": "GAF-PISO-059",
+       "n": "2/1 giros (720º) sobre una pierna – pierna libre opcional por debajo de la horizontal",
+       "ref": "FIG 2.201 · B"
+      },
+      {
+       "k": "GAF-PISO-060",
+       "n": "1/1 giro (360º) con el talón de la pierna libre extendida adelante a la horizontal durante todo el giro (pierna de apoyo extendida o flexionada)",
+       "ref": "FIG 2.202 · B"
+      },
+      {
+       "k": "GAF-PISO-061",
+       "n": "1/1 giro (360º) sosteniendo la pierna libre arriba en split a 180º durante todo el giro",
+       "ref": "FIG 2.203 · B"
+      },
+      {
+       "k": "GAF-PISO-062",
+       "n": "1/1 giro (360°) en attitude atrás (muslo de la pierna libre a la horizontal durante todo el giro)",
+       "ref": "FIG 2.204 · B"
+      },
+      {
+       "k": "GAF-PISO-063",
+       "n": "1/1 giro (360º) en balanza adelante con pierna libre sobre la horizontal durante todo el giro",
+       "ref": "FIG 2.205 · B"
+      },
+      {
+       "k": "GAF-PISO-064",
+       "n": "1/1 giro ilusión (360º) pasando por split sin tocar el suelo con la mano",
+       "ref": "FIG 2.206 · B"
+      },
+      {
+       "k": "GAF-PISO-065",
+       "n": "1/1 giro (360°) en posición agrupada sobre una pierna - pierna libre extendida durante todo el giro",
+       "ref": "FIG 2.207 · B"
+      },
+      {
+       "k": "GAF-PISO-066",
+       "n": "2/1 giros (720°) o más sobre espalda en posición acostada carpada (ángulo cadera-piernas cerrado)",
+       "ref": "FIG 2.208 · B"
+      }
+     ]
+    },
+    {
+     "nombre": "Elementos con apoyo de manos",
+     "elementos": [
+      {
+       "k": "GAF-PISO-067",
+       "n": "Salto, impulso o elevación al apoyo invertido – movimiento de retorno opcional, también con ½ y 1/1 giro (180º-360º) en la vertical",
+       "ref": "FIG 3.101 · A"
+      },
+      {
+       "k": "GAF-PISO-068",
+       "n": "Ángel y rol adelante (león)",
+       "ref": "FIG 3.102 · A"
+      },
+      {
+       "k": "GAF-PISO-069",
+       "n": "Rol atrás al apoyo invertido con ½ o 1/1 giro (180° - 360°) en la",
+       "ref": "FIG 3.103 · A"
+      },
+      {
+       "k": "GAF-PISO-070",
+       "n": "Inversión atrás desde posición de pie o sentado agrupado con una pierna extendida al apoyo invertido con 1/1 giro (360º) en la vertical – movimiento de retorno opcional",
+       "ref": "FIG 3.104 · A"
+      },
+      {
+       "k": "GAF-PISO-071",
+       "n": "Inversión adelante con vuelo, despegue con una pierna o flic-flac adelante, despegue con dos piernas – con o sin fase de ángel antes del apoyo de manos – recepción opcional",
+       "ref": "FIG 3.105 · A"
+      },
+      {
+       "k": "GAF-PISO-072",
+       "n": "Rondada",
+       "ref": "FIG 3.106 · A"
+      },
+      {
+       "k": "GAF-PISO-073",
+       "n": "Todas las variantes de flic-flac y",
+       "ref": "FIG 3.107 · A · Tsavdaridou"
+      },
+      {
+       "k": "GAF-PISO-074",
+       "n": "Salto, impulso o elevación al apoyo invertido con 1½ - 2/1 giros (540º-720º) en la vertical – movimiento de retorno opcional",
+       "ref": "FIG 3.201 · B"
+      },
+      {
+       "k": "GAF-PISO-075",
+       "n": "Rol atrás al apoyo invertido con 1½ - 2/1 giros (540º-720º) en la vertical",
+       "ref": "FIG 3.203 · B"
+      },
+      {
+       "k": "GAF-PISO-076",
+       "n": "Flic-flac con 1/1 giro (360º) antes del apoyo de manos",
+       "ref": "FIG 3.207 · B"
+      }
+     ]
+    },
+    {
+     "nombre": "Mortales adelante y lateral",
+     "elementos": [
+      {
+       "k": "GAF-PISO-077",
+       "n": "Mortal adelante agrupado o carpado",
+       "ref": "FIG 4.101 · A"
+      },
+      {
+       "k": "GAF-PISO-078",
+       "n": "Inversión adelante libre (sin manos)",
+       "ref": "FIG 4.103 · A"
+      },
+      {
+       "k": "GAF-PISO-079",
+       "n": "Inversión lateral libre o rondada libre (sin manos)",
+       "ref": "FIG 4.104 · A"
+      },
+      {
+       "k": "GAF-PISO-080",
+       "n": "Desde despegue hacia adelante con una o dos piernas – mortal lateral agrupado o carpado",
+       "ref": "FIG 4.105 · A"
+      },
+      {
+       "k": "GAF-PISO-081",
+       "n": "Mortal adelante agrupado con ½ o 1/1 giro (180° ó 360º), también mortal adelante carpado con ½ giro (180º)",
+       "ref": "FIG 4.201 · B"
+      },
+      {
+       "k": "GAF-PISO-082",
+       "n": "Mortal adelante extendido; también con ½ giro (180°)",
+       "ref": "FIG 4.202 · B"
+      },
+      {
+       "k": "GAF-PISO-083",
+       "n": "Twist agrupado o carpado (despegue hacia atrás con ½ giro [180°] y mortal adelante) – recepción opcional",
+       "ref": "FIG 4.205 · B"
+      }
+     ]
+    },
+    {
+     "nombre": "Mortales atrás",
+     "elementos": [
+      {
+       "k": "GAF-PISO-084",
+       "n": "Mortal atrás agrupado, carpado o extendido",
+       "ref": "FIG 5.101 · A"
+      },
+      {
+       "k": "GAF-PISO-085",
+       "n": "Mortal tempo",
+       "ref": "FIG 5.104 · A"
+      },
+      {
+       "k": "GAF-PISO-086",
+       "n": "Mortal atrás extendido con ½ giro o mortal atrás agrupado o extendido con 1/1 giro (180º o 360º)",
+       "ref": "FIG 5.201 · B"
+      },
+      {
+       "k": "GAF-PISO-087",
+       "n": "Mortal tempo con ½ giro (180º) Mortal tempo con 1/1 giro (360º)",
+       "ref": "FIG 5.204 · B"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
