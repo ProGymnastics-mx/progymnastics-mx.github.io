@@ -1,0 +1,32 @@
+# Notificaciones de ProGymnastics: recordatorios de mensualidad y envío de avisos (correo y celular).
+# Corre cada 15 minutos; también se puede correr a mano (Actions → Notificaciones → Run workflow).
+# Secretos (Settings → Secrets and variables → Actions): FIREBASE_SERVICE_ACCOUNT, GMAIL_USER, GMAIL_APP_PASSWORD.
+name: Notificaciones
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: notificaciones
+  cancel-in-progress: false
+jobs:
+  enviar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Instalar
+        working-directory: tools/notificaciones
+        run: npm ci --no-audit --no-fund
+      - name: Enviar avisos
+        working-directory: tools/notificaciones
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: node enviar.mjs

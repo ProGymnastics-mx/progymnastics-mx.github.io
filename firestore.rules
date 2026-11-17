@@ -105,6 +105,24 @@ service cloud.firestore {
       allow write: if pgStaff();
     }
 
+    // Notificaciones (avisos de pagos y recordatorios): tutor y atleta leen las de sus atletas; administración las crea al
+    // registrar pagos. Las envía y marca la tarea automática (tools/notificaciones, con la cuenta de servicio).
+    match /pg_notificaciones/{id} {
+      allow read: if pgStaff() || (resource != null && pgMio(resource.data.atletaId));
+      allow create: if pgAdmin() && request.resource.data.estado == 'pendiente';
+      allow update, delete: if pgAdmin();
+    }
+
+    // Celulares suscritos a notificaciones: cada quien solo los suyos.
+    match /pg_suscripciones/{uid} {
+      allow read, write: if pgMiembro() && request.auth.uid == uid;
+    }
+
+    // Llave pública de notificaciones (la privada vive en pg_config, que ningún usuario puede leer).
+    match /pg_config_publica/{doc} {
+      allow read: if pgMiembro();
+    }
+
     match /pg_eventos/{id} {
       allow read: if pgMiembro();
       allow write: if pgStaff();
