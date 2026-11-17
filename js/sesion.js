@@ -115,28 +115,55 @@
       t.textContent = msg; t.classList.toggle("error", !!error); t.classList.add("ver");
       clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove("ver"), 3200);
     },
-    // Encabezado común de los módulos: volver, título, usuario y Salir.
+    // Íconos de línea (blancos sobre cuadro de color, como iOS). Trazos propios, 24×24.
+    ICONOS: {
+      check: '<path d="M20 6 9 17l-5-5"/>',
+      tarjeta: '<rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 10h19M6 15h4"/>',
+      megafono: '<path d="M4 10v4a1 1 0 0 0 1 1h3l6 4V5L8 9H5a1 1 0 0 0-1 1z"/><path d="M18 9a4 4 0 0 1 0 6"/>',
+      calendario: '<rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M8 3v4M16 3v4M3.5 10h17"/>',
+      lista: '<rect x="5" y="4" width="14" height="17" rx="2.5"/><path d="M9 3h6v3H9zM8.5 11h7M8.5 15h5"/>',
+      lapiz: '<path d="M4 20l4-1L19 8a2.1 2.1 0 0 0-3-3L5 16z"/><path d="M14 7l3 3"/>',
+      trofeo: '<path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5v1.5A3 3 0 0 0 8 10.5M16 6h3v1.5a3 3 0 0 1-3 3M12 13v4M8.5 20h7M10 17h4v3h-4z"/>',
+      grafica: '<path d="M4 4v16h16"/><path d="M8 15l3.5-3.5 3 3L20 9"/>',
+      carpeta: '<path d="M3.5 7.5A2 2 0 0 1 5.5 5.5h3.6l2 2h7.4a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"/>',
+      candado: '<rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/>',
+      alta: '<circle cx="10" cy="8" r="3.5"/><path d="M3.5 20a6.5 6.5 0 0 1 13 0M19 8v6M16 11h6"/>',
+      baja: '<circle cx="10" cy="8" r="3.5"/><path d="M3.5 20a6.5 6.5 0 0 1 13 0M16 11h6"/>',
+      barras: '<path d="M6 20V11M12 20V5M18 20v-6M3.5 20h17"/>',
+      personas: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/>'
+    },
+    icono(nombre) {
+      return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${UI.ICONOS[nombre] || ""}</svg>`;
+    },
+    chevron: '<svg class="chevron" viewBox="0 0 8 13" aria-hidden="true"><path d="M1.5 1.5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    // Barra de navegación de iOS: «‹ Atrás» a la izquierda, título chico al centro (aparece al bajar) y título grande en la página.
     // "Volver" regresa a la página de la que se llegó: la sección (?s=GAV), Herramientas administrativas (?v=admin) o el inicio.
     encabezado(titulo, raiz, u, volver) {
       if (!volver) {
         const sec = seccionActual();
         volver = sec ? raiz + sec.toLowerCase() + "/" : param("v") === "admin" ? raiz + "admin/" : raiz + "index.html";
       }
+      const etiqueta = /admin\/$/.test(volver) ? "Herramientas" : /gav\/$/.test(volver) ? "GAV" : /gaf\/$/.test(volver) ? "GAF" : "Inicio";
       const h = document.createElement("header");
       h.className = "barra";
       h.innerHTML = `
-        <a class="volver" href="${UI.esc(volver)}" aria-label="Volver">‹</a>
-        <img class="mini-logo" src="${raiz}img/icono-192.png" alt="" width="36" height="36">
+        <a class="volver" href="${UI.esc(volver)}"><svg viewBox="0 0 13 21" aria-hidden="true"><path d="M11 2L2.5 10.5 11 19" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>${UI.esc(etiqueta)}</a>
         <h1>${UI.esc(titulo)}</h1>
-        <span class="quien">${UI.esc(u.nombre)}<small>${UI.esc(ROLES[u.rol] || u.rol)}</small></span>
         <button type="button" class="salir">Salir</button>`;
-      h.querySelector(".salir").onclick = () => { if (confirm("¿Cerrar sesión?")) salir(raiz); };
+      h.querySelector(".salir").onclick = () => { if (confirm(`¿Cerrar la sesión de ${u.nombre}?`)) salir(raiz); };
       document.body.prepend(h);
+      const grande = document.createElement("div");
+      grande.className = "titulo-grande";
+      grande.innerHTML = `<h2>${UI.esc(titulo)}</h2><p>${UI.esc(u.nombre)} · ${UI.esc(ROLES[u.rol] || u.rol)}</p>`;
+      h.after(grande);
       if (DB.DEMO) {
         const d = document.createElement("div"); d.className = "liston-demo";
         d.textContent = "Modo demostración: los datos se guardan solo en este navegador.";
-        h.after(d);
+        grande.after(d);
       }
+      // Al bajar, el título grande se esconde y aparece el chico en la barra (como iOS).
+      if ("IntersectionObserver" in window) new IntersectionObserver(([e]) => h.classList.toggle("con-linea", !e.isIntersecting), { rootMargin: "-50px 0px 0px 0px" }).observe(grande);
+      else h.classList.add("con-linea");
     }
   };
 

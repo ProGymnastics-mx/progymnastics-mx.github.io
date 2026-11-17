@@ -27,6 +27,12 @@ con módulos de **pagos** y **asistencia**. Responder en español, claro y sin r
   (`COLECCION_PREFIJO`); nunca tocar colecciones ni reglas de AKC. `?demo` abre el modo demostración.
 - `firestore.rules`: reglas de seguridad (se AGREGAN a las de AKC, no las reemplazan); cualquier permiso nuevo en `sesion.js` se refleja también aquí.
 - Colores del logo: amarillo `#ffcb0b` y negro.
+- **Diseño de iPhone (cliente, vía Manu, 17-nov-2026):** que se vea y se sienta como app de iOS, fácil y accesible. `css/app.css`
+  usa el lenguaje de iOS: letra del sistema, fondo agrupado (#f2f2f7 / negro), celdas redondeadas, barra traslúcida con «‹ Atrás»
+  y título grande (`UI.encabezado`), inicio como pantalla de inicio del iPhone (íconos de color), secciones y herramientas como
+  listas de Ajustes (`PaginaMenu`), control segmentado en pestañas, interruptores en casillas, ventanas como hoja que sube desde
+  abajo, colores del sistema de iOS (variables `--verde`, `--azul`…) e íconos de línea propios (`UI.icono`). Modo claro y oscuro,
+  áreas seguras (`viewport-fit=cover`) y metas para instalarla en la pantalla de inicio. Todo módulo nuevo sigue este estilo.
 
 ## Etapas pedidas por Manu (17-nov-2026)
 1. ✅ Estructura: inicio, secciones, herramientas administrativas y acceso; vistas por perfil (admin y coach primero).
