@@ -1,0 +1,24 @@
+# App ProGymnastics México — guía para Claude
+
+App web (HTML/JS sin build) del club ProGymnastics México. Se publica con GitHub Pages desde `main`.
+La pidió Manu (José Manuel Jaime Morales, 17-nov-2026): "clonar aguilaskc.net con la modalidad de la App GAV AKC (Firebase)",
+con módulos de **pagos** y **asistencia**. Responder en español, claro y sin relleno.
+
+## Estructura
+- `index.html`: login (Firebase Auth correo/contraseña, o selector de perfil en modo demo) y menú en tarjetas.
+- `js/config.js`: datos del club (grupos, cuotas, día límite, recargo, métodos, datos para pagar) y `FIREBASE_CONFIG`
+  (`null` = modo demostración en localStorage).
+- `js/db.js`: capa de datos única (Firestore o localStorage) — los módulos usan solo `DB.*`.
+- `js/sesion.js`: sesión, perfiles y permisos (`Sesion.puede.*`), utilidades `UI.*` y encabezado de módulos.
+- `modulos/<nombre>/index.html + app.js`: asistencia, pagos, equipo, avisos, calendario.
+- `firestore.rules`: reglas de seguridad; cualquier permiso nuevo en `sesion.js` se refleja también aquí.
+- Colores del logo: amarillo `#ffcb0b` y negro.
+
+## Reglas
+- Perfiles como aguilaskc.net: OWNER > ADMIN > COACH > TUTOR/ATLETA. Tutor y atleta solo ven a sus atletas (`usuarios.atletas`).
+  Coaches no ven pagos.
+- Asistencia: P/R/S cuentan como asistencia, F y J como falta, clase cancelada = sin registros. Semáforo 85% / 70%.
+- Pagos: estado del mes solo con concepto Mensualidad; antes del mes `desde` del atleta no hay adeudo.
+- Textos de usuarios siempre escapados (`UI.esc`) o con `textContent`.
+- Probar en ancho de celular (~390 px) y en impresión. Distinguir lo hecho, lo probado y lo verificado.
+- No exponer contraseñas ni tokens.

@@ -1,0 +1,66 @@
+rules_version = '2';
+// Reglas de Firestore de ProGymnastics México. Se pegan en Consola de Firebase → Firestore → Reglas.
+// Perfiles: OWNER, ADMIN (administración), COACH, TUTOR, ATLETA (ver js/sesion.js).
+service cloud.firestore {
+  match /databases/{db}/documents {
+    function dentro() { return request.auth != null; }
+    function yo() { return get(/databases/$(db)/documents/usuarios/$(request.auth.uid)).data; }
+    function miembro() { return dentro() && exists(/databases/$(db)/documents/usuarios/$(request.auth.uid)); }
+    function admin() { return miembro() && yo().rol in ['OWNER', 'ADMIN']; }
+    function staff() { return miembro() && yo().rol in ['OWNER', 'ADMIN', 'COACH']; }
+    function owner() { return miembro() && yo().rol == 'OWNER'; }
+    function mio(atletaId) { return miembro() && atletaId in yo().atletas; }
+    function correo() { return request.auth.token.email.lower(); }
+    function inv() { return get(/databases/$(db)/documents/invitaciones/$(correo())).data; }
+
+    match /usuarios/{uid} {
+      allow get: if dentro() && (request.auth.uid == uid || admin());
+      allow list: if admin();
+      // Primer ingreso: la cuenta se crea igual a su invitación.
+      allow create: if dentro() && request.auth.uid == uid
+        && exists(/databases/$(db)/documents/invitaciones/$(correo()))
+        && request.resource.data.rol == inv().rol
+        && request.resource.data.atletas == inv().atletas
+        && request.resource.data.email == correo();
+      // Administración edita; solo OWNER toca cuentas OWNER o da ese perfil; nadie cambia su propio perfil.
+      allow update: if admin() && request.auth.uid != uid
+        && (owner() || (resource.data.rol != 'OWNER' && request.resource.data.rol != 'OWNER'));
+      allow update: if admin() && request.auth.uid == uid && request.resource.data.rol == resource.data.rol;
+      allow delete: if admin() && request.auth.uid != uid && (owner() || resource.data.rol != 'OWNER');
+    }
+
+    match /invitaciones/{email} {
+      allow get: if dentro() && (correo() == email || admin());
+      allow list: if admin();
+      allow create, update: if admin() && email == email.lower() && (owner() || request.resource.data.rol != 'OWNER');
+      allow delete: if admin() || (dentro() && correo() == email);
+    }
+
+    match /atletas/{id} {
+      allow get: if staff() || mio(id);
+      allow list: if staff();
+      allow write: if admin();
+    }
+
+    match /asistencia/{id} {
+      allow read: if staff() || (resource != null && mio(resource.data.atletaId));
+      allow write: if staff();
+    }
+
+    match /pagos/{id} {
+      allow read: if admin() || (resource != null && mio(resource.data.atletaId));
+      allow write: if admin();
+    }
+
+    match /avisos/{id} {
+      allow read: if miembro();
+      allow create: if staff() && request.resource.data.autorUid == request.auth.uid;
+      allow delete: if admin() || (staff() && resource.data.autorUid == request.auth.uid);
+    }
+
+    match /eventos/{id} {
+      allow read: if miembro();
+      allow write: if staff();
+    }
+  }
+}
