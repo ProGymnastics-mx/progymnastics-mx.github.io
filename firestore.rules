@@ -81,6 +81,11 @@ service cloud.firestore {
       allow write: if pgStaff();
     }
 
+    // Rutinas (editor de GAV): un solo documento "estado" con libres y obligatorios. Solo el staff.
+    match /pg_rutinas/{doc} {
+      allow read, write: if pgStaff();
+    }
+
     match /pg_eventos/{id} {
       allow read: if pgMiembro();
       allow write: if pgStaff();
