@@ -11,7 +11,9 @@ con módulos de **pagos** y **asistencia**. Responder en español, claro y sin r
 - `js/db.js`: capa de datos única (Firestore o localStorage) — los módulos usan solo `DB.*`.
 - `js/sesion.js`: sesión, perfiles y permisos (`Sesion.puede.*`), utilidades `UI.*` y encabezado de módulos.
 - `modulos/<nombre>/index.html + app.js`: asistencia, pagos, equipo, avisos, calendario.
-- `firestore.rules`: reglas de seguridad; cualquier permiso nuevo en `sesion.js` se refleja también aquí.
+- **Firebase = `akc-con-reporte` (el de Manu, compartido con AKC; Manu, 17-nov-2026).** Todo va en colecciones `pg_*`
+  (`COLECCION_PREFIJO`); nunca tocar colecciones ni reglas de AKC. `?demo` abre el modo demostración.
+- `firestore.rules`: reglas de seguridad (se AGREGAN a las de AKC, no las reemplazan); cualquier permiso nuevo en `sesion.js` se refleja también aquí.
 - Colores del logo: amarillo `#ffcb0b` y negro.
 
 ## Reglas

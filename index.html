@@ -58,6 +58,7 @@
         <button type="button" id="l-crear">Crear mi cuenta (con invitación)</button>
         <button type="button" id="l-olvide">Olvidé mi contraseña</button>
       </div>
+      <p class="nota" style="text-align:center"><a href="?demo">Ver la demostración</a></p>
     </form>
   </section>
 
@@ -66,6 +67,7 @@
     <p class="nota" style="text-align:center">Modo demostración: elige con qué perfil entrar. Los datos son inventados y se guardan solo en este navegador.</p>
     <div class="perfiles-demo" id="demo-perfiles"></div>
     <p style="text-align:center;margin-top:18px"><button class="btn chico" type="button" id="demo-reiniciar">Borrar datos de demostración</button></p>
+    <p class="nota oculto" id="demo-salir" style="text-align:center"><a href="./" id="demo-salir-a">Salir de la demostración</a></p>
   </section>
 
   <!-- Menú -->
@@ -115,6 +117,10 @@
         const b = e.target.closest("button[data-uid]"); if (!b) return;
         localStorage.setItem("pg_demo_uid", b.dataset.uid); mostrarMenu(await Sesion.actual());
       };
+      if (window.FIREBASE_CONFIG) {
+        $("demo-salir").classList.remove("oculto");
+        $("demo-salir-a").onclick = () => { try { sessionStorage.removeItem("pg_demo"); } catch (e) {} localStorage.removeItem("pg_demo_uid"); };
+      }
       $("demo-reiniciar").onclick = () => { if (confirm("¿Borrar todos los datos de demostración?")) { DB.reiniciar(); localStorage.removeItem("pg_demo_uid"); location.reload(); } };
       return;
     }

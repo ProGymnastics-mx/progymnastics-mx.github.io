@@ -1,72 +1,78 @@
 rules_version = '2';
-// Reglas de Firestore de ProGymnastics México. Se pegan en Consola de Firebase → Firestore → Reglas.
+// Reglas de Firestore de ProGymnastics México (colecciones pg_*), en el proyecto akc-con-reporte que comparte con AKC.
+// NO reemplazar las reglas de AKC: en Consola de Firebase → Firestore → Reglas, copiar las funciones y los bloques
+// "match /pg_…" de abajo DENTRO del "match /databases/{database}/documents" que ya existe, y conservar todo lo de AKC.
+// Si las reglas actuales tienen una regla abierta para todo, como
+//     match /{document=**} { allow read, write: if true; }
+// cambiarla por esta, para que lo de AKC siga igual pero no abra las colecciones pg_ (pagos y datos de familias):
+//     match /{coleccion}/{document=**} { allow read, write: if !coleccion.matches('pg_.*'); }
 // Perfiles: SUPER (Desarrollador), OWNER, ADMIN (administración), COACH, TUTOR, ATLETA (ver js/sesion.js).
 // SUPER solo se da creando a mano su invitación en la consola; desde la app nadie lo da, cambia ni quita.
 service cloud.firestore {
-  match /databases/{db}/documents {
-    function dentro() { return request.auth != null; }
-    function yo() { return get(/databases/$(db)/documents/usuarios/$(request.auth.uid)).data; }
-    function miembro() { return dentro() && exists(/databases/$(db)/documents/usuarios/$(request.auth.uid)); }
-    function admin() { return miembro() && yo().rol in ['SUPER', 'OWNER', 'ADMIN']; }
-    function staff() { return miembro() && yo().rol in ['SUPER', 'OWNER', 'ADMIN', 'COACH']; }
-    function owner() { return miembro() && yo().rol in ['SUPER', 'OWNER']; }
-    function mio(atletaId) { return miembro() && atletaId in yo().atletas; }
-    function correo() { return request.auth.token.email.lower(); }
-    function inv() { return get(/databases/$(db)/documents/invitaciones/$(correo())).data; }
+  match /databases/{database}/documents {
+    function pgDentro() { return request.auth != null; }
+    function pgYo() { return get(/databases/$(database)/documents/pg_usuarios/$(request.auth.uid)).data; }
+    function pgMiembro() { return pgDentro() && exists(/databases/$(database)/documents/pg_usuarios/$(request.auth.uid)); }
+    function pgAdmin() { return pgMiembro() && pgYo().rol in ['SUPER', 'OWNER', 'ADMIN']; }
+    function pgStaff() { return pgMiembro() && pgYo().rol in ['SUPER', 'OWNER', 'ADMIN', 'COACH']; }
+    function pgOwner() { return pgMiembro() && pgYo().rol in ['SUPER', 'OWNER']; }
+    function pgMio(atletaId) { return pgMiembro() && atletaId in pgYo().atletas; }
+    function pgCorreo() { return request.auth.token.email.lower(); }
+    function pgInv() { return get(/databases/$(database)/documents/pg_invitaciones/$(pgCorreo())).data; }
 
-    match /usuarios/{uid} {
-      allow get: if dentro() && (request.auth.uid == uid || admin());
-      allow list: if admin();
+    match /pg_usuarios/{uid} {
+      allow get: if pgDentro() && (request.auth.uid == uid || pgAdmin());
+      allow list: if pgAdmin();
       // Primer ingreso: la cuenta se crea igual a su invitación.
-      allow create: if dentro() && request.auth.uid == uid
-        && exists(/databases/$(db)/documents/invitaciones/$(correo()))
-        && request.resource.data.rol == inv().rol
-        && request.resource.data.atletas == inv().atletas
-        && request.resource.data.email == correo();
+      allow create: if pgDentro() && request.auth.uid == uid
+        && exists(/databases/$(database)/documents/pg_invitaciones/$(pgCorreo()))
+        && request.resource.data.rol == pgInv().rol
+        && request.resource.data.atletas == pgInv().atletas
+        && request.resource.data.email == pgCorreo();
       // Administración edita; solo OWNER toca cuentas OWNER o da ese perfil; nadie cambia su propio perfil.
       // Las cuentas SUPER no se pueden editar ni borrar desde la app, y nadie puede dar ese perfil.
-      allow update: if admin() && request.auth.uid != uid
+      allow update: if pgAdmin() && request.auth.uid != uid
         && resource.data.rol != 'SUPER' && request.resource.data.rol != 'SUPER'
-        && (owner() || (resource.data.rol != 'OWNER' && request.resource.data.rol != 'OWNER'));
-      allow update: if admin() && request.auth.uid == uid && request.resource.data.rol == resource.data.rol;
-      allow delete: if admin() && request.auth.uid != uid && resource.data.rol != 'SUPER'
-        && (owner() || resource.data.rol != 'OWNER');
+        && (pgOwner() || (resource.data.rol != 'OWNER' && request.resource.data.rol != 'OWNER'));
+      allow update: if pgAdmin() && request.auth.uid == uid && request.resource.data.rol == resource.data.rol;
+      allow delete: if pgAdmin() && request.auth.uid != uid && resource.data.rol != 'SUPER'
+        && (pgOwner() || resource.data.rol != 'OWNER');
     }
 
-    match /invitaciones/{email} {
-      allow get: if dentro() && (correo() == email || admin());
-      allow list: if admin();
-      allow create, update: if admin() && email == email.lower() && request.resource.data.rol != 'SUPER'
-        && (!exists(/databases/$(db)/documents/invitaciones/$(email)) || resource.data.rol != 'SUPER')
-        && (owner() || request.resource.data.rol != 'OWNER');
-      allow delete: if (admin() && resource.data.rol != 'SUPER') || (dentro() && correo() == email);
+    match /pg_invitaciones/{email} {
+      allow get: if pgDentro() && (pgCorreo() == email || pgAdmin());
+      allow list: if pgAdmin();
+      allow create, update: if pgAdmin() && email == email.lower() && request.resource.data.rol != 'SUPER'
+        && (!exists(/databases/$(database)/documents/pg_invitaciones/$(email)) || resource.data.rol != 'SUPER')
+        && (pgOwner() || request.resource.data.rol != 'OWNER');
+      allow delete: if (pgAdmin() && resource.data.rol != 'SUPER') || (pgDentro() && pgCorreo() == email);
     }
 
-    match /atletas/{id} {
-      allow get: if staff() || mio(id);
-      allow list: if staff();
-      allow write: if admin();
+    match /pg_atletas/{id} {
+      allow get: if pgStaff() || pgMio(id);
+      allow list: if pgStaff();
+      allow write: if pgAdmin();
     }
 
-    match /asistencia/{id} {
-      allow read: if staff() || (resource != null && mio(resource.data.atletaId));
-      allow write: if staff();
+    match /pg_asistencia/{id} {
+      allow read: if pgStaff() || (resource != null && pgMio(resource.data.atletaId));
+      allow write: if pgStaff();
     }
 
-    match /pagos/{id} {
-      allow read: if admin() || (resource != null && mio(resource.data.atletaId));
-      allow write: if admin();
+    match /pg_pagos/{id} {
+      allow read: if pgAdmin() || (resource != null && pgMio(resource.data.atletaId));
+      allow write: if pgAdmin();
     }
 
-    match /avisos/{id} {
-      allow read: if miembro();
-      allow create: if staff() && request.resource.data.autorUid == request.auth.uid;
-      allow delete: if admin() || (staff() && resource.data.autorUid == request.auth.uid);
+    match /pg_avisos/{id} {
+      allow read: if pgMiembro();
+      allow create: if pgStaff() && request.resource.data.autorUid == request.auth.uid;
+      allow delete: if pgAdmin() || (pgStaff() && resource.data.autorUid == request.auth.uid);
     }
 
-    match /eventos/{id} {
-      allow read: if miembro();
-      allow write: if staff();
+    match /pg_eventos/{id} {
+      allow read: if pgMiembro();
+      allow write: if pgStaff();
     }
   }
 }

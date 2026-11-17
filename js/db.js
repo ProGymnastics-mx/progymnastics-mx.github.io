@@ -7,7 +7,13 @@
      DB.lote([{tipo:"guardar"|"borrar", col, id, datos}])
 */
 (function () {
-  const DEMO = !window.FIREBASE_CONFIG;
+  // Modo demostración: sin FIREBASE_CONFIG, o abriendo la app con ?demo en la dirección.
+  let pideDemo = /[?&]demo\b/.test(location.search);
+  try { if (pideDemo) sessionStorage.setItem("pg_demo", "1"); else pideDemo = sessionStorage.getItem("pg_demo") === "1"; } catch (e) {}
+  const DEMO = !window.FIREBASE_CONFIG || pideDemo;
+  // Todas las colecciones del club llevan prefijo (pg_usuarios, pg_pagos…) para no mezclarse con otras apps del mismo proyecto.
+  const P = window.COLECCION_PREFIJO || "";
+  const C = (col) => fs.collection(P + col);
   const nuevoId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
   const limpiar = (o) => JSON.parse(JSON.stringify(o)); // quita undefined
 
@@ -78,7 +84,7 @@
 
   // ---------- Firestore ----------
   const Nube = {
-    async obtener(col, id) { const s = await fs.collection(col).doc(id).get(); return s.exists ? { ...s.data(), id: s.id } : null; },
+    async obtener(col, id) { const s = await C(col).doc(id).get(); return s.exists ? { ...s.data(), id: s.id } : null; },
     async listar(col, filtros = []) {
       // Firestore limita "in" a 10 valores: se parte en varias consultas.
       const conIn = filtros.find((f) => f[1] === "in");
@@ -91,22 +97,22 @@
         return out;
       }
       if (conIn && !conIn[2].length) return [];
-      let q = fs.collection(col);
+      let q = C(col);
       filtros.forEach(([c, op, v]) => { q = q.where(c, op, v); });
       const s = await q.get();
       return s.docs.map((d) => ({ ...d.data(), id: d.id }));
     },
     async guardar(col, id, datos, op = {}) {
-      const ref = id ? fs.collection(col).doc(id) : fs.collection(col).doc();
+      const ref = id ? C(col).doc(id) : C(col).doc();
       await ref.set(limpiar(datos), { merge: op.unir !== false });
       return ref.id;
     },
-    async borrar(col, id) { await fs.collection(col).doc(id).delete(); },
+    async borrar(col, id) { await C(col).doc(id).delete(); },
     async lote(ops) {
       for (let i = 0; i < ops.length; i += 450) {
         const b = fs.batch();
         ops.slice(i, i + 450).forEach((o) => {
-          const ref = fs.collection(o.col).doc(o.id);
+          const ref = C(o.col).doc(o.id);
           o.tipo === "borrar" ? b.delete(ref) : b.set(ref, limpiar(o.datos), { merge: o.unir !== false });
         });
         await b.commit();
