@@ -45,8 +45,8 @@ con módulos de **pagos** y **asistencia**. Responder en español, claro y sin r
   VAPID (privada en `pg_config`, que nadie lee; pública en `pg_config_publica`), los recordatorios de mensualidad (3 días antes, el
   día límite y un día después; 9 a 21 h CDMX) y envía los pendientes por correo (Gmail del club) y Web Push a tutores/atletas ligados.
   Secretos: FIREBASE_SERVICE_ACCOUNT, GMAIL_USER, GMAIL_APP_PASSWORD (ver `tools/notificaciones/README.md`). Pantalla bloqueada:
-  texto corto sin nombres ni montos (`push`); el detalle va en correo y en la app. Cobro automático con tarjeta: pendiente
-  (necesita proveedor como Mercado Pago o Stripe con cuenta del club; usaría estos mismos avisos).
+  texto corto sin nombres ni montos (`push`); el detalle va en correo y en la app. **Sin pago en línea** (Manu, 17-nov-2026): los papás
+  pagan en efectivo, transferencia o tarjeta directamente en administración, que lo registra en la app y eso dispara la confirmación.
 
 ## Etapas pedidas por Manu (17-nov-2026)
 1. ✅ Estructura: inicio, secciones, herramientas administrativas y acceso; vistas por perfil (admin y coach primero).
