@@ -42,7 +42,13 @@ con módulos de **pagos** y **asistencia**. Responder en español, claro y sin r
    FMG N9/N10, USAG N7/N8 y obligatorios 3–6). Cambios: atletas elegidos de `pg_atletas` de GAV (clave = nombre en mayúsculas),
    sin Excel de arranque (no hay «Volver a cargar del Excel» ni «Descargar Excel»), guarda en `pg_rutinas/estado` (solo staff;
    en demo, en el navegador), marca ProGymnastics y capa de estilo iPhone al final de `editor.css` (la impresión no cambia).
-   Pendiente: vista de rutinas para papás/atletas (irá con Reportes, con documentos por atleta para no exponer las de otros).
+   Al guardar, publica la NP de cada atleta en `pg_rutinas_vista/<atletaId>` (para su reporte; un papá no lee `pg_rutinas`).
+   ✅ Competencias GAV (`modulos/competencias/`, solo staff): copas en `pg_competencias` (todos las ven, con `podio` = el más
+   eficiente de libres y obligatorios), resultados en `pg_resultados/<copaId>__<atletaId>` (NP juez, NF, NP de rutina tomada de
+   `pg_rutinas_vista`), captura con % en vivo y concentrado con colores. Reglas de eficiencia en `js/eficiencia.js` (las de AKC).
+   ✅ Reportes GAV (`modulos/reportes/`): por atleta, competencias (tendencia, detalle, mejor nota por aparato), rutina actual,
+   normativos y asistencia; papá/atleta solo los suyos. En AKC los papás ven el ranking completo de la última copa; aquí, por
+   ahora, solo el «más eficiente» (podio) y lo de su hijo — preguntar a Manu si el cliente quiere el ranking completo.
 2. GAV: traer de aguilaskc.net (`Kids-Center-Gimnasia/AguilasKC`, `gav/app/`) Normativos, Editor de rutinas, Calendario,
    Competencias (subir resultados, notas de partida, eficiencia) y Reportes para papás. **No** Fuerza ni Plan anual
    (Manu aún no sabe si se los mandarán). Sin datos ni nombres de atletas de AKC: los atletas son los de `pg_atletas`.

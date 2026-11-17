@@ -4,6 +4,7 @@
    se guarda en Firestore pg_rutinas/estado (o en el navegador en modo demostración) y la marca es ProGymnastics. */
 const COLLECTION='rutinas', DOC='estado', LOCAL='pg_rutinas_estado';
 let PG_ATLETAS=[]; // atletas activos de GAV que puede manejar el usuario (para «Agregar atleta»)
+let PG_ID={};     // nombre en mayúsculas → id del atleta (para publicar su nota de partida en su reporte)
 const APS=[['PISO','Piso'],['ARZON','Arzón'],['ANILLOS','Anillos'],['SALTO','Salto'],['PARALELAS','Paralelas'],['FIJA','Fija']];
 const NP_COL={PISO:'PISO',ARZON:'ARZON',ANILLOS:'ANILLO',SALTO:'SALTO',PARALELAS:'PARALELA',FIJA:'FIJA'};
 const NIVELES=['N7','N8','N9','N10','FIG'];
@@ -669,7 +670,7 @@ function save(){
         if(cur.oorden!==SENT.oorden)u.push(FP('obligatorios','orden'),JSON.parse(cur.oorden),FP('obligatorios','vista','orden'),JSON.parse(cur.oorden));
         if(cur.obajas!==SENT.obajas)u.push(FP('obligatorios','bajas'),JSON.parse(cur.obajas));
         if(u.length)await cloud.update(...u,FP('updatedAt'),firebase.firestore.FieldValue.serverTimestamp());}
-      SENT=cur;setSync('ok',DB.DEMO?'Guardado en este navegador':'Guardado en la nube');}
+      const antes=SENT;SENT=cur;setSync('ok',DB.DEMO?'Guardado en este navegador':'Guardado en la nube');publicarVistas(antes,cur);}
     catch(e){console.error(e);setSync('warn','No se pudo guardar: revisa tu conexión');}
     SAVING=false;
   },600);
@@ -1221,6 +1222,18 @@ async function init(){
   render();
 }
 /* ---------- ProGymnastics: sesión, atletas del club y nube de demostración ---------- */
+// Nota de partida de cada atleta en su propio documento (rutinas_vista/<atletaId>) para el reporte de papás:
+// así un papá lee la de su hijo sin poder leer el documento con las rutinas de todos.
+async function publicarVistas(antes,cur){
+  const cambiados=new Set();
+  for(const n of Object.keys(cur.lib))if(!antes||antes.lib[n]!==cur.lib[n])cambiados.add(n);
+  for(const n of Object.keys(cur.ov))if(!antes||antes.ov[n]!==cur.ov[n])cambiados.add(n);
+  for(const n of cambiados){const id=PG_ID[n];if(!id)continue;
+    let d=null;
+    if(S.atletas[n]){const t=totals(n);d={tipo:'L',nivel:S.atletas[n].nivel,aa:t.aa,np:Object.fromEntries(APS.map(([ap])=>[ap,t[ap].np]))};}
+    else if(S.obl.atletas[n]){const t=oblTotals(S.obl.atletas[n]);d={tipo:'O',nivel:String(S.obl.atletas[n].nivel),aa:t.aa,np:Object.fromEntries(OAPS.map(([ap])=>[ap,t[ap].np]))};}
+    if(d)DB.guardar('rutinas_vista',id,{...d,nombre:n,actualizado:new Date().toISOString()},{unir:false}).catch(e=>console.warn('No se publicó la NP de',n,e));}
+}
 // <option> con los atletas de GAV que aún no están en la lista (libres u obligatorios). La clave es el nombre en mayúsculas.
 function opcionesAtletas(ya){
   const libres=PG_ATLETAS.filter(a=>!ya[a.nombre.trim().replace(/\s+/g,' ').toUpperCase()]);
@@ -1236,6 +1249,8 @@ function nubeDemo(){const K='pg_demo_rutinas';
   const u=await Sesion.requerir('../../');
   if(!Sesion.esStaff(u)||!Sesion.seccionesDe(u).includes('GAV')){root.innerHTML=`<div class="top"><a class="back" href="../../index.html">‹ Inicio</a><h1>Editor de rutinas</h1></div><div class="empty">El editor es solo para entrenadores de GAV.</div>`;return;}
   const grupos=new Set(Sesion.gruposDe(u,'GAV').map(g=>g.id));
-  PG_ATLETAS=(await DB.listar('atletas').catch(()=>[])).filter(a=>a.activo!==false&&grupos.has(a.grupo)).sort((a,b)=>a.nombre.localeCompare(b.nombre,'es'));
+  const todos=await DB.listar('atletas').catch(()=>[]);
+  todos.forEach(a=>{PG_ID[a.nombre.trim().replace(/\s+/g,' ').toUpperCase()]=a.id;});
+  PG_ATLETAS=todos.filter(a=>a.activo!==false&&grupos.has(a.grupo)).sort((a,b)=>a.nombre.localeCompare(b.nombre,'es'));
   init();
 })();

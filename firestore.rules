@@ -86,6 +86,24 @@ service cloud.firestore {
       allow read, write: if pgStaff();
     }
 
+    // Nota de partida de la rutina de cada atleta (la publica el Editor de rutinas) para su reporte.
+    match /pg_rutinas_vista/{atletaId} {
+      allow get: if pgStaff() || pgMio(atletaId);
+      allow list, write: if pgStaff();
+    }
+
+    // Copas: todos los miembros las ven (con «el más eficiente»); solo el staff las crea o cambia.
+    match /pg_competencias/{id} {
+      allow read: if pgMiembro();
+      allow write: if pgStaff();
+    }
+
+    // Resultados: un documento por atleta y copa. Staff todo; tutor y atleta solo los suyos.
+    match /pg_resultados/{id} {
+      allow read: if pgStaff() || (resource != null && pgMio(resource.data.atletaId));
+      allow write: if pgStaff();
+    }
+
     match /pg_eventos/{id} {
       allow read: if pgMiembro();
       allow write: if pgStaff();
