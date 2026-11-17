@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111111">
+  <title>Herramientas administrativas · ProGymnastics México</title>
+  <link rel="icon" href="../img/icono-192.png">
+  <link rel="stylesheet" href="../css/app.css">
+</head>
+<body>
+  <main id="app"><p class="vacio">Cargando…</p></main>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+  <script src="../js/config.js"></script>
+  <script src="../js/db.js"></script>
+  <script src="../js/sesion.js"></script>
+  <script src="../js/paginas.js"></script>
+  <script>
+    // Solo OWNER, ADMIN y Desarrollador. Lo de cada sección (tomar lista) está en GAV y GAF.
+    PaginaMenu({ raiz: "../", titulo: "Herramientas administrativas", subtitulo: "Administración del club", permiso: "herramientasAdmin",
+      tarjetas: () => [
+        { href: "../modulos/pagos/?v=admin", ico: "💳", t: "Pagos", s: "Mensualidades, adeudos y registro de pagos" },
+        { href: "../modulos/equipo/?vista=atletas&v=admin", ico: "📝", t: "Registro de atletas", s: "Altas y datos de cada atleta" },
+        { href: "../modulos/equipo/?vista=bajas&v=admin", ico: "📤", t: "Bajas", s: "Dar de baja y ver a quienes salieron" },
+        { href: "../modulos/asistencia/?vista=reporte&v=admin", ico: "📈", t: "Reporte de asistencias", s: "Asistencia de todo el club, GAV y GAF" }
+      ] });
+  </script>
+</body>
+</html>

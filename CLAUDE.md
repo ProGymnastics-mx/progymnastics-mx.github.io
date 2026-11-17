@@ -6,7 +6,18 @@ La pidió Manu (José Manuel Jaime Morales, 17-nov-2026): "clonar aguilaskc.net 
 con módulos de **pagos** y **asistencia**. Responder en español, claro y sin relleno.
 
 ## Estructura
-- `index.html`: login (Firebase Auth correo/contraseña, o selector de perfil en modo demo) y menú en tarjetas.
+- `index.html`: login (Firebase Auth correo/contraseña, o selector de perfil en modo demo) e **inicio como aguilaskc.net**
+  (Manu, 17-nov-2026): logo y tarjetas **GAV**, **GAF** (cada quien solo las suyas), **Herramientas administrativas** y
+  **Administración de acceso** (estas dos, solo SUPER/OWNER/ADMIN).
+- `gav/` y `gaf/` (`js/paginas.js`, `tarjetasSeccion`): página de cada sección. Tomar asistencia (coach) o Asistencia
+  (tutor/atleta), Mis pagos (tutor/atleta), Avisos, Calendario y, en gris «Próximamente»: Normativos, Editor de rutinas,
+  Competencias y Reportes para papás. Los módulos reciben `?s=GAV|GAF` y solo muestran esa sección (y lo de todo el club);
+  «Volver» regresa a la sección.
+- `admin/`: Herramientas administrativas = Pagos, Registro de atletas (`equipo?vista=atletas`), Bajas (`equipo?vista=bajas`,
+  `atletas.baja = {fecha, motivo}`) y Reporte de asistencias (`asistencia?vista=reporte`, todo el club). Los módulos reciben `?v=admin`.
+- Administración de acceso = `equipo?vista=accesos`. Un COACH lleva `secciones` ([] = GAV y GAF) y `grupos` ([] = todos los
+  de sus secciones): solo entra a esas secciones y toma lista de esos grupos.
+- Cada grupo de `CLUB.grupos` pertenece a una sección (`seccion`); la sección de un atleta es la de su grupo.
 - `js/config.js`: datos del club (grupos, cuotas, día límite, recargo, métodos, datos para pagar) y `FIREBASE_CONFIG`
   (`null` = modo demostración en localStorage).
 - `js/db.js`: capa de datos única (Firestore o localStorage) — los módulos usan solo `DB.*`.
@@ -16,6 +27,17 @@ con módulos de **pagos** y **asistencia**. Responder en español, claro y sin r
   (`COLECCION_PREFIJO`); nunca tocar colecciones ni reglas de AKC. `?demo` abre el modo demostración.
 - `firestore.rules`: reglas de seguridad (se AGREGAN a las de AKC, no las reemplazan); cualquier permiso nuevo en `sesion.js` se refleja también aquí.
 - Colores del logo: amarillo `#ffcb0b` y negro.
+
+## Etapas pedidas por Manu (17-nov-2026)
+1. ✅ Estructura: inicio, secciones, herramientas administrativas y acceso; vistas por perfil (admin y coach primero).
+2. GAV: traer de aguilaskc.net (`Kids-Center-Gimnasia/AguilasKC`, `gav/app/`) Normativos, Editor de rutinas, Calendario,
+   Competencias (subir resultados, notas de partida, eficiencia) y Reportes para papás. **No** Fuerza ni Plan anual
+   (Manu aún no sabe si se los mandarán). Sin datos ni nombres de atletas de AKC: los atletas son los de `pg_atletas`.
+3. GAF: crear Normativos femeniles de salto, barras, viga y piso con la misma lógica que los varoniles, basados en el
+   programa USAG y el Código FIG femenil (fuentes: repos `APPBKA` —módulo femenil— y `Jueceofemenil`).
+4. Vistas de papá y atleta.
+Cada colección nueva (`pg_normativos`, `pg_rutinas`…) necesita su bloque en `firestore.rules`, y Manu debe pegar las reglas
+otra vez en la consola; sin eso Firestore la rechaza.
 
 ## Reglas
 - **SUPER = Desarrollador (Manu, 17-nov-2026):** el club se vende; el dueño es OWNER, pero Manu debe poder manejar todo.

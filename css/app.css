@@ -32,6 +32,27 @@ button, input, select, textarea { font: inherit; font-size: 16px; color: inherit
 
 main.contenido { width: 100%; max-width: 980px; margin: 0 auto; padding: 16px 16px 48px; }
 
+/* ---------- menú en tarjetas (inicio, secciones, herramientas) ---------- */
+.menu { width: 100%; max-width: 980px; margin: 16px auto 0; padding: 0 16px 40px; display: grid; gap: 12px;
+        grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (min-width: 700px) { .menu { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.tarjeta { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; padding: 20px 10px 16px;
+           min-height: 156px; border-radius: 22px; background: var(--panel); border: 1px solid var(--line); box-shadow: var(--sombra);
+           text-decoration: none; transition: transform .12s, border-color .12s; }
+.tarjeta:hover { transform: translateY(-2px); border-color: var(--amarillo); }
+.tarjeta .ico { width: 68px; height: 68px; border-radius: 20px; display: grid; place-items: center; font-size: 36px;
+                background: #111; box-shadow: inset 0 0 0 2px var(--amarillo);
+                font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif; }
+.tarjeta strong { font-size: .9rem; letter-spacing: .06em; text-transform: uppercase; }
+.tarjeta small { font-size: .8rem; color: var(--muted); line-height: 1.25; }
+.tarjeta .ico.texto { font-family: inherit; font-size: 1.15rem; font-weight: 900; letter-spacing: .04em; color: var(--amarillo); }
+.tarjeta.pronto { opacity: .55; pointer-events: none; }
+.tarjeta .chip { font-size: .7rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px;
+                 background: color-mix(in srgb, var(--muted) 22%, transparent); color: var(--muted); }
+.titulo-seccion { width: 100%; max-width: 980px; margin: 18px auto 0; padding: 0 16px; }
+.titulo-seccion h2 { margin: 0; font-size: 1.25rem; }
+.titulo-seccion p { margin: 4px 0 0; color: var(--muted); font-size: .9rem; }
+
 /* ---------- piezas ---------- */
 .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; box-shadow: var(--sombra); margin-bottom: 14px; }
 .panel h2 { margin: 0 0 12px; font-size: 1rem; letter-spacing: .05em; text-transform: uppercase; }

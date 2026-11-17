@@ -24,7 +24,7 @@
   }
 
   // ---------- Modo demostración ----------
-  const CLAVE = "pg_demo_db_v1";
+  const CLAVE = "pg_demo_db_v2"; // v2: grupos por sección (GAV/GAF)
   function leerDemo() {
     try { return JSON.parse(localStorage.getItem(CLAVE)) || {}; } catch (e) { return {}; }
   }
@@ -58,7 +58,8 @@
       "demo-super": { nombre: "Desarrollador (demo)", email: "super@demo", rol: "SUPER", atletas: [] },
       "demo-owner": { nombre: "Dueño (demo)", email: "owner@demo", rol: "OWNER", atletas: [] },
       "demo-admin": { nombre: "Administración (demo)", email: "admin@demo", rol: "ADMIN", atletas: [] },
-      "demo-coach": { nombre: "Coach (demo)", email: "coach@demo", rol: "COACH", atletas: [] },
+      "demo-coach": { nombre: "Coach GAV (demo)", email: "coach@demo", rol: "COACH", atletas: [], secciones: ["GAV"], grupos: [] },
+      "demo-coach-gaf": { nombre: "Coach GAF (demo)", email: "coachf@demo", rol: "COACH", atletas: [], secciones: ["GAF"], grupos: [] },
       "demo-tutor": { nombre: "Tutor (demo)", email: "tutor@demo", rol: "TUTOR", atletas: ["demo1", "demo2"] },
       "demo-atleta": { nombre: "Atleta Demo 3", email: "atleta@demo", rol: "ATLETA", atletas: ["demo3"] }
     };
