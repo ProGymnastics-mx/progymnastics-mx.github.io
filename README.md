@@ -1,5 +1,7 @@
 # ProGymnastics México — App del club
 
+Publicada en **https://progymnastics-mx.github.io/** (organización de GitHub `ProGymnastics-mx`, repo `progymnastics-mx.github.io`).
+
 App web (HTML/JS sin build) para ProGymnastics México, con el mismo modelo que la App GAV de AKC:
 se publica con **GitHub Pages** y guarda los datos en **Firebase** (Auth + Firestore).
 Toma la organización de aguilaskc.net (perfiles OWNER/ADMIN/COACH/TUTOR/ATLETA, avisos, calendario, asistencias),
@@ -25,7 +27,7 @@ disponible abriendo la app con `?demo`.
 
 Pasos en la consola (https://console.firebase.google.com/project/akc-con-reporte):
 1. Authentication → Método de acceso → activar **Correo electrónico/contraseña**.
-2. Authentication → Configuración → Dominios autorizados → agregar `josemanueljaimemorales.github.io`.
+2. Authentication → Configuración → Dominios autorizados → agregar `progymnastics-mx.github.io`.
 3. Firestore → Reglas → **agregar** (no reemplazar) lo de `firestore.rules`, siguiendo las instrucciones de su encabezado.
 4. Primeras cuentas: en Firestore crear la colección `pg_invitaciones` con dos documentos, cada uno con id = el
    correo en minúsculas y los campos `nombre` (texto), `rol` (texto) y `atletas` (arreglo vacío):
