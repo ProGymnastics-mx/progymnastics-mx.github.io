@@ -42,6 +42,7 @@
     .logo-mini { width: min(300px, calc(100% - 64px)); margin: 4px auto 22px; background: #fff; border-radius: 18px; padding: 6px; box-shadow: var(--sombra); }
     .logo-mini img { display: block; width: 100%; height: auto; }
     .globo { flex: none; min-width: 24px; height: 24px; padding: 0 7px; border-radius: 12px; background: var(--rojo); color: #fff; font-size: 14px; font-weight: 600; display: grid; place-items: center; }
+    @media (min-width: 700px) { .top, .hola, #fila-avisos { max-width: 760px !important; } .hola h1 { font-size: 34px; } }
     footer { margin-top: auto; padding: 16px 16px calc(16px + var(--seguro-abajo)); text-align: center; color: var(--muted); font-size: 12px; }
   </style>
 </head>
@@ -116,7 +117,7 @@
       const tarjetas = CLUB.secciones.filter((x) => secs.includes(x.id)).map((x) =>
         ({ href: x.id.toLowerCase() + "/", ico: x.id, texto: true, t: x.id, s: x.nombre }));
       if (Sesion.puede.herramientasAdmin(u)) tarjetas.push({ href: "admin/", icono: "carpeta", color: "gris", t: "Herramientas", s: "Pagos, altas y bajas" });
-      if (Sesion.puede.accesos(u)) tarjetas.push({ href: "modulos/equipo/?vista=accesos", icono: "candado", color: "azul", t: "Acceso", s: "Administración de acceso: quién entra y qué puede ver" });
+      if (Sesion.puede.accesos(u)) tarjetas.push({ href: "modulos/equipo/?vista=accesos", icono: "candado", color: "azul", t: "Administración de acceso", s: "Quién entra y qué ve" });
       // Fila de notificaciones (contador de avisos nuevos y si este celular ya las recibe).
       Promise.all([Avisos.nuevos(u).catch(() => 0), Avisos.estado("")]).then(([n, est]) => {
         $("fila-avisos").innerHTML = `<ul class="lista"><li><a href="modulos/notificaciones/"><span class="icono" style="background:var(--rojo)">${UI.icono("megafono")}</span>
@@ -124,7 +125,7 @@
           ${n ? `<span class="globo">${n}</span>` : ""}${UI.chevron}</a></li></ul>`;
       });
       $("menu").innerHTML = tarjetas.length ? tarjetas.map((m) =>
-        `<a class="tarjeta" href="${m.href}" aria-label="${UI.esc(m.t + ": " + m.s)}"><span class="ico${m.texto ? " texto" : ""}" style="${m.color ? `background:var(--${m.color})` : ""}" aria-hidden="true">${m.texto ? UI.esc(m.ico) : UI.icono(m.icono)}</span><strong>${UI.esc(m.t)}</strong></a>`).join("")
+        `<a class="tarjeta" href="${m.href}"><span class="ico${m.texto ? " texto" : ""}" style="${m.color ? `background:var(--${m.color})` : ""}" aria-hidden="true">${m.texto ? UI.esc(m.ico) : UI.icono(m.icono)}</span><span class="txt"><strong>${UI.esc(m.t)}</strong><small>${UI.esc(m.s)}</small></span>${UI.chevron}</a>`).join("")
         : `<p class="vacio" style="grid-column:1/-1">Tu cuenta todavía no tiene atletas ni secciones asignadas. Pídelo a Administración.</p>`;
     }
 
