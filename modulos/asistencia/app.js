@@ -5,7 +5,10 @@
 (async function () {
   const RAIZ = "../../";
   const u = await Sesion.requerir(RAIZ);
-  UI.encabezado("Asistencia", RAIZ, u);
+  // ?s=GAV|GAF: dentro de una sección (solo sus grupos, y los del coach). ?vista=reporte: reporte de todo el club (administración).
+  const SEC = Sesion.seccionActual();
+  const REPORTE = Sesion.param("vista") === "reporte" && Sesion.esAdmin(u);
+  UI.encabezado(REPORTE ? "Reporte de asistencias" : SEC ? "Asistencia " + SEC : "Asistencia", RAIZ, u);
   const app = document.getElementById("app");
   const esc = UI.esc;
   const ESTADOS = [
@@ -14,16 +17,18 @@
   ];
   const ASISTIO = new Set(["P", "R", "S"]);
   const staff = Sesion.puede.tomarAsistencia(u);
+  const misGrupos = REPORTE ? CLUB.grupos : Sesion.gruposDe(u, SEC);
+  const idsMios = new Set(misGrupos.map((g) => g.id));
   let atletas = await Sesion.atletasVisibles(u);
   const porId = Object.fromEntries(atletas.map((a) => [a.id, a]));
 
   app.innerHTML = `
-    ${staff ? `<div class="pestanas" role="tablist">
+    ${staff && !REPORTE ? `<div class="pestanas" role="tablist">
       <button role="tab" data-p="lista" aria-selected="true">Tomar lista</button>
       <button role="tab" data-p="tablero" aria-selected="false">Tablero</button></div>` : ""}
-    <section id="p-lista" ${staff ? "" : "hidden"}></section>
-    <section id="p-tablero" ${staff ? "hidden" : ""}></section>`;
-  if (staff) {
+    <section id="p-lista" ${staff && !REPORTE ? "" : "hidden"}></section>
+    <section id="p-tablero" ${staff && !REPORTE ? "hidden" : ""}></section>`;
+  if (staff && !REPORTE) {
     app.querySelector(".pestanas").onclick = (e) => {
       const b = e.target.closest("button[data-p]"); if (!b) return;
       app.querySelectorAll(".pestanas button").forEach((x) => x.setAttribute("aria-selected", x === b));
@@ -37,6 +42,7 @@
   // ---------------- Tomar lista ----------------
   function tomarLista() {
     const p = document.getElementById("p-lista");
+    if (!misGrupos.length) { p.innerHTML = `<p class="vacio">No tienes grupos asignados${SEC ? " en " + esc(SEC) : ""}. Pídelo a Administración.</p>`; return; }
     p.innerHTML = `
       <style>
         .alumno { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 10px 0; border-bottom: 1px solid var(--line); }
@@ -52,7 +58,7 @@
       <div class="panel">
         <div class="fila">
           <label>Fecha <input type="date" id="l-fecha" value="${UI.hoy()}"></label>
-          <label>Grupo <select id="l-grupo">${CLUB.grupos.map((g) => `<option value="${esc(g.id)}">${esc(g.nombre)}</option>`).join("")}</select></label>
+          <label>Grupo <select id="l-grupo">${UI.opcionesGrupos(misGrupos)}</select></label>
         </div>
         <div class="leyenda">${ESTADOS.map((e) => `<span><b>${e.k}</b> = ${e.t}</span>`).join("")}</div>
       </div>
@@ -140,7 +146,9 @@
           <label>Periodo <select id="t-tipo"><option value="mes">Mes</option><option value="anio">Año</option></select></label>
           <label id="t-mes-l">Mes <input type="month" id="t-mes" value="${hoy.slice(0, 7)}"></label>
           <label id="t-anio-l" hidden>Año <input type="number" id="t-anio" value="${hoy.slice(0, 4)}" min="2020" max="2100"></label>
-          ${staff ? `<label>Grupo <select id="t-grupo"><option value="">Todos</option>${CLUB.grupos.map((g) => `<option value="${esc(g.id)}">${esc(g.nombre)}</option>`).join("")}</select></label>` : ""}
+          ${staff ? `<label>Grupo <select id="t-grupo"><option value="">${REPORTE ? "Todo el club" : "Todos mis grupos"}</option>
+            ${REPORTE ? CLUB.secciones.map((x) => `<option value="S:${esc(x.id)}">Todo ${esc(x.id)}</option>`).join("") : ""}
+            ${UI.opcionesGrupos(misGrupos)}</select></label>` : ""}
           <button class="btn chico" type="button" onclick="print()">Imprimir</button>
         </div></div>
         <div class="kpis" id="t-kpis"></div>
@@ -161,7 +169,10 @@
     if (staff) regs = await DB.listar("asistencia", [["fecha", ">=", desde], ["fecha", "<=", hasta]]);
     else regs = (await Promise.all((u.atletas || []).map((id) => DB.listar("asistencia", [["atletaId", "==", id]])))).flat()
       .filter((r) => r.fecha >= desde && r.fecha <= hasta);
-    if (grupo) regs = regs.filter((r) => r.grupo === grupo);
+    if (grupo.startsWith("S:")) regs = regs.filter((r) => Sesion.seccionDeGrupo(r.grupo) === grupo.slice(2));
+    else if (grupo) regs = regs.filter((r) => r.grupo === grupo);
+    else if (staff) regs = regs.filter((r) => idsMios.has(r.grupo));
+    if (!staff && SEC) regs = regs.filter((r) => Sesion.seccionDeGrupo(r.grupo) === SEC);
 
     const por = {};
     regs.forEach((r) => {

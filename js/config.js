@@ -4,11 +4,19 @@ window.CLUB = {
   nombre: "ProGymnastics México",
   nombreCorto: "ProGymnastics",
 
-  // Grupos de entrenamiento (PENDIENTE: nombres reales, días y horarios).
+  // Secciones del club (como aguilaskc.net): cada una tiene su página con sus módulos.
+  secciones: [
+    { id: "GAV", nombre: "Gimnasia Artística Varonil" },
+    { id: "GAF", nombre: "Gimnasia Artística Femenil" }
+  ],
+
+  // Grupos de entrenamiento; cada uno pertenece a una sección (PENDIENTE: nombres reales, días y horarios).
+  // El id no puede llevar "/" (se usa en los registros de asistencia).
   grupos: [
-    { id: "INICIACION", nombre: "Iniciación", dias: "PENDIENTE", horario: "PENDIENTE" },
-    { id: "PRE-EQUIPO", nombre: "Pre-equipo", dias: "PENDIENTE", horario: "PENDIENTE" },
-    { id: "EQUIPO", nombre: "Equipo", dias: "PENDIENTE", horario: "PENDIENTE" }
+    { id: "GAV-INICIACION", seccion: "GAV", nombre: "GAV Iniciación", dias: "PENDIENTE", horario: "PENDIENTE" },
+    { id: "GAV-EQUIPO", seccion: "GAV", nombre: "GAV Equipo", dias: "PENDIENTE", horario: "PENDIENTE" },
+    { id: "GAF-INICIACION", seccion: "GAF", nombre: "GAF Iniciación", dias: "PENDIENTE", horario: "PENDIENTE" },
+    { id: "GAF-EQUIPO", seccion: "GAF", nombre: "GAF Equipo", dias: "PENDIENTE", horario: "PENDIENTE" }
   ],
 
   pagos: {
