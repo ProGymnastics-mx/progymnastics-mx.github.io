@@ -27,10 +27,32 @@ vm.runInNewContext(fs.readFileSync(path.join(AQUI, "../../js/config.js"), "utf8"
 const CLUB = ventana.CLUB;
 
 // ---------- Firebase ----------
+// Lee el JSON de la cuenta de servicio aunque al copiarlo desde un celular o tableta los "\n" de private_key se hayan
+// vuelto saltos de línea reales (JSON.parse los rechaza dentro de una cadena): solo dentro de cadenas los vuelve a escapar.
+function leerLlave(texto) {
+  const t = String(texto || "").trim().replace(/^\uFEFF/, "");
+  try { return JSON.parse(t); } catch (e) {
+    let out = "", enCadena = false, escape = false;
+    for (const c of t) {
+      if (enCadena) {
+        if (escape) { out += c; escape = false; continue; }
+        if (c === "\\") { out += c; escape = true; continue; }
+        if (c === '"') { enCadena = false; out += c; continue; }
+        if (c === "\n") { out += "\\n"; continue; }
+        if (c === "\r") continue;
+        if (c === "\t") { out += "\\t"; continue; }
+        out += c;
+      } else { if (c === '"') enCadena = true; out += c; }
+    }
+    try { return JSON.parse(out); }
+    catch (e2) { throw new Error("El secreto FIREBASE_SERVICE_ACCOUNT no es un JSON válido (¿se copió completo, de { a }?): " + e2.message); }
+  }
+}
+
 if (process.env.FIRESTORE_EMULATOR_HOST) admin.initializeApp({ projectId: process.env.GCLOUD_PROJECT || "demo-pg" });
 else {
   if (!process.env.FIREBASE_SERVICE_ACCOUNT) { log("Falta el secreto FIREBASE_SERVICE_ACCOUNT: no se envía nada (ver README de tools/notificaciones)."); process.exit(0); }
-  admin.initializeApp({ credential: admin.credential.cert(JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)) });
+  admin.initializeApp({ credential: admin.credential.cert(leerLlave(process.env.FIREBASE_SERVICE_ACCOUNT)) });
 }
 const db = admin.firestore();
 const col = (c) => db.collection(P + c);
