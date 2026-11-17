@@ -24,17 +24,15 @@ window.tarjetasSeccion = function (sec) {
   return (u) => {
     const staff = Sesion.esStaff(u);
     return [
-      staff && { href: "../modulos/asistencia/" + q, icono: "check", color: "verde", t: "Tomar asistencia", s: "Lista por grupo y tablero de tus grupos" },
-      { href: "../modulos/asistencia/" + q + "&vista=reporte", icono: "barras", color: "cian", t: "Reporte de asistencia", s: staff ? "Asistencia de todos los atletas de " + sec : "Asistencia del grupo y día por día de tu atleta" },
-      !staff && { href: "../modulos/pagos/" + q, icono: "tarjeta", color: "azul", t: "Mis pagos", s: "Mensualidades y recibos" },
-      { href: "../modulos/avisos/" + q, icono: "megafono", color: "naranja", t: "Avisos", s: "Lo más reciente de " + sec },
-      { href: "../modulos/calendario/" + q, icono: "calendario", color: "rojo", t: "Calendario", s: "Competencias, eventos y días sin clase" },
-      { href: "../modulos/normativos/" + q, icono: "lista", color: "indigo", t: "Normativos", s: sec === "GAF" ? "Salto, barras, viga y piso" : staff ? "Qué domina cada atleta por aparato" : "Qué domina por aparato" },
-      staff && { href: sec === "GAF" ? "../modulos/rutinas-gaf/editor.html" : "../modulos/rutinas/editor.html", icono: "lapiz", color: "cafe", t: "Editor de rutinas",
-                 s: sec === "GAF" ? "USAG niveles 6 a 10, Junior FIG y FIG con su nota de partida" : "Libres y obligatorios con su nota de partida" },
-      staff && { href: "../modulos/competencias/" + q, icono: "trofeo", color: "morado", t: "Competencias", s: "Nota de partida, nota final y eficiencia de cada copa" },
-      { href: "../modulos/reportes/" + q, icono: "grafica", color: "turquesa", t: staff ? "Reportes para papás" : "Mi reporte",
-        s: sec === "GAF" ? "En qué etapa va, competencias, rutina y asistencia" : "Competencias, rutina, normativos y asistencia" }
+      staff && { href: "../modulos/asistencia/" + q, icono: "check", color: "verde", t: "Tomar asistencia", s: "Pasar lista por grupo" },
+      { href: "../modulos/asistencia/" + q + "&vista=reporte", icono: "barras", color: "cian", t: "Reporte de asistencia", s: "Porcentaje de cada atleta" },
+      !staff && { href: "../modulos/pagos/" + q, icono: "tarjeta", color: "azul", t: "Mis pagos", s: "Estado de cuenta y recibos" },
+      { href: "../modulos/avisos/" + q, icono: "megafono", color: "naranja", t: "Avisos", s: "Noticias del club" },
+      { href: "../modulos/calendario/" + q, icono: "calendario", color: "rojo", t: "Calendario", s: "Competencias y eventos" },
+      { href: "../modulos/normativos/" + q, icono: "lista", color: "indigo", t: "Normativos", s: "Nivel por aparato" },
+      staff && { href: sec === "GAF" ? "../modulos/rutinas-gaf/editor.html" : "../modulos/rutinas/editor.html", icono: "lapiz", color: "cafe", t: "Editor de rutinas", s: "Rutinas y nota de partida" },
+      staff && { href: "../modulos/competencias/" + q, icono: "trofeo", color: "morado", t: "Competencias", s: "Resultados y eficiencia" },
+      { href: "../modulos/reportes/" + q, icono: "grafica", color: "turquesa", t: staff ? "Reportes para papás" : "Mi reporte", s: staff ? "Avance de cada atleta" : "Tu avance" }
     ];
   };
 };
