@@ -33,8 +33,10 @@ window.tarjetasSeccion = function (sec) {
                     : { href: "../modulos/normativos/" + q, icono: "lista", color: "indigo", t: "Normativos", s: staff ? "Qué domina cada atleta por aparato" : "Qué domina por aparato" },
       staff && (sec === "GAV" ? { href: "../modulos/rutinas/editor.html", icono: "lapiz", color: "cafe", t: "Editor de rutinas", s: "Libres y obligatorios con su nota de partida" }
                               : { icono: "lapiz", color: "cafe", t: "Editor de rutinas", s: "Rutinas y notas de partida", pronto: true }),
-      staff && { icono: "trofeo", color: "morado", t: "Competencias", s: "Resultados de cada copa", pronto: true },
-      { icono: "grafica", color: "turquesa", t: staff ? "Reportes para papás" : "Mi reporte", s: "Avance, competencias y estadísticas", pronto: true }
+      staff && (sec === "GAV" ? { href: "../modulos/competencias/" + q, icono: "trofeo", color: "morado", t: "Competencias", s: "Resultados, eficiencia y el más eficiente de cada copa" }
+                              : { icono: "trofeo", color: "morado", t: "Competencias", s: "Resultados de cada copa", pronto: true }),
+      sec === "GAV" ? { href: "../modulos/reportes/" + q, icono: "grafica", color: "turquesa", t: staff ? "Reportes para papás" : "Mi reporte", s: "Competencias, rutina, normativos y asistencia" }
+                    : { icono: "grafica", color: "turquesa", t: staff ? "Reportes para papás" : "Mi reporte", s: "Avance, competencias y estadísticas", pronto: true }
     ];
   };
 };
