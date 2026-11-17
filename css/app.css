@@ -37,7 +37,7 @@
 html { -webkit-text-size-adjust: 100%; }
 body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--fg);
        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", system-ui, Roboto, sans-serif;
-       font-size: 17px; line-height: 1.35; letter-spacing: -.01em; -webkit-font-smoothing: antialiased;
+       font-size: 16px; line-height: 1.35; letter-spacing: -.01em; -webkit-font-smoothing: antialiased;
        padding-bottom: var(--seguro-abajo); }
 a { color: var(--tinte); text-decoration: none; }
 button, input, select, textarea { font: inherit; color: inherit; letter-spacing: inherit; }
@@ -59,37 +59,37 @@ button, input, select, textarea { font: inherit; color: inherit; letter-spacing:
 .barra .salir { justify-self: end; min-height: 44px; padding: 0 8px; border: 0; background: none; color: var(--tinte); font-size: 17px; cursor: pointer; }
 .barra .mini-logo, .barra .quien { display: none; }
 .titulo-grande { width: 100%; max-width: 980px; margin: 0 auto; padding: 4px 20px 6px; }
-.titulo-grande h2 { margin: 0; font-size: 34px; line-height: 1.2; font-weight: 700; letter-spacing: .01em; }
-.titulo-grande p { margin: 2px 0 0; color: var(--muted); font-size: 15px; }
+.titulo-grande h2 { margin: 0; font-size: 30px; line-height: 1.2; font-weight: 700; letter-spacing: .01em; }
+.titulo-grande p { margin: 2px 0 0; color: var(--muted); font-size: 13px; }
 .liston-demo { width: calc(100% - 32px); max-width: 948px; margin: 8px auto 0; padding: 8px 12px; border-radius: 10px;
                background: color-mix(in srgb, var(--amarillo) 22%, var(--panel)); color: var(--fg); font-size: 13px; text-align: center; }
 
 main.contenido { width: 100%; max-width: 980px; margin: 0 auto; padding: 12px 16px 48px; }
 
 /* ---------- inicio: íconos como pantalla de inicio del iPhone ---------- */
-.menu { width: 100%; max-width: 560px; margin: 8px auto 0; padding: 0 16px 32px; display: grid; gap: 22px 12px;
+.menu { width: 100%; max-width: 560px; margin: 8px auto 0; padding: 0 12px 32px; display: grid; gap: 24px 8px;
         grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .tarjeta { display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; color: var(--fg); text-decoration: none; }
-.tarjeta .ico { width: 64px; height: 64px; border-radius: 15px; display: grid; place-items: center; color: #fff;
+.tarjeta .ico { width: 74px; height: 74px; border-radius: 18px; display: grid; place-items: center; color: #fff;
                 box-shadow: 0 2px 6px rgba(0,0,0,.18); transition: transform .12s; }
 .tarjeta:active .ico { transform: scale(.92); }
-.tarjeta .ico svg { width: 34px; height: 34px; }
-.tarjeta .ico.texto { background: #111; color: var(--amarillo); font-size: 18px; font-weight: 800; letter-spacing: .02em; box-shadow: 0 2px 6px rgba(0,0,0,.25), inset 0 0 0 1.5px rgba(255,203,11,.55); }
+.tarjeta .ico svg { width: 40px; height: 40px; }
+.tarjeta .ico.texto { background: #111; color: var(--amarillo); font-size: 21px; font-weight: 800; letter-spacing: .02em; box-shadow: 0 2px 6px rgba(0,0,0,.25), inset 0 0 0 1.5px rgba(255,203,11,.55); }
 .tarjeta strong { font-size: 12px; font-weight: 500; line-height: 1.2; letter-spacing: 0; }
 .tarjeta small { display: none; }
 
 /* ---------- listas agrupadas (como Ajustes) ---------- */
-.grupo-lista { width: 100%; max-width: 980px; margin: 0 auto; padding: 0 16px; }
+.grupo-lista { width: 100%; max-width: 720px; margin: 0 auto; padding: 0 16px; }
 .grupo-lista h3 { margin: 22px 16px 7px; font-size: 13px; font-weight: 400; color: var(--muted); text-transform: uppercase; letter-spacing: .02em; }
 .lista { list-style: none; margin: 0; padding: 0; background: var(--panel); border-radius: var(--r); overflow: hidden; }
-.lista a, .lista .fila-lista { display: flex; align-items: center; gap: 14px; min-height: 60px; padding: 8px 16px; color: var(--fg); position: relative; }
-.lista li + li a::before, .lista li + li .fila-lista::before { content: ""; position: absolute; top: 0; right: 0; left: 62px; border-top: .5px solid var(--line); }
+.lista a, .lista .fila-lista { display: flex; align-items: center; gap: 14px; min-height: 64px; padding: 10px 16px; color: var(--fg); position: relative; }
+.lista li + li a::before, .lista li + li .fila-lista::before { content: ""; position: absolute; top: 0; right: 0; left: 70px; border-top: .5px solid var(--line); }
 .lista a:active { background: var(--relleno); }
-.lista .icono { flex: none; width: 32px; height: 32px; border-radius: 8px; display: grid; place-items: center; color: #fff; }
-.lista .icono svg { width: 20px; height: 20px; }
+.lista .icono { flex: none; width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; color: #fff; }
+.lista .icono svg { width: 24px; height: 24px; }
 .lista .txt { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-.lista .txt b { font-weight: 400; font-size: 17px; }
-.lista .txt small { color: var(--muted); font-size: 13px; line-height: 1.3; }
+.lista .txt b { font-weight: 500; font-size: 16px; }
+.lista .txt small { color: var(--muted); font-size: 12.5px; line-height: 1.3; }
 .lista .chevron { flex: none; width: 8px; height: 13px; color: var(--muted); opacity: .6; }
 .lista .pronto { flex: none; font-size: 15px; color: var(--muted); }
 .lista .apagado { opacity: .55; }
