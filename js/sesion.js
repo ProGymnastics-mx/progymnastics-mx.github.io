@@ -1,12 +1,15 @@
 /* Sesión, roles y utilidades comunes de la interfaz.
-   Perfiles, de mayor a menor: OWNER, ADMIN, COACH, TUTOR / ATLETA (como aguilaskc.net).
+   Perfiles, de mayor a menor: SUPER, OWNER, ADMIN, COACH, TUTOR / ATLETA (como aguilaskc.net).
+   - SUPER (Desarrollador, Manu): todo, incluido lo del OWNER. Solo se da desde la consola de Firebase:
+     nadie lo puede dar, cambiar ni quitar desde la app, ni el dueño del club.
    - OWNER y ADMIN: todo (equipo, pagos de todos, asistencia, avisos, calendario).
    - COACH: toma asistencia, publica avisos y calendario; no ve pagos.
    - TUTOR: ve asistencia y pagos solo de sus atletas (campo atletas).
    - ATLETA: ve su propia asistencia y pagos. */
 (function () {
-  const ROLES = { OWNER: "Owner", ADMIN: "Administración", COACH: "Coach", TUTOR: "Tutor", ATLETA: "Atleta" };
-  const esAdmin = (u) => u && (u.rol === "OWNER" || u.rol === "ADMIN");
+  const ROLES = { SUPER: "Desarrollador", OWNER: "Owner", ADMIN: "Administración", COACH: "Coach", TUTOR: "Tutor", ATLETA: "Atleta" };
+  const esAdmin = (u) => u && ["SUPER", "OWNER", "ADMIN"].includes(u.rol);
+  const esOwner = (u) => u && ["SUPER", "OWNER"].includes(u.rol);
   const esStaff = (u) => u && (esAdmin(u) || u.rol === "COACH");
   const puede = {
     equipo: esAdmin,
@@ -102,6 +105,6 @@
     return lista.sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
   }
 
-  window.Sesion = { ROLES, puede, esAdmin, esStaff, actual, requerir, salir, atletasVisibles };
+  window.Sesion = { ROLES, puede, esAdmin, esOwner, esStaff, actual, requerir, salir, atletasVisibles };
   window.UI = UI;
 })();

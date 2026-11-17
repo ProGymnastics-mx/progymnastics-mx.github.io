@@ -25,9 +25,12 @@ y los datos (inventados) se guardan solo en ese navegador.
 4. Firestore → Reglas → pegar `firestore.rules` y publicar.
 5. Configuración del proyecto → Tus apps → Web → copiar la configuración en `FIREBASE_CONFIG` (`js/config.js`).
 6. Authentication → Configuración → Dominios autorizados → agregar `<usuario>.github.io`.
-7. Primer OWNER: en Firestore crear a mano el documento `invitaciones/<correo en minúsculas>` con
-   `nombre` (texto), `rol` = `OWNER`, `atletas` = arreglo vacío. Luego esa persona abre la app, escribe su correo y
-   una contraseña y toca «Crear mi cuenta». Desde ahí todo lo demás se invita en **Equipo → Accesos**.
+7. Primeras cuentas: en Firestore crear a mano dos documentos en la colección `invitaciones`, cada uno con id = el
+   correo en minúsculas y los campos `nombre` (texto), `rol` (texto) y `atletas` (arreglo vacío):
+   - el del desarrollador con `rol` = `SUPER` (control total; nadie lo puede quitar ni cambiar desde la app);
+   - el del dueño del club con `rol` = `OWNER`.
+   Cada persona abre la app, escribe su correo y una contraseña y toca «Crear mi cuenta».
+   Desde ahí todo lo demás se invita en **Equipo → Accesos**. (Los correos no se escriben en este repo: es público.)
 
 ## Datos (Firestore)
 `usuarios/<uid>`, `invitaciones/<correo>`, `atletas/<id>`, `asistencia/<fecha>_<grupo>_<atletaId>`,

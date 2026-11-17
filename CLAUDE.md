@@ -15,7 +15,10 @@ con módulos de **pagos** y **asistencia**. Responder en español, claro y sin r
 - Colores del logo: amarillo `#ffcb0b` y negro.
 
 ## Reglas
-- Perfiles como aguilaskc.net: OWNER > ADMIN > COACH > TUTOR/ATLETA. Tutor y atleta solo ven a sus atletas (`usuarios.atletas`).
+- **SUPER = Desarrollador (Manu, 17-nov-2026):** el club se vende; el dueño es OWNER, pero Manu debe poder manejar todo.
+  SUPER tiene todo lo del OWNER y desde la app nadie lo da, cambia ni quita (reglas en `firestore.rules` y `equipo/app.js`);
+  solo se crea a mano en la consola de Firebase. Los correos de Manu y del dueño no van en el repo (es público).
+- Perfiles como aguilaskc.net: SUPER > OWNER > ADMIN > COACH > TUTOR/ATLETA. Tutor y atleta solo ven a sus atletas (`usuarios.atletas`).
   Coaches no ven pagos.
 - Asistencia: P/R/S cuentan como asistencia, F y J como falta, clase cancelada = sin registros. Semáforo 85% / 70%.
 - Pagos: estado del mes solo con concepto Mensualidad; antes del mes `desde` del atleta no hay adeudo.

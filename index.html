@@ -108,7 +108,7 @@
       if (u) return mostrarMenu(u);
       $("sec-demo").classList.remove("oculto");
       const us = await DB.listar("usuarios");
-      const orden = ["OWNER", "ADMIN", "COACH", "TUTOR", "ATLETA"];
+      const orden = ["SUPER", "OWNER", "ADMIN", "COACH", "TUTOR", "ATLETA"];
       us.sort((a, b) => orden.indexOf(a.rol) - orden.indexOf(b.rol));
       $("demo-perfiles").innerHTML = us.map((x) => `<button class="btn" data-uid="${UI.esc(x.id)}">${UI.esc(Sesion.ROLES[x.rol])} · ${UI.esc(x.nombre)}</button>`).join("");
       $("demo-perfiles").onclick = async (e) => {
