@@ -17,7 +17,8 @@ con módulos de **pagos** y **asistencia**. Responder en español, claro y sin r
   (`equipo?vista=bajas`, `atletas.baja = {fecha, motivo}`). Los módulos reciben `?v=admin`.
 - **Ficha del atleta** (Manu, 18-nov-2026: «todos los datos fundamentales»): el alta guarda además `atletas.ficha` = CURP (**obligatoria**, Manu 18-nov-2026: 18 caracteres con su formato) e ID FMG
   (opcional), salud (tipo de sangre, servicio médico IMSS/ISSSTE/seguro… y su número de afiliación, alergias, padecimientos),
-  domicilio, hasta 2 tutores (nombre, parentesco, teléfono, correo) y contacto de emergencia. **Nivel:** `nivel`, `nivelDesde`, `repite` y
+  domicilio, hasta 2 tutores (nombre, parentesco, teléfono, correo) y contacto de emergencia. **Programa** (`programa`: Equipo, Desarrollo, Adultos, Bebés, Preescolar; sin dato, Equipo si el grupo es de equipo). **Nivel** (solo
+  Equipo: el último en que compitió o se sabe que está): `nivel`, `nivelDesde`, `repite` y
   `historialNivel` ([{nivel, desde, hasta, repitio}]; al cambiar el nivel, el anterior pasa ahí solo). Adulto = 18 años o más (etiqueta en
   la lista). «Descargar lista completa (Excel)» baja un CSV con todos los datos (respeta el filtro); solo lo usa administración. La edad se calcula sola con la fecha de
   nacimiento (columna Edad en la lista). Con el atleta guardado, «Dar acceso a la app con este correo» abre la invitación de TUTOR ya
