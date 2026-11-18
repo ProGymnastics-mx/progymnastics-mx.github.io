@@ -114,7 +114,11 @@ otra vez en la consola; sin eso Firestore la rechaza.
 - Perfiles como aguilaskc.net: SUPER > OWNER > ADMIN > COACH > TUTOR/ATLETA. Tutor y atleta solo ven a sus atletas (`usuarios.atletas`).
   Coaches no ven pagos.
 - Asistencia: P/R/S cuentan como asistencia, F y J como falta, clase cancelada = sin registros. Semáforo 85% / 70%.
-- Pagos: estado del mes solo con concepto Mensualidad; antes del mes `desde` del atleta no hay adeudo.
+- Pagos: estado del mes solo con concepto Mensualidad; antes del mes `desde` del atleta no hay adeudo. **Registrar pago** (Manu, 18-nov-2026): se busca al atleta o
+  gimnasta escribiendo su nombre; concepto, mes, monto, forma de pago, referencia, **fecha y hora** (`hora`) y quién lo registró
+  (`registradoPorNombre`); todo queda en «Pagos registrados» y en el recibo. **Recordatorio** (por atleta) y «Recordar a todos los que
+  deben»: `pg_notificaciones` tipo recordatorio/vencido con `periodo`, que la tarea manda por app, correo y WhatsApp; la lista muestra
+  «Recordado <fecha y hora>». En celular, Cobrar y Recordatorio van debajo del nombre (Cuota y Pagado se ocultan).
 - Textos de usuarios siempre escapados (`UI.esc`) o con `textContent`.
 - Probar en ancho de celular (~390 px) y en impresión. Distinguir lo hecho, lo probado y lo verificado.
 - No exponer contraseñas ni tokens.

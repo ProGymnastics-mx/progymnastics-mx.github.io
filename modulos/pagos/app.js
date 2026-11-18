@@ -1,5 +1,8 @@
 /* Pagos.
-   pagos/<id> = {atletaId, concepto, periodo "AAAA-MM", monto, fecha, metodo, referencia, nota, registradoPor, creado}
+   pagos/<id> = {atletaId, concepto, periodo "AAAA-MM", monto, fecha, hora "HH:MM", metodo, referencia, nota, registradoPor,
+     registradoPorNombre, creado}
+   «Enviar recordatorio» (Manu, 18-nov-2026: «si no ha pagado, que se le envíe»): notificaciones/<id> tipo "recordatorio" con
+   periodo; la tarea automática lo manda por app, correo y WhatsApp a la familia de ese atleta.
    La mensualidad de cada atleta es atletas/<id>.cuota (0 = beca o sin cuota).
    Estado del mes (solo concepto Mensualidad): Pagado, Parcial, Pendiente (aún no vence), Vencido (pasó el día límite).
    Administración (OWNER/ADMIN) ve y registra todo; tutor y atleta ven solo lo suyo. Los coaches no entran. */
@@ -15,6 +18,10 @@
   const atletas = await Sesion.atletasVisibles(u);
   const porId = Object.fromEntries(atletas.map((a) => [a.id, a]));
 
+  // "18:05" → "6:05 p. m."
+  const horaTxt = (h) => { if (!h) return ""; const [H, M] = h.split(":").map(Number); return `${H % 12 || 12}:${String(M).padStart(2, "0")} ${H < 12 ? "a. m." : "p. m."}`; };
+  const cuandoTxt = (p) => UI.fecha(p.fecha) + (p.hora ? " · " + horaTxt(p.hora) : "");
+  const ahoraHHMM = () => { const d = new Date(); return String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0"); };
   const cuotaDe = (a) => (a.cuota != null && a.cuota !== "" ? Number(a.cuota) : Number(P.mensualidadBase) || 0);
   function vencio(periodo) {
     const mes = UI.mesActual();
@@ -50,9 +57,9 @@
       <h1>Recibo de pago</h1><table>
       <tr><td>Atleta</td><td>${esc(a.nombre)}</td></tr>
       <tr><td>Concepto</td><td>${esc(p.concepto)} · ${esc(UI.nombreMes(p.periodo))}</td></tr>
-      <tr><td>Fecha de pago</td><td>${esc(UI.fecha(p.fecha))}</td></tr>
+      <tr><td>Fecha de pago</td><td>${esc(cuandoTxt(p))}</td></tr>
       <tr><td>Método</td><td>${esc(p.metodo)}${p.referencia ? " · " + esc(p.referencia) : ""}</td></tr>
-      <tr><td>Folio</td><td>${esc(p.id)}</td></tr>
+      <tr><td>Folio</td><td>${esc(p.id)}</td></tr>${p.registradoPorNombre ? `<tr><td>Registró</td><td>${esc(p.registradoPorNombre)}</td></tr>` : ""}
       <tr><td>Monto</td><td class="total">${UI.dinero(p.monto)}</td></tr></table>
       ${p.nota ? `<p>${esc(p.nota)}</p>` : ""}<p style="color:#555;font-size:.85rem">${esc(CLUB.nombre)}</p>
       <script>onload=()=>print()<\/script></body></html>`);
@@ -76,7 +83,7 @@
             return `<tr><td>${esc(UI.nombreMes(m))}</td><td class="num">${UI.dinero(x.pagado)}</td><td class="num"><span class="etiqueta ${x.c}">${x.t}</span></td></tr>`; }).join("")}</tbody></table></div>
           <h2 style="font-size:.85rem;margin-top:14px">Pagos registrados</h2>
           ${mios.length ? `<div class="tabla-wrap"><table><thead><tr><th>Fecha</th><th>Concepto</th><th class="num">Monto</th><th></th></tr></thead><tbody>
-            ${mios.map((p) => `<tr><td>${esc(UI.fecha(p.fecha))}</td><td>${esc(p.concepto)} · ${esc(UI.nombreMes(p.periodo))}</td><td class="num">${UI.dinero(p.monto)}</td>
+            ${mios.map((p) => `<tr><td>${esc(cuandoTxt(p))}</td><td>${esc(p.concepto)} · ${esc(UI.nombreMes(p.periodo))}<br><small class="nota">${esc(p.metodo || "")}</small></td><td class="num">${UI.dinero(p.monto)}</td>
             <td class="num"><button class="btn chico" data-recibo="${esc(p.id)}">Recibo</button></td></tr>`).join("")}</tbody></table></div>` : `<p class="vacio">Aún no hay pagos registrados.</p>`}
         </div>`; }).join("") : `<p class="vacio">Tu cuenta no tiene atletas ligados. Pídelo a Administración.</p>`);
     app.onclick = (ev) => { const b = ev.target.closest("[data-recibo]"); if (b) recibo(pagos.find((p) => p.id === b.dataset.recibo)); };
@@ -87,7 +94,7 @@
   app.innerHTML = `
     <div class="pestanas" role="tablist">
       <button role="tab" data-p="mes" aria-selected="true">Mensualidades</button>
-      <button role="tab" data-p="hist" aria-selected="false">Pagos del mes</button>
+      <button role="tab" data-p="hist" aria-selected="false">Pagos registrados</button>
     </div>
     <div class="panel no-imprimir"><div class="fila">
       <label>Mes <input type="month" id="f-mes" value="${UI.mesActual()}"></label>
@@ -101,18 +108,19 @@
 
     <dialog id="dlg"><form method="dialog" id="fp">
       <h2>Registrar pago</h2>
-      <label>Atleta <select id="p-atleta" required>${atletas.map((a) => `<option value="${esc(a.id)}">${esc(a.nombre)}${a.activo === false ? " (baja)" : ""}</option>`).join("")}</select></label>
+      <label>Atleta o gimnasta <input type="search" id="p-buscar" placeholder="Escribe su nombre para buscar" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-1p-ignore="true" data-lpignore="true"></label>
+      <label><span class="nota">Elige</span> <select id="p-atleta" required size="1">${atletas.map((a) => `<option value="${esc(a.id)}">${esc(a.nombre)}${a.activo === false ? " (baja)" : ""}</option>`).join("")}</select></label>
       <div class="fila"><label>Concepto <select id="p-concepto">${P.conceptos.map((c) => `<option>${esc(c)}</option>`).join("")}</select></label>
         <label>Mes que cubre <input type="month" id="p-periodo" required></label></div>
       <div class="fila"><label>Monto <input type="number" id="p-monto" min="0" step="0.01" inputmode="decimal" required></label>
-        <label>Fecha de pago <input type="date" id="p-fecha" required></label></div>
-      <div class="fila"><label>Método <select id="p-metodo">${P.metodos.map((c) => `<option>${esc(c)}</option>`).join("")}</select></label>
+        <label>Forma de pago <select id="p-metodo">${P.metodos.map((c) => `<option>${esc(c)}</option>`).join("")}</select></label>
         <label>Referencia / folio <input id="p-ref" maxlength="80"></label></div>
+      <div class="fila"><label>Fecha de pago <input type="date" id="p-fecha" required></label><label>Hora <input type="time" id="p-hora" required></label></div>
       <label>Nota <input id="p-nota" maxlength="200"></label>
       <div class="acciones"><button class="btn" value="cancelar" formnovalidate>Cancelar</button><button class="btn principal" value="ok" id="p-ok">Guardar</button></div>
     </form></dialog>`;
 
-  let pagosMes = [], vista = "mes";
+  let pagosMes = [], vista = "mes", ultimo = {};
   app.querySelector(".pestanas").onclick = (e) => {
     const b = e.target.closest("button[data-p]"); if (!b) return;
     vista = b.dataset.p;
@@ -122,7 +130,10 @@
   ["f-mes", "f-grupo", "f-estado"].forEach((id) => ($(id).onchange = id === "f-mes" ? cargar : pintar));
 
   async function cargar() {
-    pagosMes = await DB.listar("pagos", [["periodo", "==", $("f-mes").value]]);
+    const mes = $("f-mes").value;
+    const [pg, recs] = await Promise.all([DB.listar("pagos", [["periodo", "==", mes]]), DB.listar("notificaciones", [["periodo", "==", mes]]).catch(() => [])]);
+    pagosMes = pg; ultimo = {};
+    recs.filter((n) => n.atletaId && ["recordatorio", "vencido"].includes(n.tipo)).forEach((n) => { if ((n.creado || "") > (ultimo[n.atletaId] || "")) ultimo[n.atletaId] = n.creado; });
     pintar();
   }
   function pintar() {
@@ -143,17 +154,16 @@
 
     const vis = filas.filter((f) => !fe || f.e.k === fe);
     $("v-mes").innerHTML = `<div class="fila" style="justify-content:space-between;align-items:center;margin-bottom:8px"><h2 style="margin:0">Mensualidades · ${esc(UI.nombreMes(mes))}</h2>
-      <span class="no-imprimir" style="display:flex;gap:6px"><button class="btn chico" id="b-csv">Descargar CSV</button><button class="btn chico" onclick="print()">Imprimir</button></span></div>
-      ${vis.length ? `<div class="tabla-wrap"><table><thead><tr><th>Atleta</th><th class="col-grupo">Grupo</th><th class="num">Cuota</th><th class="num">Pagado</th><th class="num">Saldo</th><th>Estado</th><th class="no-imprimir"></th></tr></thead><tbody>
-      ${vis.map(({ a, e }) => `<tr><td>${esc(a.nombre)}</td><td class="col-grupo">${esc(UI.grupo(a.grupo))}</td><td class="num">${UI.dinero(e.cuota)}</td><td class="num">${UI.dinero(e.pagado)}</td>
-        <td class="num">${UI.dinero(e.saldo)}${e.recargo ? `<br><small class="nota">+ ${UI.dinero(e.recargo)} recargo</small>` : ""}</td><td><span class="etiqueta ${e.c}">${e.t}</span></td>
-        <td class="num no-imprimir">${e.saldo > 0 ? `<button class="btn chico" data-cobrar="${esc(a.id)}">Cobrar</button>` : ""}</td></tr>`).join("")}</tbody></table></div>`
+      <span class="no-imprimir" style="display:flex;gap:6px;flex-wrap:wrap">${vis.some((f) => f.e.saldo > 0) ? `<button class="btn chico" id="b-recordar-todos">Recordar a todos los que deben</button>` : ""}<button class="btn chico" id="b-csv">Descargar CSV</button><button class="btn chico" onclick="print()">Imprimir</button></span></div>
+      ${vis.length ? `<div class="tabla-wrap"><table><thead><tr><th>Atleta</th><th class="col-grupo">Grupo</th><th class="num col-grupo">Cuota</th><th class="num col-grupo">Pagado</th><th class="num">Saldo</th><th>Estado</th></tr></thead><tbody>
+      ${vis.map(({ a, e }) => `<tr><td>${esc(a.nombre)}${e.saldo > 0 ? `<div class="no-imprimir" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px"><button class="btn chico" data-cobrar="${esc(a.id)}">Cobrar</button><button class="btn chico" data-recordar="${esc(a.id)}">Recordatorio</button></div>${ultimo[a.id] ? `<small class="nota no-imprimir">Recordado ${esc(UI.fecha(ultimo[a.id]))} ${esc(horaTxt(ultimo[a.id].slice(11, 16)))}</small>` : ""}` : ""}</td><td class="col-grupo">${esc(UI.grupo(a.grupo))}</td><td class="num col-grupo">${UI.dinero(e.cuota)}</td><td class="num col-grupo">${UI.dinero(e.pagado)}</td>
+        <td class="num">${UI.dinero(e.saldo)}${e.recargo ? `<br><small class="nota">+ ${UI.dinero(e.recargo)} recargo</small>` : ""}</td><td><span class="etiqueta ${e.c}">${e.t}</span></td></tr>`).join("")}</tbody></table></div>`
       : `<p class="vacio">${atletas.length ? "Nadie con ese filtro." : "Aún no hay atletas. Agrégalos en Equipo."}</p>`}`;
 
-    const hist = pagosMes.filter((p) => !grupo || (porId[p.atletaId] || {}).grupo === grupo).sort((x, y) => (y.fecha || "").localeCompare(x.fecha || ""));
+    const hist = pagosMes.filter((p) => !grupo || (porId[p.atletaId] || {}).grupo === grupo).sort((x, y) => ((y.fecha || "") + (y.hora || "")).localeCompare((x.fecha || "") + (x.hora || "")));
     $("v-hist").innerHTML = `<h2>Pagos que corresponden a ${esc(UI.nombreMes(mes))}</h2>
-      ${hist.length ? `<div class="tabla-wrap"><table><thead><tr><th>Fecha</th><th>Atleta</th><th>Concepto</th><th>Método</th><th class="num">Monto</th><th class="no-imprimir"></th></tr></thead><tbody>
-      ${hist.map((p) => `<tr><td>${esc(UI.fecha(p.fecha))}</td><td>${esc((porId[p.atletaId] || {}).nombre || "(borrado)")}</td><td>${esc(p.concepto)}</td>
+      ${hist.length ? `<div class="tabla-wrap"><table><thead><tr><th>Fecha y hora</th><th>Atleta</th><th>Concepto</th><th>Forma de pago</th><th class="num">Monto</th><th class="no-imprimir"></th></tr></thead><tbody>
+      ${hist.map((p) => `<tr><td>${esc(cuandoTxt(p))}${p.registradoPorNombre ? `<br><small class="nota">Registró: ${esc(p.registradoPorNombre)}</small>` : ""}</td><td>${esc((porId[p.atletaId] || {}).nombre || "(borrado)")}</td><td>${esc(p.concepto)}</td>
         <td>${esc(p.metodo)}${p.referencia ? `<br><small class="nota">${esc(p.referencia)}</small>` : ""}</td><td class="num">${UI.dinero(p.monto)}</td>
         <td class="num no-imprimir" style="white-space:nowrap"><button class="btn chico" data-recibo="${esc(p.id)}">Recibo</button> <button class="btn chico peligro" data-borrar="${esc(p.id)}" aria-label="Borrar pago">✕</button></td></tr>`).join("")}</tbody></table></div>`
       : `<p class="vacio">No hay pagos registrados para este mes.</p>`}`;
@@ -166,11 +176,21 @@
     };
   }
 
+  // La lista del registro: solo los que coinciden con lo escrito (en iPhone no se pueden ocultar opciones, por eso se rearma).
+  const sinAc = (t) => String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  function opcionesAtleta(q, elegido) {
+    q = sinAc(q.trim());
+    const lista = atletas.filter((a) => !q || sinAc(a.nombre).includes(q));
+    $("p-atleta").innerHTML = lista.length ? lista.map((a) => `<option value="${esc(a.id)}">${esc(a.nombre)} · ${esc(UI.grupo(a.grupo))}${a.activo === false ? " (baja)" : ""}</option>`).join("")
+      : `<option value="">Nadie con ese nombre</option>`;
+    if (elegido && lista.some((a) => a.id === elegido)) $("p-atleta").value = elegido;
+  }
   function abrir(atletaId) {
     const mes = $("f-mes").value;
     $("fp").reset();
     if (atletaId) $("p-atleta").value = atletaId;
-    $("p-periodo").value = mes; $("p-fecha").value = UI.hoy();
+    $("p-periodo").value = mes; $("p-fecha").value = UI.hoy(); $("p-hora").value = ahoraHHMM();
+    $("p-buscar").value = ""; opcionesAtleta("", atletaId);
     const ponerMonto = () => {
       const a = porId[$("p-atleta").value];
       if (a && $("p-concepto").value === "Mensualidad") { const e = estadoMes(a, $("p-periodo").value, pagosMes); $("p-monto").value = e.saldo + e.recargo || ""; }
@@ -179,9 +199,36 @@
     ponerMonto();
     $("dlg").showModal();
   }
-  $("b-nuevo").onclick = () => abrir();
+  $("b-nuevo").onclick = () => { abrir(); $("p-buscar").focus(); };
+  $("p-buscar").oninput = () => { opcionesAtleta($("p-buscar").value, $("p-atleta").value); $("p-atleta").onchange(); };
+
+  // Recordatorio de pago a la familia (app, correo y WhatsApp; lo manda la tarea automática en unos minutos).
+  async function recordar(ids) {
+    const mes = $("f-mes").value;
+    for (const id of ids) {
+      const a = porId[id], e = estadoMes(a, mes, pagosMes);
+      if (!(e.saldo > 0)) continue;
+      await DB.guardar("notificaciones", null, { atletaId: id, tipo: e.k === "vencido" ? "vencido" : "recordatorio", periodo: mes,
+        titulo: e.k === "vencido" ? "Tu mensualidad está vencida" : "Recordatorio de pago",
+        texto: `La mensualidad de ${UI.nombreMes(mes)} de ${a.nombre} tiene un saldo de ${UI.dinero(e.saldo)}${e.recargo ? ` más ${UI.dinero(e.recargo)} de recargo` : ""}${e.k === "vencido" ? "" : `; vence el día ${P.diaLimite}`}.` +
+          (P.datosParaPagar ? `\n\nCómo pagar:\n${P.datosParaPagar}` : ""),
+        push: e.k === "vencido" ? "Tu mensualidad está vencida. Toca para ver tu saldo." : "Recordatorio de pago. Toca para ver tu saldo.",
+        url: "modulos/pagos/" + (Sesion.seccionDeGrupo(a.grupo) ? "?s=" + Sesion.seccionDeGrupo(a.grupo) : ""),
+        manual: true, por: u.uid, creado: new Date().toISOString(), estado: "pendiente" });
+    }
+  }
   app.addEventListener("click", async (ev) => {
     const c = ev.target.closest("[data-cobrar]"), r = ev.target.closest("[data-recibo]"), b = ev.target.closest("[data-borrar]");
+    const rc = ev.target.closest("[data-recordar]"), rt = ev.target.closest("#b-recordar-todos");
+    if (rc || rt) {
+      const mes = $("f-mes").value, grupo = $("f-grupo").value;
+      const ids = rc ? [rc.dataset.recordar] : atletas.filter((a) => a.activo !== false && (!grupo || a.grupo === grupo) && estadoMes(a, mes, pagosMes).saldo > 0).map((a) => a.id);
+      const msg = rc ? `¿Enviar recordatorio de pago a la familia de ${porId[ids[0]].nombre}?` : `¿Enviar recordatorio de pago a ${ids.length} familia(s) con saldo en ${UI.nombreMes(mes)}?`;
+      if (!ids.length || !confirm(msg + " Les llega a la app, al correo y al WhatsApp.")) return;
+      try { await recordar(ids); UI.aviso(`Recordatorio enviado (${ids.length}). Sale en unos minutos.`); cargar(); }
+      catch (x) { UI.aviso("No se pudo enviar: " + x.message, true); }
+      return;
+    }
     if (c) abrir(c.dataset.cobrar);
     if (r) recibo(pagosMes.find((p) => p.id === r.dataset.recibo));
     if (b) {
@@ -196,7 +243,7 @@
     const monto = Number($("p-monto").value);
     if (!(monto > 0)) return UI.aviso("Escribe un monto mayor a cero.", true);
     const datos = { atletaId: $("p-atleta").value, concepto: $("p-concepto").value, periodo: $("p-periodo").value, monto,
-      fecha: $("p-fecha").value, metodo: $("p-metodo").value, referencia: $("p-ref").value.trim(), nota: $("p-nota").value.trim(),
+      fecha: $("p-fecha").value, hora: $("p-hora").value, registradoPorNombre: u.nombre, metodo: $("p-metodo").value, referencia: $("p-ref").value.trim(), nota: $("p-nota").value.trim(),
       registradoPor: u.uid, creado: new Date().toISOString() };
     $("p-ok").disabled = true;
     try {

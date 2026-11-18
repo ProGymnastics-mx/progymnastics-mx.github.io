@@ -57,10 +57,10 @@
     return DB.guardar("notificaciones", null, {
       atletaId: p.atletaId, tipo: tarjeta ? "cargo" : "pago",
       titulo: tarjeta ? "Cargo a tu tarjeta" : "Pago registrado",
-      texto: `${tarjeta ? "Se registró el cargo a tu tarjeta" : "Registramos tu pago"} de ${UI.dinero(p.monto)} por ${p.concepto}${mes ? " de " + mes : ""} de ${atleta ? atleta.nombre : "tu atleta"}. Fecha: ${UI.fecha(p.fecha)}${p.referencia ? " · Referencia: " + p.referencia : ""}. ¡Gracias!`,
+      texto: `${tarjeta ? "Se registró el cargo a tu tarjeta" : "Registramos tu pago"} de ${UI.dinero(p.monto)} por ${p.concepto}${mes ? " de " + mes : ""} de ${atleta ? atleta.nombre : "tu atleta"}. Fecha: ${UI.fecha(p.fecha)}${p.hora ? " a las " + p.hora : ""}${p.referencia ? " · Referencia: " + p.referencia : ""}. ¡Gracias!`,
       push: tarjeta ? "Se registró el cargo a tu tarjeta. Toca para ver tu recibo." : "Registramos tu pago. Toca para ver tu recibo.",
       url: "modulos/pagos/" + (atleta && Sesion.seccionDeGrupo(atleta.grupo) ? "?s=" + Sesion.seccionDeGrupo(atleta.grupo) : ""),
-      pagoId: p.id || "", creado: new Date().toISOString(), estado: "pendiente"
+      pagoId: p.id || "", periodo: p.periodo || "", creado: new Date().toISOString(), estado: "pendiente"
     });
   }
 

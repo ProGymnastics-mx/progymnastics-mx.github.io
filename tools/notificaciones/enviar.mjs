@@ -112,7 +112,7 @@ async function recordatorios(hoy) {
     }[tipo];
     try {
       await col("notificaciones").doc(`rec_${doc.id}_${hoy.mes}_${tipo}`).create({
-        atletaId: doc.id, tipo: tipo === "vencido" ? "vencido" : "recordatorio", titulo: t[0],
+        atletaId: doc.id, tipo: tipo === "vencido" ? "vencido" : "recordatorio", periodo: hoy.mes, titulo: t[0],
         texto: t[1] + (CLUB.pagos.datosParaPagar ? `\n\nCómo pagar:\n${CLUB.pagos.datosParaPagar}` : ""), push: t[2],
         url: "modulos/pagos/", creado: new Date().toISOString(), estado: "pendiente", automatico: true
       });
