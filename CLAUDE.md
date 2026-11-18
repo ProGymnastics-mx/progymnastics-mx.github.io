@@ -15,8 +15,8 @@ con módulos de **pagos** y **asistencia**. Responder en español, claro y sin r
   «Volver» regresa a la sección.
 - `admin/`: Herramientas administrativas (solo administración) = Pagos, Registro de atletas (`equipo?vista=atletas`) y Bajas
   (`equipo?vista=bajas`, `atletas.baja = {fecha, motivo}`). Los módulos reciben `?v=admin`.
-- **Ficha del atleta** (Manu, 18-nov-2026: «todos los datos fundamentales»): el alta guarda además `atletas.ficha` = CURP e ID FMG
-  (opcionales), salud (tipo de sangre, servicio médico IMSS/ISSSTE/seguro… y su número de afiliación, alergias, padecimientos),
+- **Ficha del atleta** (Manu, 18-nov-2026: «todos los datos fundamentales»): el alta guarda además `atletas.ficha` = CURP (**obligatoria**, Manu 18-nov-2026: 18 caracteres con su formato) e ID FMG
+  (opcional), salud (tipo de sangre, servicio médico IMSS/ISSSTE/seguro… y su número de afiliación, alergias, padecimientos),
   domicilio, hasta 2 tutores (nombre, parentesco, teléfono, correo) y contacto de emergencia. **Nivel:** `nivel`, `nivelDesde`, `repite` y
   `historialNivel` ([{nivel, desde, hasta, repitio}]; al cambiar el nivel, el anterior pasa ahí solo). Adulto = 18 años o más (etiqueta en
   la lista). «Descargar lista completa (Excel)» baja un CSV con todos los datos (respeta el filtro); solo lo usa administración. La edad se calcula sola con la fecha de

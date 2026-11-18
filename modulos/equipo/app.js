@@ -50,7 +50,7 @@
       <h3 class="sub">Datos del atleta</h3>
       <label>Nombre completo <input id="a-nombre" required maxlength="80" data-1p-ignore="true" data-lpignore="true"></label>
       <div class="fila"><label>Fecha de nacimiento <input type="date" id="a-nac"></label><label>Edad <input id="a-edad" readonly tabindex="-1" placeholder="—"></label></div>
-      <div class="fila"><label>CURP <input id="f-curp" maxlength="18" style="text-transform:uppercase" placeholder="Opcional"></label><label>ID FMG <input id="f-idFmg" maxlength="20" inputmode="numeric" placeholder="Opcional"></label></div>
+      <div class="fila"><label>CURP <input id="f-curp" required minlength="18" maxlength="18" pattern="[A-Za-z]{4}[0-9]{6}[HMXhmx][A-Za-z]{5}[A-Za-z0-9][0-9]" title="La CURP tiene 18 caracteres, p. ej. GOMA150320HDFRRN09" style="text-transform:uppercase" autocapitalize="characters" spellcheck="false"></label><label>ID FMG <input id="f-idFmg" maxlength="20" inputmode="numeric" placeholder="Opcional"></label></div>
       <div class="fila"><label>Grupo <select id="a-g">${UI.opcionesGrupos()}</select></label><label>Nivel <input id="a-nivel" maxlength="30"></label></div>
       <div class="fila"><label>En este nivel desde <input type="date" id="a-nivel-desde"></label>
         <label style="flex-direction:row;align-items:center;gap:8px;align-self:flex-end;padding-bottom:10px"><input type="checkbox" id="a-repite" style="width:auto"> Repite nivel</label></div>
