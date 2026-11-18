@@ -33,7 +33,7 @@
         <label>Grupo <select id="a-grupo"><option value="">Todos</option>${UI.opcionesGrupos()}</select></label>
         <label ${VISTA ? "hidden" : ""}>Estado <select id="a-activo"><option value="1">Activos</option><option value="0">Bajas</option><option value="">Todos</option></select></label>
         <button class="btn principal" type="button" id="a-nuevo" ${VISTA === "bajas" ? "hidden" : ""}>+ Atleta</button>
-      </div></div>
+      </div><div class="fila" style="margin-top:8px"><button class="btn chico" type="button" id="a-excel">Descargar lista completa (Excel)</button></div></div>
       <div class="panel"><div class="tabla-wrap" id="a-lista"></div></div>
     </section>
     <section id="p-accesos" ${VISTA === "accesos" ? "" : "hidden"}>
@@ -52,6 +52,9 @@
       <div class="fila"><label>Fecha de nacimiento <input type="date" id="a-nac"></label><label>Edad <input id="a-edad" readonly tabindex="-1" placeholder="—"></label></div>
       <div class="fila"><label>CURP <input id="f-curp" maxlength="18" style="text-transform:uppercase" placeholder="Opcional"></label><label>ID FMG <input id="f-idFmg" maxlength="20" inputmode="numeric" placeholder="Opcional"></label></div>
       <div class="fila"><label>Grupo <select id="a-g">${UI.opcionesGrupos()}</select></label><label>Nivel <input id="a-nivel" maxlength="30"></label></div>
+      <div class="fila"><label>En este nivel desde <input type="date" id="a-nivel-desde"></label>
+        <label style="flex-direction:row;align-items:center;gap:8px;align-self:flex-end;padding-bottom:10px"><input type="checkbox" id="a-repite" style="width:auto"> Repite nivel</label></div>
+      <p class="nota" id="a-nivel-hist" hidden></p>
       <div class="fila"><label>Inscrito desde (mes) <input type="month" id="a-desde" required></label>
         <label>Mensualidad <input type="number" id="a-cuota" min="0" step="0.01" inputmode="decimal" placeholder="${CLUB.pagos.mensualidadBase || ""}"></label></div>
       <label style="flex-direction:row;align-items:center;gap:8px"><input type="checkbox" id="a-act" style="width:auto"> Activo (si se quita, queda como baja y conserva su historial)</label>
@@ -69,7 +72,7 @@
       <div class="fila"><label>Municipio o alcaldía <input id="f-municipio" maxlength="80"></label><label>Estado <input id="f-estado" maxlength="40"></label></div>
 
       ${[1, 2].map((n) => `
-      <h3 class="sub">${n === 1 ? "Mamá, papá o tutor" : "Segundo tutor (opcional)"}</h3>
+      <h3 class="sub">${n === 1 ? "Mamá, papá o tutor <span class='t-adulto'>(o el propio atleta si es adulto)</span>" : "Segundo tutor (opcional)"}</h3>
       <div class="fila"><label>Nombre <input id="t${n}-nombre" maxlength="80" data-1p-ignore="true" data-lpignore="true"></label>
         <label>Parentesco <select id="t${n}-parentesco"><option value=""></option>${["Mamá", "Papá", "Abuela", "Abuelo", "Tía", "Tío", "Tutor legal", "Otro"].map((x) => `<option>${x}</option>`).join("")}</select></label></div>
       <div class="fila"><label>Teléfono <input id="t${n}-tel" type="tel" maxlength="20" inputmode="tel"></label><label>Correo <input id="t${n}-correo" type="email" maxlength="80" data-1p-ignore="true" data-lpignore="true"></label></div>
@@ -120,7 +123,7 @@
       ${vis.map((a) => { const tut = usuarios.filter((x) => (x.atletas || []).includes(a.id) && x.rol === "TUTOR").map((x) => x.nombre);
         const t1 = ((a.ficha || {}).tutores || [])[0];
         return `<tr><td>${esc(a.nombre)}${a.activo === false ? ' <span class="etiqueta gris">Baja</span>' : ""}${t1 && t1.tel ? `<br><small class="nota">${esc(t1.parentesco || "Tutor")}: <a href="tel:${esc(t1.tel)}">${esc(t1.tel)}</a></small>` : ""}</td>
-        <td class="num">${edad(a.nacimiento) === "" ? "—" : edad(a.nacimiento)}</td><td class="col-grupo">${esc(UI.grupo(a.grupo))}</td><td>${esc(a.nivel || "")}</td>
+        <td class="num">${edad(a.nacimiento) === "" ? "—" : edad(a.nacimiento)}${edad(a.nacimiento) >= 18 ? '<br><span class="etiqueta gris">Adulto</span>' : ""}</td><td class="col-grupo">${esc(UI.grupo(a.grupo))}</td><td>${esc(a.nivel || "")}${a.repite ? '<br><span class="etiqueta gris">Repite</span>' : ""}</td>
         <td class="num">${a.cuota != null && a.cuota !== "" ? UI.dinero(a.cuota) : '<span class="nota">general</span>'}</td><td>${esc(tut.join(", ")) || (t1 && t1.nombre ? `<span class="nota">${esc(t1.nombre)} (sin cuenta)</span>` : '<span class="nota">—</span>')}</td>
         <td class="num" style="white-space:nowrap">${VISTA === "bajas" && a.activo === false ? `<span class="nota">${esc(UI.fecha((a.baja || {}).fecha))}${(a.baja || {}).motivo ? " · " + esc(a.baja.motivo) : ""}</span> <button class="btn chico" data-reactivar="${esc(a.id)}">Reactivar</button> ` : ""}<button class="btn chico" data-editar="${esc(a.id)}">Editar</button></td></tr>`; }).join("")}</tbody></table>
       <p class="nota">${vis.length} atleta(s)</p>` : `<p class="vacio">${VISTA === "bajas" ? "No hay bajas." : "No hay atletas con ese filtro."}</p>`;
@@ -153,6 +156,11 @@
     const f = (a && a.ficha) || {};
     CAMPOS_FICHA.forEach((k) => ($("f-" + k).value = f[k] || ""));
     [1, 2].forEach((n) => { const t = (f.tutores || [])[n - 1] || {}; ["nombre", "parentesco", "tel", "correo"].forEach((k) => ($(`t${n}-${k}`).value = t[k] || "")); });
+    $("a-nivel-desde").value = (a && a.nivelDesde) || ""; $("a-repite").checked = !!(a && a.repite);
+    const hist = (a && a.historialNivel) || [];
+    $("a-nivel-hist").hidden = !hist.length;
+    $("a-nivel-hist").textContent = hist.length ? "Niveles anteriores: " + hist.map((h) => `${h.nivel}${h.desde ? " (desde " + UI.fecha(h.desde) + ")" : ""}${h.repitio ? " · repitió" : ""}`).join(" → ") : "";
+    $("a-nivel").oninput = () => { if (a && $("a-nivel").value.trim() !== (a.nivel || "")) { $("a-nivel-desde").value = UI.hoy(); $("a-repite").checked = false; } };
     $("e-nombre").value = (f.emergencia || {}).nombre || ""; $("e-tel").value = (f.emergencia || {}).tel || "";
     const verEdad = () => { const e = edad($("a-nac").value); $("a-edad").value = e === "" ? "" : e + " años"; };
     $("a-nac").oninput = verEdad; verEdad();
@@ -169,6 +177,25 @@
     $("dlg-a").showModal();
   }
   $("a-nuevo").onclick = () => abrirAtleta(null);
+  // Lista completa (con el filtro de arriba) para abrir en Excel. Datos de menores: solo administración la descarga.
+  $("a-excel").onclick = () => {
+    const q = $("a-buscar").value.trim().toLowerCase(), g = $("a-grupo").value, act = $("a-activo").value;
+    const vis = atletas.filter((a) => (!q || a.nombre.toLowerCase().includes(q)) && (!g || a.grupo === g) && (act === "" || (act === "1") === (a.activo !== false)));
+    const c = (s) => `"${String(s ?? "").replace(/"/g, '""')}"`;
+    const cols = ["Nombre completo", "Fecha de nacimiento", "Edad", "Menor/Adulto", "CURP", "ID FMG", "Grupo", "Nivel", "En el nivel desde", "Repite nivel", "Niveles anteriores",
+      "Inscrito desde", "Mensualidad", "Estado", "Tipo de sangre", "Servicio médico", "Afiliación", "Alergias", "Padecimientos", "Calle y número", "Colonia", "C.P.", "Municipio", "Estado (domicilio)",
+      "Tutor 1", "Parentesco 1", "Teléfono 1", "Correo 1", "Tutor 2", "Parentesco 2", "Teléfono 2", "Correo 2", "Emergencia", "Teléfono emergencia", "Cuentas en la app", "Notas"];
+    const filas = vis.map((a) => { const f = a.ficha || {}, t = f.tutores || [], e = edad(a.nacimiento);
+      const cuentas = usuarios.filter((x) => (x.atletas || []).includes(a.id)).map((x) => `${x.nombre} (${x.email || x.id})`).join("; ");
+      return [a.nombre, a.nacimiento, e, e === "" ? "" : e >= 18 ? "Adulto" : "Menor", f.curp, f.idFmg, UI.grupo(a.grupo), a.nivel, a.nivelDesde, a.repite ? "Sí" : "No",
+        (a.historialNivel || []).map((h) => h.nivel + (h.repitio ? " (repitió)" : "")).join(" → "), a.desde, a.cuota ?? "general", a.activo === false ? "Baja" : "Activo",
+        f.sangre, f.servicio, f.afiliacion, f.alergias, f.padecimientos, f.calle, f.colonia, f.cp, f.municipio, f.estado,
+        ...[0, 1].flatMap((i) => [(t[i] || {}).nombre, (t[i] || {}).parentesco, (t[i] || {}).tel, (t[i] || {}).correo]),
+        (f.emergencia || {}).nombre, (f.emergencia || {}).tel, cuentas, a.notas].map(c).join(","); });
+    const txt = "\uFEFF" + cols.map(c).join(",") + "\n" + filas.join("\n");
+    const link = document.createElement("a"); link.href = URL.createObjectURL(new Blob([txt], { type: "text/csv;charset=utf-8" }));
+    link.download = `atletas_${UI.hoy()}.csv`; link.click();
+  };
   $("a-lista").onclick = async (e) => {
     const b = e.target.closest("[data-editar]"); if (b) abrirAtleta(atletas.find((a) => a.id === b.dataset.editar));
     const r = e.target.closest("[data-reactivar]");
@@ -192,7 +219,12 @@
         const antes = atletas.find((a) => a.id === editando);
         const activo = $("a-act").checked;
         const baja = activo ? null : (antes && antes.activo === false && antes.baja) || { fecha: UI.hoy(), motivo: "" };
-        await DB.guardar("atletas", editando, { nombre: $("a-nombre").value.trim(), grupo: $("a-g").value, nivel: $("a-nivel").value.trim(),
+        // Al cambiar de nivel, el anterior pasa al historial (con desde cuándo estuvo y si lo repitió).
+        const nivel = $("a-nivel").value.trim();
+        const historialNivel = [...((antes && antes.historialNivel) || [])];
+        if (antes && antes.nivel && antes.nivel !== nivel) historialNivel.push({ nivel: antes.nivel, desde: antes.nivelDesde || "", hasta: UI.hoy(), repitio: !!antes.repite });
+        await DB.guardar("atletas", editando, { nombre: $("a-nombre").value.trim(), grupo: $("a-g").value, nivel,
+          nivelDesde: $("a-nivel-desde").value || (nivel && (!antes || antes.nivel !== nivel) ? UI.hoy() : ""), repite: $("a-repite").checked, historialNivel,
           nacimiento: $("a-nac").value, desde: $("a-desde").value, cuota, activo, baja, notas: $("a-notas").value.trim(),
           ficha: { ...Object.fromEntries(CAMPOS_FICHA.map((k) => [k, k === "curp" ? $("f-" + k).value.trim().toUpperCase() : $("f-" + k).value.trim()])),
             tutores: [1, 2].map((n) => ({ nombre: $(`t${n}-nombre`).value.trim(), parentesco: $(`t${n}-parentesco`).value, tel: $(`t${n}-tel`).value.trim(), correo: $(`t${n}-correo`).value.trim().toLowerCase() }))
