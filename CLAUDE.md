@@ -15,6 +15,12 @@ con módulos de **pagos** y **asistencia**. Responder en español, claro y sin r
   «Volver» regresa a la sección.
 - `admin/`: Herramientas administrativas (solo administración) = Pagos, Registro de atletas (`equipo?vista=atletas`) y Bajas
   (`equipo?vista=bajas`, `atletas.baja = {fecha, motivo}`). Los módulos reciben `?v=admin`.
+- **Ficha del atleta** (Manu, 18-nov-2026: «todos los datos fundamentales»): el alta guarda además `atletas.ficha` = CURP e ID FMG
+  (opcionales), salud (tipo de sangre, servicio médico IMSS/ISSSTE/seguro… y su número de afiliación, alergias, padecimientos),
+  domicilio, hasta 2 tutores (nombre, parentesco, teléfono, correo) y contacto de emergencia. La edad se calcula sola con la fecha de
+  nacimiento (columna Edad en la lista). Con el atleta guardado, «Dar acceso a la app con este correo» abre la invitación de TUTOR ya
+  llenada y ligada. `pg_atletas` lo leen administración, coaches y el tutor de ese atleta: son datos de menores, no agregar más
+  lectores.
 - **Reporte de asistencia** (`asistencia?s=GAV&vista=reporte`): en cada sección, para TODOS (atletas, papás y entrenadores; Manu,
   17-nov-2026), con todos los atletas de la sección; papá/atleta ven además el día por día de los suyos. Por eso `pg_asistencia` la
   lee cualquier miembro y cada registro guarda el `nombre` del atleta.
