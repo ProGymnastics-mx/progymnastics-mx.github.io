@@ -25,6 +25,9 @@
 
   // ---------- Secciones (GAV, GAF) y grupos ----------
   const SECCIONES = () => window.CLUB.secciones;
+  // Programas (Manu, 18-nov-2026). Sin dato: Equipo si el grupo es de equipo; si no, Desarrollo.
+  const PROGRAMAS = ["Equipo", "Desarrollo", "Adultos", "Bebés", "Preescolar"];
+  const programaDe = (a) => (a && a.programa) || (/EQUIPO/i.test((a && a.grupo) || "") ? "Equipo" : "Desarrollo");
   const seccionDeGrupo = (g) => (window.CLUB.grupos.find((x) => x.id === g) || {}).seccion || "";
   const gruposDeSeccion = (sec) => window.CLUB.grupos.filter((g) => !sec || g.seccion === sec);
   // Secciones a las que entra cada quien. Tutor y atleta: las de los grupos de sus atletas.
@@ -176,6 +179,6 @@
   }
 
   window.Sesion = { ROLES, puede, esAdmin, esOwner, esStaff, actual, requerir, salir, atletasVisibles,
-    seccionDeGrupo, gruposDeSeccion, seccionesDe, gruposDe, seccionActual, param };
+    seccionDeGrupo, gruposDeSeccion, PROGRAMAS, programaDe, seccionesDe, gruposDe, seccionActual, param };
   window.UI = UI;
 })();

@@ -125,6 +125,9 @@ service cloud.firestore {
     match /pg_notificaciones/{id} {
       allow read: if pgStaff() || (resource != null && pgMio(resource.data.atletaId));
       allow create: if pgAdmin() && request.resource.data.estado == 'pendiente';
+      // Avisos a grupos (sección, grupo o programa): también los coaches, solo como «aviso» y a su nombre.
+      allow create: if pgStaff() && request.resource.data.estado == 'pendiente' && request.resource.data.tipo == 'aviso'
+        && request.resource.data.autorUid == request.auth.uid && !('atletaId' in request.resource.data);
       allow update, delete: if pgAdmin();
     }
 

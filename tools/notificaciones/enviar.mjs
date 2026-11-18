@@ -3,10 +3,13 @@
       y la pública en pg_config_publica/push (la lee la app para suscribir el celular).
    2. Recordatorios de mensualidad (hora de Ciudad de México, de 9:00 a 21:00): 3 días antes del día límite, el día límite y
       un día después si venció. Uno por atleta, mes y tipo (el id del aviso evita repetidos).
-   3. Envía los avisos pendientes (pg_notificaciones con estado "pendiente") por correo (Gmail del club) y al celular (Web Push)
-      a las cuentas ligadas al atleta (pg_usuarios.atletas), y los marca como enviados.
+   3. Envía los avisos pendientes (pg_notificaciones con estado "pendiente"): de un atleta (pagos, recordatorios) o de un grupo
+      (destino = sección, grupo y/o programa, avisos). Van a la app (Web Push de las cuentas Tutor/Atleta ligadas), al correo y al
+      WhatsApp de cada cuenta y de los tutores de la ficha del atleta, sin repetir; luego los marca como enviados.
+   4. Aplica las contraseñas nuevas que pide Administración (pg_claves) y las borra.
    Solo toca colecciones pg_* (el proyecto de Firebase es compartido con AKC).
    Variables: FIREBASE_SERVICE_ACCOUNT (JSON de la cuenta de servicio), GMAIL_USER y GMAIL_APP_PASSWORD (contraseña de aplicación),
+   WHATSAPP_TOKEN, WHATSAPP_PHONE_ID y opcionales WHATSAPP_PLANTILLA / WHATSAPP_IDIOMA (WhatsApp Business de Meta),
    APP_URL (por omisión https://progymnastics-mx.github.io/). Pruebas: FIRESTORE_EMULATOR_HOST, CORREO_PRUEBA=1 (no envía correos) y HOY_PRUEBA="AAAA-MM-DD HH". */
 import admin from "firebase-admin";
 import webpush from "web-push";
@@ -109,7 +112,7 @@ async function recordatorios(hoy) {
     }[tipo];
     try {
       await col("notificaciones").doc(`rec_${doc.id}_${hoy.mes}_${tipo}`).create({
-        atletaId: doc.id, tipo: tipo === "vencido" ? "vencido" : "recordatorio", titulo: t[0],
+        atletaId: doc.id, tipo: tipo === "vencido" ? "vencido" : "recordatorio", periodo: hoy.mes, titulo: t[0],
         texto: t[1] + (CLUB.pagos.datosParaPagar ? `\n\nCómo pagar:\n${CLUB.pagos.datosParaPagar}` : ""), push: t[2],
         url: "modulos/pagos/", creado: new Date().toISOString(), estado: "pendiente", automatico: true
       });
@@ -130,8 +133,47 @@ function correoHTML(n) {
       <p style="font-size:16px;line-height:1.45;margin:0;white-space:pre-line">${esc(n.texto)}</p>
       <p style="margin:20px 0 0"><a href="${APP_URL}${esc(n.url || "")}" style="display:inline-block;background:#ffcb0b;color:#111;text-decoration:none;font-weight:600;padding:12px 20px;border-radius:12px">Abrir la app</a></p>
     </div>
-    <p style="font-size:12px;color:#6c6c70;text-align:center;margin-top:14px">ProGymnastics México · Recibes este correo porque tu cuenta está ligada a este atleta.</p>
+    <p style="font-size:12px;color:#6c6c70;text-align:center;margin-top:14px">ProGymnastics México · Recibes este correo porque estás registrado como familia o atleta del club.</p>
   </div></body></html>`;
+}
+
+// Destinatarios de un aviso: los atletas (uno, con atletaId; o todos los activos de destino = {seccion, grupo, programa}) y,
+// de cada uno, sus cuentas Tutor/Atleta (app, correo, teléfono) y los tutores de su ficha (correo y teléfono). Sin repetir:
+// una mamá con dos hijos en el grupo recibe un solo mensaje.
+const seccionDeGrupo = (g) => (CLUB.grupos.find((x) => x.id === g) || {}).seccion || "";
+const programaDe = (a) => a.programa || (/EQUIPO/i.test(a.grupo || "") ? "Equipo" : "Desarrollo");
+const telefonoMX = (t) => { const d = String(t || "").replace(/\D/g, ""); return d.length === 10 ? "52" + d : d.length >= 11 && d.length <= 15 ? d : ""; };
+const correoReal = (c) => { c = String(c || "").trim().toLowerCase(); return /^\S+@\S+\.\S+$/.test(c) && !c.endsWith(".invalid") ? c : ""; };
+async function destinatarios(n, cache) {
+  if (!cache.atletas) {
+    cache.atletas = (await col("atletas").get()).docs.map((d) => ({ id: d.id, ...d.data() }));
+    cache.usuarios = (await col("usuarios").get()).docs.map((d) => ({ id: d.id, ...d.data() }));
+  }
+  const d = n.destino || {};
+  const atletas = n.atletaId ? cache.atletas.filter((a) => a.id === n.atletaId)
+    : cache.atletas.filter((a) => a.activo !== false && (!d.grupo || a.grupo === d.grupo) && (!d.seccion || seccionDeGrupo(a.grupo) === d.seccion) && (!d.programa || programaDe(a) === d.programa));
+  const ids = new Set(atletas.map((a) => a.id));
+  const cuentas = cache.usuarios.filter((u) => ["TUTOR", "ATLETA"].includes(u.rol) && (u.atletas || []).some((x) => ids.has(x)));
+  const correos = new Set(), telefonos = new Set();
+  for (const u of cuentas) { const c = correoReal(u.correo || u.email); if (c) correos.add(c); const t = telefonoMX(u.telefono); if (t) telefonos.add(t); }
+  for (const a of atletas) for (const t of ((a.ficha || {}).tutores || [])) { const c = correoReal(t.correo); if (c) correos.add(c); const tel = telefonoMX(t.tel); if (tel) telefonos.add(tel); }
+  return { atletas: atletas.length, uids: cuentas.map((u) => u.id), correos: [...correos], telefonos: [...telefonos] };
+}
+
+// WhatsApp (API de WhatsApp Business Cloud de Meta). Solo con los secretos WHATSAPP_TOKEN y WHATSAPP_PHONE_ID; los mensajes que
+// inicia el club van con una plantilla aprobada por Meta (WHATSAPP_PLANTILLA, por omisión "aviso_progymnastics", idioma es_MX)
+// cuyo cuerpo lleva {{1}} = título y {{2}} = texto. Meta no admite saltos de línea en los parámetros: se cambian por « · ».
+const WA = process.env.WHATSAPP_TOKEN && process.env.WHATSAPP_PHONE_ID ? { token: process.env.WHATSAPP_TOKEN, id: process.env.WHATSAPP_PHONE_ID,
+  plantilla: process.env.WHATSAPP_PLANTILLA || "aviso_progymnastics", idioma: process.env.WHATSAPP_IDIOMA || "es_MX" } : null;
+const paramWA = (t, max) => String(t || "").replace(/\s*\n+\s*/g, " · ").replace(/\s{2,}/g, " ").trim().slice(0, max);
+async function whatsapp(tel, n) {
+  if (process.env.CORREO_PRUEBA) { log("[prueba] WhatsApp a ...", tel.slice(-4)); return; }
+  const r = await fetch(`https://graph.facebook.com/v21.0/${WA.id}/messages`, {
+    method: "POST", headers: { Authorization: "Bearer " + WA.token, "Content-Type": "application/json" },
+    body: JSON.stringify({ messaging_product: "whatsapp", to: tel, type: "template", template: { name: WA.plantilla, language: { code: WA.idioma },
+      components: [{ type: "body", parameters: [{ type: "text", text: paramWA(n.titulo, 120) }, { type: "text", text: paramWA(n.texto, 900) }] }] } })
+  });
+  if (!r.ok) throw new Error("WhatsApp " + r.status + ": " + (await r.text()).slice(0, 200));
 }
 
 async function enviar(vapid) {
@@ -141,21 +183,23 @@ async function enviar(vapid) {
   const correo = process.env.CORREO_PRUEBA ? nodemailer.createTransport({ jsonTransport: true })
     : process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD ? nodemailer.createTransport({ service: "gmail", auth: { user: process.env.GMAIL_USER, pass: process.env.GMAIL_APP_PASSWORD } })
     : null;
-  if (!correo) log("Sin GMAIL_USER / GMAIL_APP_PASSWORD: se envía solo al celular.");
+  if (!correo) log("Sin GMAIL_USER / GMAIL_APP_PASSWORD: no se mandan correos.");
+  if (!WA) log("Sin WHATSAPP_TOKEN / WHATSAPP_PHONE_ID: no se mandan WhatsApp.");
   let enviados = 0;
+  const cache = {};
   for (const doc of pend.docs) {
     const n = doc.data();
-    const usuarios = (await col("usuarios").where("atletas", "array-contains", n.atletaId).get()).docs.filter((u) => ["TUTOR", "ATLETA"].includes(u.data().rol));
-    let correos = 0, celulares = 0;
-    for (const u of usuarios) {
-      const x = u.data();
-      // Correo real de la persona: `correo`; las cuentas con usuario entran con un correo interno (.invalid) que no recibe nada.
-      const para = x.correo || (x.email && !x.email.endsWith(".invalid") ? x.email : "");
-      if (correo && para) {
-        try { await correo.sendMail({ from: `"ProGymnastics México" <${process.env.GMAIL_USER || "avisos@progymnastics.mx"}>`, to: para, subject: n.titulo, text: `${n.titulo}\n\n${n.texto}\n\n${APP_URL}${n.url || ""}`, html: correoHTML(n) }); correos++; }
-        catch (e) { log("Correo no enviado a una cuenta:", e.message); }
-      }
-      const s = await col("suscripciones").doc(u.id).get();
+    const dest = await destinatarios(n, cache);
+    let correos = 0, celulares = 0, whatsapps = 0;
+    if (correo) for (const para of dest.correos) {
+      try { await correo.sendMail({ from: `"ProGymnastics México" <${process.env.GMAIL_USER || "avisos@progymnastics.mx"}>`, to: para, subject: n.titulo, text: `${n.titulo}\n\n${n.texto}\n\n${APP_URL}${n.url || ""}`, html: correoHTML(n) }); correos++; }
+      catch (e) { log("Correo no enviado:", e.message); }
+    }
+    if (WA) for (const tel of dest.telefonos) {
+      try { await whatsapp(tel, n); whatsapps++; } catch (e) { log("WhatsApp no enviado:", e.message); }
+    }
+    for (const uid of dest.uids) {
+      const s = await col("suscripciones").doc(uid).get();
       const subs = (s.exists && s.data().subs) || {};
       for (const [k, sub] of Object.entries(subs)) {
         try {
@@ -167,7 +211,8 @@ async function enviar(vapid) {
         }
       }
     }
-    await doc.ref.update({ estado: usuarios.length ? "enviada" : "sin-destinatarios", enviada: new Date().toISOString(), correos, celulares });
+    const alguien = dest.uids.length + dest.correos.length + dest.telefonos.length;
+    await doc.ref.update({ estado: alguien ? "enviada" : "sin-destinatarios", enviada: new Date().toISOString(), atletas: dest.atletas, correos, celulares, whatsapps });
     enviados++;
   }
   return enviados;
