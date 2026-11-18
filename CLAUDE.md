@@ -27,6 +27,15 @@ con módulos de **pagos** y **asistencia**. Responder en español, claro y sin r
 - **Reporte de asistencia** (`asistencia?s=GAV&vista=reporte`): en cada sección, para TODOS (atletas, papás y entrenadores; Manu,
   17-nov-2026), con todos los atletas de la sección; papá/atleta ven además el día por día de los suyos. Por eso `pg_asistencia` la
   lee cualquier miembro y cada registro guarda el `nombre` del atleta.
+- **Usuario y contraseña** (Manu, 18-nov-2026): Administración crea las cuentas y la app le da usuario y contraseña (`js/cuentas.js`).
+  Firebase Auth usa `<usuario>@usuarios.progymnastics.invalid` (no recibe correos); el correo real va en `pg_usuarios.correo` (avisos) y el
+  teléfono en `telefono`. Se crea con una segunda instancia de Firebase (no cierra la sesión de quien da el alta) y la misma regla del
+  primer ingreso (invitación → la cuenta crea su perfil → borra la invitación). El login acepta usuario o correo (`Cuentas.loginDe`).
+  Al dar de alta un atleta, mamá/papá/tutor (nombre y teléfono) son obligatorios si es menor, y al guardar sale «Accesos a la app»: tutores
+  (perfil Tutor) y el atleta (perfil Atleta, marcado si es adulto); si el tutor ya tiene cuenta (hermanos: mismo correo, teléfono o nombre),
+  se le agrega el atleta. Accesos → «+ Nueva cuenta» para coach, administración u owner. «Nueva contraseña»: queda en `pg_claves/<uid>`
+  (nadie la lee) y la tarea de notificaciones la aplica con firebase-admin y la borra (máximo ~15 min). Las invitaciones por correo siguen
+  sirviendo para las cuentas que ya entran con correo.
 - Administración de acceso = `equipo?vista=accesos`. Un COACH lleva `secciones` ([] = GAV y GAF) y `grupos` ([] = todos los
   de sus secciones): solo entra a esas secciones y toma lista de esos grupos.
 - Cada grupo de `CLUB.grupos` pertenece a una sección (`seccion`); la sección de un atleta es la de su grupo.

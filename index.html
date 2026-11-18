@@ -52,14 +52,14 @@
     <div class="portada">
       <div class="logo-caja"><img src="img/logo-ancho.jpg" alt="ProGymnastics México" width="1100" height="700"></div>
       <h1 id="entrada-titulo">Bienvenido</h1>
-      <p id="entrada-sub">Entra con tu correo del club</p>
+      <p id="entrada-sub">Entra con el usuario y la contraseña que te dio el club</p>
     </div>
 
     <!-- Entrar con Firebase -->
     <section class="entrar oculto" id="sec-login">
       <form id="f-login">
         <div class="campos">
-          <label><span>Correo</span><input type="email" id="l-email" autocomplete="email" placeholder="nombre@correo.com" required></label>
+          <label><span>Usuario</span><input type="text" id="l-email" autocomplete="username" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="usuario o correo" required></label>
           <label><span>Contraseña</span><input type="password" id="l-clave" autocomplete="current-password" placeholder="Obligatoria" required></label>
         </div>
         <p class="error" id="l-error" role="alert"></p>
@@ -100,6 +100,7 @@
   <script src="js/config.js"></script>
   <script src="js/db.js"></script>
   <script src="js/sesion.js"></script>
+  <script src="js/cuentas.js"></script>
   <script src="js/avisos.js"></script>
   <script>
   (async function () {
@@ -156,10 +157,11 @@
     const auth = firebase.auth();
     const err = (m) => { $("l-error").textContent = m || ""; };
     const MENSAJES = {
-      "auth/invalid-email": "El correo no es válido.",
-      "auth/user-not-found": "No hay cuenta con ese correo. Si tienes invitación, usa «Crear mi cuenta».",
+      "auth/invalid-email": "El usuario no es válido.",
+      "auth/user-not-found": "No hay cuenta con ese usuario.",
       "auth/wrong-password": "Contraseña incorrecta.",
-      "auth/invalid-login-credentials": "Correo o contraseña incorrectos.",
+      "auth/invalid-login-credentials": "Usuario o contraseña incorrectos.",
+      "auth/invalid-credential": "Usuario o contraseña incorrectos.",
       "auth/email-already-in-use": "Ese correo ya tiene cuenta: entra con tu contraseña.",
       "auth/weak-password": "La contraseña debe tener al menos 6 caracteres.",
       "auth/too-many-requests": "Demasiados intentos. Espera unos minutos."
@@ -173,7 +175,7 @@
     $("f-login").onsubmit = async (e) => {
       e.preventDefault(); err(""); $("l-btn").disabled = true;
       try {
-        await auth.signInWithEmailAndPassword($("l-email").value.trim(), $("l-clave").value);
+        await auth.signInWithEmailAndPassword(Cuentas.loginDe($("l-email").value), $("l-clave").value);
         mostrarMenu(await Sesion.actual());
       } catch (x) { err(msg(x)); } finally { $("l-btn").disabled = false; }
     };
@@ -186,6 +188,7 @@
     $("l-olvide").onclick = async () => {
       const email = $("l-email").value.trim();
       if (!email) return err("Escribe tu correo y vuelve a tocar «Olvidé mi contraseña».");
+      if (!email.includes("@")) return err("Pide a Administración del club una contraseña nueva para tu usuario.");
       try { await auth.sendPasswordResetEmail(email); err(""); alert("Te enviamos un correo para crear una contraseña nueva."); }
       catch (x) { err(msg(x)); }
     };
