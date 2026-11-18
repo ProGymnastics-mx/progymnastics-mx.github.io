@@ -149,8 +149,10 @@ async function enviar(vapid) {
     let correos = 0, celulares = 0;
     for (const u of usuarios) {
       const x = u.data();
-      if (correo && x.email) {
-        try { await correo.sendMail({ from: `"ProGymnastics México" <${process.env.GMAIL_USER || "avisos@progymnastics.mx"}>`, to: x.email, subject: n.titulo, text: `${n.titulo}\n\n${n.texto}\n\n${APP_URL}${n.url || ""}`, html: correoHTML(n) }); correos++; }
+      // Correo real de la persona: `correo`; las cuentas con usuario entran con un correo interno (.invalid) que no recibe nada.
+      const para = x.correo || (x.email && !x.email.endsWith(".invalid") ? x.email : "");
+      if (correo && para) {
+        try { await correo.sendMail({ from: `"ProGymnastics México" <${process.env.GMAIL_USER || "avisos@progymnastics.mx"}>`, to: para, subject: n.titulo, text: `${n.titulo}\n\n${n.texto}\n\n${APP_URL}${n.url || ""}`, html: correoHTML(n) }); correos++; }
         catch (e) { log("Correo no enviado a una cuenta:", e.message); }
       }
       const s = await col("suscripciones").doc(u.id).get();
@@ -171,7 +173,27 @@ async function enviar(vapid) {
   return enviados;
 }
 
+// ---------- 4. contraseñas nuevas que pidió Administración (pg_claves/<uid>) ----------
+async function claves() {
+  const pend = await col("claves").limit(50).get();
+  let n = 0;
+  for (const doc of pend.docs) {
+    const c = doc.data().clave;
+    try {
+      const u = await col("usuarios").doc(doc.id).get();
+      if (u.exists && u.data().rol !== "SUPER" && typeof c === "string" && c.length >= 6) {
+        if (!process.env.FIRESTORE_EMULATOR_HOST) await admin.auth().updateUser(doc.id, { password: c });
+        n++;
+      }
+    } catch (e) { log("Contraseña no aplicada:", e.code || e.message); }
+    await doc.ref.delete(); // nunca se queda guardada
+  }
+  return n;
+}
+
 const hoy = ahoraMX();
+const k = await claves();
+if (k) log(`${k} contraseña(s) nueva(s) aplicada(s).`);
 const vapid = await llaves();
 const r = await recordatorios(hoy);
 const e = await enviar(vapid);

@@ -52,6 +52,16 @@ service cloud.firestore {
       allow delete: if (pgAdmin() && resource.data.rol != 'SUPER') || (pgDentro() && pgCorreo() == email);
     }
 
+    // Contraseña nueva que pide Administración para una cuenta (la aplica la tarea de notificaciones y borra el documento).
+    // Nadie la lee desde la app; no se piden para SUPER, para uno mismo ni (salvo OWNER) para cuentas OWNER.
+    match /pg_claves/{uid} {
+      allow create, update: if pgAdmin() && request.auth.uid != uid
+        && exists(/databases/$(database)/documents/pg_usuarios/$(uid))
+        && get(/databases/$(database)/documents/pg_usuarios/$(uid)).data.rol != 'SUPER'
+        && (pgOwner() || get(/databases/$(database)/documents/pg_usuarios/$(uid)).data.rol != 'OWNER')
+        && request.resource.data.clave is string && request.resource.data.clave.size() >= 6;
+    }
+
     match /pg_atletas/{id} {
       allow get: if pgStaff() || pgMio(id);
       allow list: if pgStaff();

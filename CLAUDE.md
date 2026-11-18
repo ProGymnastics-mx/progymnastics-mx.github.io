@@ -15,9 +15,10 @@ con módulos de **pagos** y **asistencia**. Responder en español, claro y sin r
   «Volver» regresa a la sección.
 - `admin/`: Herramientas administrativas (solo administración) = Pagos, Registro de atletas (`equipo?vista=atletas`) y Bajas
   (`equipo?vista=bajas`, `atletas.baja = {fecha, motivo}`). Los módulos reciben `?v=admin`.
-- **Ficha del atleta** (Manu, 18-nov-2026: «todos los datos fundamentales»): el alta guarda además `atletas.ficha` = CURP e ID FMG
-  (opcionales), salud (tipo de sangre, servicio médico IMSS/ISSSTE/seguro… y su número de afiliación, alergias, padecimientos),
-  domicilio, hasta 2 tutores (nombre, parentesco, teléfono, correo) y contacto de emergencia. **Nivel:** `nivel`, `nivelDesde`, `repite` y
+- **Ficha del atleta** (Manu, 18-nov-2026: «todos los datos fundamentales»): el alta guarda además `atletas.ficha` = CURP (**obligatoria**, Manu 18-nov-2026: 18 caracteres con su formato) e ID FMG
+  (opcional), salud (tipo de sangre, servicio médico IMSS/ISSSTE/seguro… y su número de afiliación, alergias, padecimientos),
+  domicilio, hasta 2 tutores (nombre, parentesco, teléfono, correo) y contacto de emergencia. **Programa** (`programa`: Equipo, Desarrollo, Adultos, Bebés, Preescolar; sin dato, Equipo si el grupo es de equipo). **Nivel** (solo
+  Equipo: el último en que compitió o se sabe que está): `nivel`, `nivelDesde`, `repite` y
   `historialNivel` ([{nivel, desde, hasta, repitio}]; al cambiar el nivel, el anterior pasa ahí solo). Adulto = 18 años o más (etiqueta en
   la lista). «Descargar lista completa (Excel)» baja un CSV con todos los datos (respeta el filtro); solo lo usa administración. La edad se calcula sola con la fecha de
   nacimiento (columna Edad en la lista). Con el atleta guardado, «Dar acceso a la app con este correo» abre la invitación de TUTOR ya
@@ -26,6 +27,15 @@ con módulos de **pagos** y **asistencia**. Responder en español, claro y sin r
 - **Reporte de asistencia** (`asistencia?s=GAV&vista=reporte`): en cada sección, para TODOS (atletas, papás y entrenadores; Manu,
   17-nov-2026), con todos los atletas de la sección; papá/atleta ven además el día por día de los suyos. Por eso `pg_asistencia` la
   lee cualquier miembro y cada registro guarda el `nombre` del atleta.
+- **Usuario y contraseña** (Manu, 18-nov-2026): Administración crea las cuentas y la app le da usuario y contraseña (`js/cuentas.js`).
+  Firebase Auth usa `<usuario>@usuarios.progymnastics.invalid` (no recibe correos); el correo real va en `pg_usuarios.correo` (avisos) y el
+  teléfono en `telefono`. Se crea con una segunda instancia de Firebase (no cierra la sesión de quien da el alta) y la misma regla del
+  primer ingreso (invitación → la cuenta crea su perfil → borra la invitación). El login acepta usuario o correo (`Cuentas.loginDe`).
+  Al dar de alta un atleta, mamá/papá/tutor (nombre y teléfono) son obligatorios si es menor, y al guardar sale «Accesos a la app»: tutores
+  (perfil Tutor) y el atleta (perfil Atleta, marcado si es adulto); si el tutor ya tiene cuenta (hermanos: mismo correo, teléfono o nombre),
+  se le agrega el atleta. Accesos → «+ Nueva cuenta» para coach, administración u owner. «Nueva contraseña»: queda en `pg_claves/<uid>`
+  (nadie la lee) y la tarea de notificaciones la aplica con firebase-admin y la borra (máximo ~15 min). Las invitaciones por correo siguen
+  sirviendo para las cuentas que ya entran con correo.
 - Administración de acceso = `equipo?vista=accesos`. Un COACH lleva `secciones` ([] = GAV y GAF) y `grupos` ([] = todos los
   de sus secciones): solo entra a esas secciones y toma lista de esos grupos.
 - Cada grupo de `CLUB.grupos` pertenece a una sección (`seccion`); la sección de un atleta es la de su grupo.
