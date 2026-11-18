@@ -66,6 +66,13 @@ con módulos de **pagos** y **asistencia**. Responder en español, claro y sin r
   Secretos: FIREBASE_SERVICE_ACCOUNT, GMAIL_USER, GMAIL_APP_PASSWORD (ver `tools/notificaciones/README.md`). Pantalla bloqueada:
   texto corto sin nombres ni montos (`push`); el detalle va en correo y en la app. **Sin pago en línea** (Manu, 17-nov-2026): los papás
   pagan en efectivo, transferencia o tarjeta directamente en administración, que lo registra en la app y eso dispara la confirmación.
+  **Canales y destinatarios (Manu, 18-nov-2026: «lo fundamental del cliente»):** cada aviso va a la app (cuentas Tutor/Atleta ligadas),
+  al correo y al **WhatsApp** de cada cuenta (`correo`, `telefono`) y de los tutores de la ficha del atleta, sin repetir (una mamá con dos
+  hijos recibe uno). Pagos y recordatorios: solo la familia de ese atleta. **Avisos a grupos** (módulo Avisos, «Para» + «Programa» +
+  «Enviar notificación»): `pg_notificaciones` con `destino = {seccion, grupo, programa}` (todos los atletas activos que coinciden; los
+  coaches también pueden crearlos, solo `tipo: "aviso"`). WhatsApp = API de WhatsApp Business Cloud de Meta: secretos `WHATSAPP_TOKEN`,
+  `WHATSAPP_PHONE_ID` y plantilla aprobada (`aviso_progymnastics`, es_MX, {{1}} título y {{2}} texto; variable `WHATSAPP_PLANTILLA` para
+  otro nombre). Sin esos secretos no se manda WhatsApp, y lo demás sigue igual.
 
 ## Etapas pedidas por Manu (17-nov-2026)
 1. ✅ Estructura: inicio, secciones, herramientas administrativas y acceso; vistas por perfil (admin y coach primero).

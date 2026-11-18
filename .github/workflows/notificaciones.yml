@@ -1,6 +1,7 @@
 # Notificaciones de ProGymnastics: recordatorios de mensualidad y envío de avisos (correo y celular).
 # Corre cada 15 minutos; también se puede correr a mano (Actions → Notificaciones → Run workflow).
-# Secretos (Settings → Secrets and variables → Actions): FIREBASE_SERVICE_ACCOUNT, GMAIL_USER, GMAIL_APP_PASSWORD.
+# Secretos (Settings → Secrets and variables → Actions): FIREBASE_SERVICE_ACCOUNT, GMAIL_USER, GMAIL_APP_PASSWORD,
+# WHATSAPP_TOKEN y WHATSAPP_PHONE_ID (WhatsApp Business de Meta; sin ellos no se manda WhatsApp).
 name: Notificaciones
 on:
   schedule:
@@ -29,4 +30,7 @@ jobs:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           GMAIL_USER: ${{ secrets.GMAIL_USER }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          WHATSAPP_TOKEN: ${{ secrets.WHATSAPP_TOKEN }}
+          WHATSAPP_PHONE_ID: ${{ secrets.WHATSAPP_PHONE_ID }}
+          WHATSAPP_PLANTILLA: ${{ vars.WHATSAPP_PLANTILLA }}
         run: node enviar.mjs

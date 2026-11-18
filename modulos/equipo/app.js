@@ -17,8 +17,7 @@
   let atletas = [], usuarios = [], invitaciones = [];
 
   // Programa (Manu, 18-nov-2026): el nivel solo aplica a los atletas de equipo.
-  const PROGRAMAS = ["Equipo", "Desarrollo", "Adultos", "Bebés", "Preescolar"];
-  const programaDe = (a) => a.programa || (/EQUIPO/i.test(a.grupo || "") ? "Equipo" : "Desarrollo");
+  const { PROGRAMAS, programaDe } = Sesion;
   app.innerHTML = `
     <div class="pestanas" role="tablist" ${VISTA ? "hidden" : ""}>
       <button role="tab" data-p="atletas" aria-selected="true">Atletas</button>
