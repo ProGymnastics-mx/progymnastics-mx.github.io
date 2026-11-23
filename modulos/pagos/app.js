@@ -2,7 +2,9 @@
    pagos/<id> = {atletaId, concepto, periodo "AAAA-MM", monto, fecha, hora "HH:MM", metodo, referencia, nota, registradoPor,
      registradoPorNombre, creado}
    «Enviar recordatorio» (Manu, 18-nov-2026: «si no ha pagado, que se le envíe»): notificaciones/<id> tipo "recordatorio" con
-   periodo; la tarea automática lo manda por app, correo y WhatsApp a la familia de ese atleta.
+   periodo: la tarea automática lo manda a la app de la familia, y aquí mismo se abre WhatsApp con el mensaje listo para
+   mamá y papá (js/whatsapp.js; Manu, 23-nov-2026: sin correo ni WhatsApp Business). El envío por WhatsApp se anota en
+   notificaciones.whatsapp = {<número>: fecha}.
    La mensualidad de cada atleta es atletas/<id>.cuota (0 = beca o sin cuota).
    Estado del mes (solo concepto Mensualidad): Pagado, Parcial, Pendiente (aún no vence), Vencido (pasó el día límite).
    Administración (OWNER/ADMIN) ve y registra todo; tutor y atleta ven solo lo suyo. Los coaches no entran. */
@@ -17,9 +19,12 @@
   const admin = Sesion.puede.pagosTodos(u);
   const atletas = await Sesion.atletasVisibles(u);
   const porId = Object.fromEntries(atletas.map((a) => [a.id, a]));
+  const usuarios = admin ? await DB.listar("usuarios").catch(() => []) : []; // teléfonos de las cuentas ligadas (WhatsApp)
 
   // "18:05" → "6:05 p. m."
   const horaTxt = (h) => { if (!h) return ""; const [H, M] = h.split(":").map(Number); return `${H % 12 || 12}:${String(M).padStart(2, "0")} ${H < 12 ? "a. m." : "p. m."}`; };
+  // Hora local de una fecha ISO ("2026-11-23T16:05:00Z" → "10:05 a. m." en México).
+  const horaLocal = (iso) => { const d = new Date(iso); return isNaN(d) ? "" : horaTxt(String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0")); };
   const cuandoTxt = (p) => UI.fecha(p.fecha) + (p.hora ? " · " + horaTxt(p.hora) : "");
   const ahoraHHMM = () => { const d = new Date(); return String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0"); };
   const cuotaDe = (a) => (a.cuota != null && a.cuota !== "" ? Number(a.cuota) : Number(P.mensualidadBase) || 0);
@@ -120,7 +125,7 @@
       <div class="acciones"><button class="btn" value="cancelar" formnovalidate>Cancelar</button><button class="btn principal" value="ok" id="p-ok">Guardar</button></div>
     </form></dialog>`;
 
-  let pagosMes = [], vista = "mes", ultimo = {};
+  let pagosMes = [], vista = "mes", ultimo = {}, waOk = {};
   app.querySelector(".pestanas").onclick = (e) => {
     const b = e.target.closest("button[data-p]"); if (!b) return;
     vista = b.dataset.p;
@@ -132,8 +137,11 @@
   async function cargar() {
     const mes = $("f-mes").value;
     const [pg, recs] = await Promise.all([DB.listar("pagos", [["periodo", "==", mes]]), DB.listar("notificaciones", [["periodo", "==", mes]]).catch(() => [])]);
-    pagosMes = pg; ultimo = {};
-    recs.filter((n) => n.atletaId && ["recordatorio", "vencido"].includes(n.tipo)).forEach((n) => { if ((n.creado || "") > (ultimo[n.atletaId] || "")) ultimo[n.atletaId] = n.creado; });
+    pagosMes = pg; ultimo = {}; waOk = {};
+    recs.filter((n) => n.atletaId && ["recordatorio", "vencido"].includes(n.tipo)).forEach((n) => {
+      if ((n.creado || "") > (ultimo[n.atletaId] || "")) ultimo[n.atletaId] = n.creado;
+      Object.values(n.whatsapp || {}).forEach((f) => { if (f > (waOk[n.atletaId] || "")) waOk[n.atletaId] = f; });
+    });
     pintar();
   }
   function pintar() {
@@ -153,10 +161,15 @@
       <div class="kpi"><span>Ingresos del mes</span><b>${UI.dinero(cobradoTotal)}</b><small class="nota">todos los conceptos</small></div>`;
 
     const vis = filas.filter((f) => !fe || f.e.k === fe);
-    $("v-mes").innerHTML = `<div class="fila" style="justify-content:space-between;align-items:center;margin-bottom:8px"><h2 style="margin:0">Mensualidades · ${esc(UI.nombreMes(mes))}</h2>
+    // Días de recordatorio (3 antes, el día límite y uno después): la app recuerda mandarlos por WhatsApp.
+    const dia = new Date().getDate(), lim = Number(P.diaLimite) || 0, hoyISO = UI.hoy();
+    const tocaHoy = mes === UI.mesActual() && lim && [lim - 3, lim, lim + 1].includes(dia);
+    const faltanHoy = tocaHoy ? filas.filter((f) => f.e.saldo > 0 && WA.destinos(f.a, usuarios).length && !(waOk[f.a.id] || "").startsWith(hoyISO)).length : 0;
+    $("v-mes").innerHTML = (faltanHoy ? `<div class="aviso-banda no-imprimir" style="display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:color-mix(in srgb, var(--naranja) 18%, transparent);border-radius:12px;padding:10px 12px;margin-bottom:10px">
+        <span>Hoy toca recordar el pago a <b>${faltanHoy}</b> familia(s) por WhatsApp.</span><button class="btn chico principal" type="button" data-recordar-hoy>Mandar recordatorios</button></div>` : "") + `<div class="fila" style="justify-content:space-between;align-items:center;margin-bottom:8px"><h2 style="margin:0">Mensualidades · ${esc(UI.nombreMes(mes))}</h2>
       <span class="no-imprimir" style="display:flex;gap:6px;flex-wrap:wrap">${vis.some((f) => f.e.saldo > 0) ? `<button class="btn chico" id="b-recordar-todos">Recordar a todos los que deben</button>` : ""}<button class="btn chico" id="b-csv">Descargar CSV</button><button class="btn chico" onclick="print()">Imprimir</button></span></div>
       ${vis.length ? `<div class="tabla-wrap"><table><thead><tr><th>Atleta</th><th class="col-grupo">Grupo</th><th class="num col-grupo">Cuota</th><th class="num col-grupo">Pagado</th><th class="num">Saldo</th><th>Estado</th></tr></thead><tbody>
-      ${vis.map(({ a, e }) => `<tr><td>${esc(a.nombre)}${e.saldo > 0 ? `<div class="no-imprimir" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px"><button class="btn chico" data-cobrar="${esc(a.id)}">Cobrar</button><button class="btn chico" data-recordar="${esc(a.id)}">Recordatorio</button></div>${ultimo[a.id] ? `<small class="nota no-imprimir">Recordado ${esc(UI.fecha(ultimo[a.id]))} ${esc(horaTxt(ultimo[a.id].slice(11, 16)))}</small>` : ""}` : ""}</td><td class="col-grupo">${esc(UI.grupo(a.grupo))}</td><td class="num col-grupo">${UI.dinero(e.cuota)}</td><td class="num col-grupo">${UI.dinero(e.pagado)}</td>
+      ${vis.map(({ a, e }) => `<tr><td>${esc(a.nombre)}${e.saldo > 0 ? `<div class="no-imprimir" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px"><button class="btn chico" data-cobrar="${esc(a.id)}">Cobrar</button><button class="btn chico" data-recordar="${esc(a.id)}">Recordatorio</button></div>${ultimo[a.id] ? `<small class="nota no-imprimir">Recordado ${esc(UI.fecha(ultimo[a.id]))} ${esc(horaLocal(ultimo[a.id]))}${waOk[a.id] ? " · WhatsApp ✓" : ""}</small>` : ""}` : ""}</td><td class="col-grupo">${esc(UI.grupo(a.grupo))}</td><td class="num col-grupo">${UI.dinero(e.cuota)}</td><td class="num col-grupo">${UI.dinero(e.pagado)}</td>
         <td class="num">${UI.dinero(e.saldo)}${e.recargo ? `<br><small class="nota">+ ${UI.dinero(e.recargo)} recargo</small>` : ""}</td><td><span class="etiqueta ${e.c}">${e.t}</span></td></tr>`).join("")}</tbody></table></div>`
       : `<p class="vacio">${atletas.length ? "Nadie con ese filtro." : "Aún no hay atletas. Agrégalos en Equipo."}</p>`}`;
 
@@ -202,9 +215,12 @@
   $("b-nuevo").onclick = () => { abrir(); $("p-buscar").focus(); };
   $("p-buscar").oninput = () => { opcionesAtleta($("p-buscar").value, $("p-atleta").value); $("p-atleta").onchange(); };
 
-  // Recordatorio de pago a la familia (app, correo y WhatsApp; lo manda la tarea automática en unos minutos).
+  // Recordatorio de pago: aviso en la app (lo manda la tarea automática) y mensaje de WhatsApp listo para cada familia.
+  const textoRecordatorio = (a, mes, e) => `Hola, le saludamos de ${CLUB.nombre}.\nLa mensualidad de ${UI.nombreMes(mes)} de ${a.nombre} tiene un saldo de ${UI.dinero(e.saldo)}` +
+    `${e.recargo ? ` más ${UI.dinero(e.recargo)} de recargo` : ""}. ${e.k === "vencido" ? `Venció el día ${P.diaLimite}.` : `Vence el día ${P.diaLimite}.`}` +
+    (P.datosParaPagar ? `\n\nCómo pagar:\n${P.datosParaPagar}` : "") + `\n\nSu estado de cuenta está en la app: ${WA.appUrl()}`;
   async function recordar(ids) {
-    const mes = $("f-mes").value;
+    const mes = $("f-mes").value, hechos = {};
     for (const id of ids) {
       const a = porId[id], e = estadoMes(a, mes, pagosMes);
       if (!(e.saldo > 0)) continue;
@@ -214,18 +230,26 @@
           (P.datosParaPagar ? `\n\nCómo pagar:\n${P.datosParaPagar}` : ""),
         push: e.k === "vencido" ? "Tu mensualidad está vencida. Toca para ver tu saldo." : "Recordatorio de pago. Toca para ver tu saldo.",
         url: "modulos/pagos/" + (Sesion.seccionDeGrupo(a.grupo) ? "?s=" + Sesion.seccionDeGrupo(a.grupo) : ""),
-        manual: true, por: u.uid, creado: new Date().toISOString(), estado: "pendiente" });
+        manual: true, por: u.uid, creado: new Date().toISOString(), estado: "pendiente" }).then((nid) => (hechos[id] = nid));
     }
+    return hechos;
+  }
+  function whatsappRecordatorios(hechos) {
+    const mes = $("f-mes").value;
+    WA.mostrar({ titulo: "Recordatorios por WhatsApp", nota: "Ya les llegó el aviso a la app. Toca cada botón para mandarles también el mensaje por WhatsApp.",
+      envios: Object.keys(hechos).map((id) => { const a = porId[id]; return { titulo: a.nombre, texto: textoRecordatorio(a, mes, estadoMes(a, mes, pagosMes)), destinos: WA.destinos(a, usuarios), nid: hechos[id] }; }),
+      alEnviar: (e, t) => DB.guardar("notificaciones", e.nid, { whatsapp: { [WA.numero(t.tel)]: new Date().toISOString() } }) });
+    $("dlg-wa").addEventListener("close", () => cargar(), { once: true });
   }
   app.addEventListener("click", async (ev) => {
     const c = ev.target.closest("[data-cobrar]"), r = ev.target.closest("[data-recibo]"), b = ev.target.closest("[data-borrar]");
-    const rc = ev.target.closest("[data-recordar]"), rt = ev.target.closest("#b-recordar-todos");
+    const rc = ev.target.closest("[data-recordar]"), rt = ev.target.closest("#b-recordar-todos, [data-recordar-hoy]");
     if (rc || rt) {
       const mes = $("f-mes").value, grupo = $("f-grupo").value;
       const ids = rc ? [rc.dataset.recordar] : atletas.filter((a) => a.activo !== false && (!grupo || a.grupo === grupo) && estadoMes(a, mes, pagosMes).saldo > 0).map((a) => a.id);
       const msg = rc ? `¿Enviar recordatorio de pago a la familia de ${porId[ids[0]].nombre}?` : `¿Enviar recordatorio de pago a ${ids.length} familia(s) con saldo en ${UI.nombreMes(mes)}?`;
-      if (!ids.length || !confirm(msg + " Les llega a la app, al correo y al WhatsApp.")) return;
-      try { await recordar(ids); UI.aviso(`Recordatorio enviado (${ids.length}). Sale en unos minutos.`); cargar(); }
+      if (!ids.length || !confirm(msg + " Les llega a la app y se abre WhatsApp con el mensaje listo.")) return;
+      try { const hechos = await recordar(ids); UI.aviso(`Aviso en la app para ${ids.length} familia(s).`); whatsappRecordatorios(hechos); }
       catch (x) { UI.aviso("No se pudo enviar: " + x.message, true); }
       return;
     }
@@ -248,13 +272,21 @@
     $("p-ok").disabled = true;
     try {
       const id = await DB.guardar("pagos", null, datos);
-      // Aviso al papá/atleta (correo y celular; lo envía la tarea automática del club).
-      let avisado = true;
-      try { await Avisos.porPago({ ...datos, id }, porId[datos.atletaId]); } catch (x) { avisado = false; console.warn("No se creó el aviso del pago", x); }
-      $("dlg").close(); UI.aviso(`Pago de ${UI.dinero(monto)} registrado.${avisado ? " Se le avisará a la familia." : ""}`);
+      // Aviso en la app de la familia (lo envía la tarea automática) y confirmación por WhatsApp desde aquí.
+      let nid = null;
+      try { nid = await Avisos.porPago({ ...datos, id }, porId[datos.atletaId]); } catch (x) { console.warn("No se creó el aviso del pago", x); }
+      $("dlg").close(); UI.aviso(`Pago de ${UI.dinero(monto)} registrado.`);
       if (datos.periodo !== $("f-mes").value) $("f-mes").value = datos.periodo;
       await cargar();
-      if (confirm("¿Imprimir recibo?")) recibo({ ...datos, id });
+      const a = porId[datos.atletaId];
+      WA.mostrar({ titulo: "Confirmación del pago", nota: "Manda la confirmación por WhatsApp a la familia. En la app ya les aparece.",
+        envios: [{ titulo: a.nombre, destinos: WA.destinos(a, usuarios),
+          texto: `Hola, le saludamos de ${CLUB.nombre}.\nRegistramos el pago de ${UI.dinero(monto)} por ${datos.concepto} de ${UI.nombreMes(datos.periodo)} de ${a.nombre}.\n` +
+            `Fecha: ${cuandoTxt(datos)} · Forma de pago: ${datos.metodo}${datos.referencia ? " · Referencia: " + datos.referencia : ""} · Folio: ${id}.\n¡Gracias!\n\nSu recibo está en la app: ${WA.appUrl()}` }],
+        extra: `<div class="acciones" style="justify-content:flex-start"><button class="btn chico" type="button" data-wa-extra>Ver recibo</button></div>`,
+        alExtra: () => recibo({ ...datos, id }),
+        alEnviar: () => nid && DB.guardar("notificaciones", nid, { whatsapp: { enviado: new Date().toISOString() } }) });
+
     } catch (x) { UI.aviso("No se pudo guardar: " + x.message, true); }
     finally { $("p-ok").disabled = false; }
   });
