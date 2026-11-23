@@ -11,10 +11,10 @@
   const TEXTO_ESTADO = {
     demo: "En modo demostración no se envían notificaciones al celular; aquí ves cómo quedan los avisos.",
     instalar: "En iPhone, primero agrega la app a tu pantalla de inicio: abre esta página en Safari, toca Compartir (el cuadro con flecha) y elige «Agregar a inicio». Después ábrela desde ese ícono y vuelve aquí.",
-    "no-soportado": "Este navegador no recibe notificaciones. Abre la app en Chrome (Android) o agrégala a la pantalla de inicio en iPhone. Los avisos también te llegan por correo.",
+    "no-soportado": "Este navegador no recibe notificaciones. Abre la app en Chrome (Android) o agrégala a la pantalla de inicio en iPhone. El club también te manda los avisos por WhatsApp.",
     bloqueado: "Bloqueaste las notificaciones para esta app. Actívalas en Ajustes del celular → Notificaciones, y vuelve a intentarlo.",
-    activo: "Este celular ya recibe las notificaciones. También te llegan por correo.",
-    inactivo: "Actívalas para enterarte cuando se registre un pago o se acerque la fecha límite. También te llegan por correo."
+    activo: "Este celular ya recibe las notificaciones.",
+    inactivo: "Actívalas para enterarte cuando se registre un pago, se acerque la fecha límite o el club publique un aviso."
   };
 
   async function pintar() {

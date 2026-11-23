@@ -42,7 +42,7 @@
       <div class="panel"><div class="fila" style="justify-content:space-between;align-items:center"><h2 style="margin:0">Cuentas</h2>
         <button class="btn principal" type="button" id="i-nuevo">+ Nueva cuenta</button></div>
         <p class="nota">Elige el perfil (papá o tutor, atleta, coach, administración${Sesion.esOwner(u) ? " o dueño" : ""}): al guardar, la app te da su <b>usuario y contraseña</b> para entrar.
-          Su teléfono y correo quedan guardados para los avisos.</p>
+          Su teléfono queda guardado para mandarle avisos por WhatsApp.</p>
         <div class="tabla-wrap" id="u-lista"></div></div>
       <div class="panel"><h2>Invitaciones pendientes</h2><div class="tabla-wrap" id="i-lista"></div></div>
     </section>
@@ -104,7 +104,7 @@
       <label>Nombre completo <input id="i-nombre" required maxlength="80" data-1p-ignore="true" data-lpignore="true"></label>
       <label>Usuario para entrar <input id="i-usuario" maxlength="30" autocapitalize="off" autocorrect="off" spellcheck="false" data-1p-ignore="true" data-lpignore="true"></label>
       <div class="fila"><label>Teléfono <input id="i-tel" type="tel" maxlength="20" inputmode="tel"></label>
-        <label>Correo (para avisos) <input type="email" id="i-email" maxlength="80" data-1p-ignore="true" data-lpignore="true"></label></div>
+        <label>Correo (opcional) <input type="email" id="i-email" maxlength="80" data-1p-ignore="true" data-lpignore="true"></label></div>
       <label>Perfil <select id="i-rol">${ROLES.map((r) => `<option value="${r}">${esc(Sesion.ROLES[r])}</option>`).join("")}</select></label>
       <fieldset id="i-atl" style="border:1px solid var(--line);border-radius:8px;max-height:220px;overflow:auto">
         <legend class="nota">Atletas ligados (tutor: sus hijos; atleta: él mismo)</legend><div id="i-atl-lista"></div></fieldset>

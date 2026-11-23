@@ -73,6 +73,13 @@ con módulos de **pagos** y **asistencia**. Responder en español, claro y sin r
   coaches también pueden crearlos, solo `tipo: "aviso"`). WhatsApp = API de WhatsApp Business Cloud de Meta: secretos `WHATSAPP_TOKEN`,
   `WHATSAPP_PHONE_ID` y plantilla aprobada (`aviso_progymnastics`, es_MX, {{1}} título y {{2}} texto; variable `WHATSAPP_PLANTILLA` para
   otro nombre). Sin esos secretos no se manda WhatsApp, y lo demás sigue igual.
+  **Sin correo y WhatsApp desde el celular (Manu, 23-nov-2026):** no se configuran Gmail ni WhatsApp Business (código listo pero
+  apagado). Los avisos salen solos a la **app**, y por **WhatsApp** con botones `wa.me` que abren el WhatsApp de quien los manda con el
+  mensaje listo (`js/whatsapp.js`, `WA.destinos` = teléfonos de la ficha y de las cuentas ligadas, sin repetir): confirmación al
+  registrar un pago (con «Ver recibo»), «Recordatorio» y «Recordar a todos» en Pagos (anotado en `notificaciones.whatsapp`, la lista
+  muestra «WhatsApp ✓»), banda «Hoy toca recordar…» los días de recordatorio (3 antes, el límite y 1 después), y en Avisos, al publicar
+  o con el botón «WhatsApp» de cada aviso, la lista de familias (hermanos juntos) y «Copiar mensaje» para el grupo del club. El
+  recordatorio automático de la tarea no se repite si ese día ya se mandó uno a mano. Textos de la app: «app y WhatsApp», sin correo.
 
 ## Etapas pedidas por Manu (17-nov-2026)
 1. ✅ Estructura: inicio, secciones, herramientas administrativas y acceso; vistas por perfil (admin y coach primero).

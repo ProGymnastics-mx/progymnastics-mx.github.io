@@ -94,10 +94,14 @@ async function recordatorios(hoy) {
   const [atletas, pagos] = await Promise.all([col("atletas").get(), col("pagos").where("periodo", "==", hoy.mes).get()]);
   const pagado = {};
   pagos.forEach((p) => { const x = p.data(); if (x.concepto === "Mensualidad") pagado[x.atletaId] = (pagado[x.atletaId] || 0) + Number(x.monto || 0); });
+  // Si administración ya mandó hoy un recordatorio a mano (botón Recordatorio, con su WhatsApp), no se repite el automático.
+  const fechaMX = (iso) => new Date(iso).toLocaleDateString("en-CA", { timeZone: "America/Mexico_City" });
+  const yaHoy = new Set((await col("notificaciones").where("periodo", "==", hoy.mes).get()).docs.map((d) => d.data())
+    .filter((x) => x.manual && x.creado && fechaMX(x.creado) === hoy.fecha).map((x) => x.atletaId));
   let n = 0;
   for (const doc of atletas.docs) {
     const a = doc.data();
-    if (a.activo === false) continue;
+    if (a.activo === false || yaHoy.has(doc.id)) continue;
     const cuota = a.cuota != null && a.cuota !== "" ? Number(a.cuota) : Number(CLUB.pagos.mensualidadBase) || 0;
     const alta = a.desde || (a.creado || "").slice(0, 7);
     if (cuota <= 0 || (alta && hoy.mes < alta)) continue;
