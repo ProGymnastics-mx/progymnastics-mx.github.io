@@ -918,10 +918,17 @@ function renderMenu(){
   <div class="home-pie"><button class="btn" data-act="printall">Imprimir o guardar en PDF</button><button class="btn" data-act="export">Descargar en Excel</button>${sug?'<button class="btn ghost" data-act="sugerir">✉ Enviar sugerencia</button>':''}
     <small>Tus rutinas se guardan en este equipo. Imprímelas o descárgalas cuando las necesites (una hoja por atleta; en el diálogo de impresión elige "Guardar como PDF").</small></div>`;
 }
+/* Elegir atleta con listas desplegables Grupo/Nivel/Atleta (Manu, 28-nov-2026: «listas desplegables y no scroll muy largos»).
+   Abajo solo se pintan las tarjetas del grupo o nivel elegido; elegir en «Atleta» abre a la atleta. */
+function grupoPG(n){const k=claveNombre(n).toUpperCase();const a=PG_ATLETAS.find(x=>claveNombre(x.nombre).toUpperCase()===k);return a?UI.grupo(a.grupo):'';}
+function selItems(){return S.orden.filter(n=>S.atletas[n]).map(n=>({v:n,t:n,nivel:nivTxt(S.atletas[n].nivel),grupo:grupoPG(n)}));}
+SELATL.config('pg-editor-gaf',{alElegir:v=>{ui.atleta=v;ui.view='athlete';ui.ap='BARRAS';ui.open=-1;ui.q='';ui.del=-1;ui.delA=null;render();},alCambiar:()=>render()});
 function renderList(){
   let h=`<div class="top"><a class="back" href="../../gaf/">‹ GAF</a><h1>Rutinas femenil</h1><span class="sync ${syncState[0]}">${esc(syncState[1])}</span></div>`;
+  const _items=selItems(), _ver=new Set(SELATL.filtrados('pg-editor-gaf',_items).map(x=>x.v));
+  if(S.orden.length)h+=SELATL.html('pg-editor-gaf',_items,{ordenGrupos:(window.CLUB&&CLUB.grupos||[]).map(g=>g.nombre)});
   h+=`<div class="cards">`;
-  for(const n of S.orden){const a=S.atletas[n];if(!a)continue;const t=totals(n);
+  for(const n of S.orden){const a=S.atletas[n];if(!a||!_ver.has(n))continue;const t=totals(n);
     h+=`<button class="card" data-act="open" data-v="${esc(n)}"><div><b>${esc(n)}</b><span class="lv">${esc(nivTxt(a.nivel))}</span></div><span class="aa">${esUSAG(a.nivel)?f2(t.aa):f2(t.aa)}</span></button>`;}
   h+=`</div>`;
   if(!S.orden.length)h+=`<div class="empty">Todavía no hay atletas. Agrega la primera abajo.</div>`;

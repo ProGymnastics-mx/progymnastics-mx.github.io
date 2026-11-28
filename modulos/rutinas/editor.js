@@ -719,6 +719,14 @@ function renderMenu(){
   <div class="menu"><button class="card big" data-act="libres"><span><b>Editar libres</b><small>Rutinas, NP, atletas e impresión</small></span><span class="aa">›</span></button>
   <button class="card big" data-act="oblopen"><span><b>Editar obligatorios</b><small>Elementos hechos y nota de partida (niveles 3 a 6)</small></span><span class="aa">›</span></button></div>`;
 }
+/* Elegir atleta con listas desplegables Grupo/Nivel/Atleta (Manu, 28-nov-2026: «listas desplegables y no scroll muy largos»).
+   Abajo solo se pintan las tarjetas del grupo o nivel elegido; elegir en «Atleta» abre al atleta (o, eliminando, pide confirmar). */
+function grupoPG(n){const a=PG_ATLETAS.find(x=>x.nombre.trim().replace(/\s+/g,' ').toUpperCase()===n);return a?UI.grupo(a.grupo):'';}
+const SEL_ORDEN_G=()=>(window.CLUB&&CLUB.grupos||[]).map(g=>g.nombre);
+function selItemsL(){return ORDER.filter(n=>S.atletas[n]).map(n=>({v:n,t:n,nivel:S.atletas[n].nivel,grupo:grupoPG(n)}));}
+function selItemsO(){return S.obl.orden.filter(n=>S.obl.atletas[n]).map(n=>({v:n,t:n,nivel:S.obl.atletas[n].nivel,grupo:grupoPG(n)}));}
+SELATL.config('pg-editor-libres',{alElegir:v=>{if(ui.delMode){ui.delAsk=v;return render();}ui={view:'athlete',atleta:v,ap:'PISO',open:-1,q:'',replace:-1};render();},alCambiar:()=>render()});
+SELATL.config('pg-editor-obl',{alElegir:v=>{if(ui.odel){ui.oask=v;return render();}ui.view='oath';ui.oat=v;ui.oap='PISO';render();},alCambiar:()=>render()});
 function renderList(){
   let h=`<div class="top"><button class="back" data-act="menu">← Editor</button><h1>Editar libres</h1><span class="sync ${syncState[0]}">${esc(syncState[1])}</span></div>`;
   h+=`<div class="actions"><button class="btn" data-act="addform">Agregar atleta</button><button class="btn ${ui.delMode?'danger':'ghost'}" data-act="delmode">${ui.delMode?'Terminar de eliminar':'Eliminar atleta'}</button></div>`;
@@ -727,8 +735,10 @@ function renderList(){
     ${ui.addErr?`<div class="badge b">${esc(ui.addErr)}</div>`:''}<div class="actions"><button class="btn" data-act="addok">Agregar</button><button class="btn ghost" data-act="addno">Cancelar</button></div></div>`;
   if(ui.delAsk)h+=`<div class="score addbox"><b>¿Eliminar a ${esc(ui.delAsk)}?</b><small>Se borran sus rutinas de todos los aparatos y deja de aparecer en Libres.</small>
     <div class="actions"><button class="btn danger" data-act="delok">Eliminar</button><button class="btn ghost" data-act="delno">Cancelar</button></div></div>`;
+  const _items=selItemsL(), _ver=new Set(SELATL.filtrados('pg-editor-libres',_items).map(x=>x.v));
+  h+=SELATL.html('pg-editor-libres',_items,{ordenGrupos:SEL_ORDEN_G()});
   h+=`<div class="cards">`;
-  for(const n of ORDER){const a=S.atletas[n];if(!a)continue;const t=totals(n);
+  for(const n of ORDER){const a=S.atletas[n];if(!a||!_ver.has(n))continue;const t=totals(n);
     if(ui.delMode){h+=`<button class="card del" data-act="delask" data-v="${esc(n)}"><span><b>${esc(n)}</b><span class="lv">${esc(a.nivel)}</span></span><span class="xdel">Eliminar</span></button>`;continue;}
     h+=`<button class="card" data-act="open" data-v="${esc(n)}"><span><b>${esc(n)}</b><span class="lv">${esc(a.nivel)}</span></span><span class="aa">${f1(t.aa)}${APS.reduce((x,[k])=>x+nAv(t[k]),0)?`<small class="warn"> ⚠${APS.reduce((x,[k])=>x+nAv(t[k]),0)}</small>`:''}</span></button>`;}
   h+=`</div>`;
@@ -954,9 +964,11 @@ function renderOList(){
   if(ui.oadding)h+=`<div class="score addbox"><label>Atleta<select id="oName">${opcionesAtletas(S.obl.atletas)}</select></label><label>Nivel<select id="oLevel">${['3','4','5','6'].map(n=>`<option value="${n}">Nivel ${n}</option>`).join('')}</select></label>
     ${ui.oerr?`<div class="badge b">${esc(ui.oerr)}</div>`:''}<div class="actions"><button class="btn" data-act="oaddok">Agregar</button><button class="btn ghost" data-act="oaddno">Cancelar</button></div></div>`;
   if(ui.oask)h+=`<div class="score addbox"><b>¿Eliminar a ${esc(ui.oask)}?</b><small>Se borra su selección de elementos y deja de aparecer en Obligatorios.</small><div class="actions"><button class="btn danger" data-act="odelok">Eliminar</button><button class="btn ghost" data-act="odelno">Cancelar</button></div></div>`;
+  const _items=selItemsO(), _ver=new Set(SELATL.filtrados('pg-editor-obl',_items).map(x=>x.v));
+  if(O.orden.length)h+=SELATL.html('pg-editor-obl',_items,{ordenGrupos:SEL_ORDEN_G()});
   h+=`<div class="cards">`;
   const _oprint=`<div class="actions printbar"><button class="btn" data-act="oprint">Imprimir obligatorios</button><small>Una hoja tamaño carta horizontal por atleta.</small></div>`;
-  for(const n of O.orden){const a=O.atletas[n];if(!a)continue;const t=oblTotals(a);
+  for(const n of O.orden){const a=O.atletas[n];if(!a||!_ver.has(n))continue;const t=oblTotals(a);
     h+=ui.odel?`<button class="card del" data-act="odelask" data-v="${esc(n)}"><span><b>${esc(n)}</b><span class="lv">Nivel ${esc(a.nivel)}</span></span><span class="xdel">Eliminar</span></button>`
       :`<button class="card" data-act="oopen" data-v="${esc(n)}"><span><b>${esc(n)}</b><span class="lv">Nivel ${esc(a.nivel)}</span></span><span class="aa">${f1(t.aa)}</span></button>`;}
   if(!O.orden.length)h+=`<div class="empty">Sin atletas. Agrega el primero.</div>`;
