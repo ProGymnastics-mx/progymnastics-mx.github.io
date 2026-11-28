@@ -45,6 +45,10 @@
   `;
   document.head.appendChild(st);
 
+  // Staff: listas desplegables Grupo/Nivel/Atleta y abajo solo los del grupo o nivel elegido (Manu, 28-nov-2026).
+  const SEL_ITEMS = atletas.map((a) => ({ v: a.id, t: a.nombre, nivel: a.nivel, grupo: UI.grupo(a.grupo) }));
+  const SEL_CLAVE = "pg-reportes-" + SEC;
+  if (staff) SELATL.config(SEL_CLAVE, { alElegir: (v) => { location.hash = "a=" + encodeURIComponent(v); }, alCambiar: () => pintar() });
   const ruta = () => new URLSearchParams(location.hash.slice(1)).get("a");
   window.addEventListener("hashchange", pintar);
 
@@ -54,8 +58,10 @@
     if (id && atletas.some((a) => a.id === id)) return reporte(id);
     if (!staff && atletas.length === 1) return reporte(atletas[0].id);
     const porGrupo = {};
-    atletas.forEach((a) => (porGrupo[a.grupo] = porGrupo[a.grupo] || []).push(a));
-    app.innerHTML = Object.entries(porGrupo).map(([g, lista]) => `
+    let lista = atletas;
+    if (staff) { const ids = new Set(SELATL.filtrados(SEL_CLAVE, SEL_ITEMS).map((x) => x.v)); lista = atletas.filter((a) => ids.has(a.id)); }
+    lista.forEach((a) => (porGrupo[a.grupo] = porGrupo[a.grupo] || []).push(a));
+    app.innerHTML = (staff ? SELATL.html(SEL_CLAVE, SEL_ITEMS, { ordenGrupos: CLUB.grupos.map((g) => g.nombre) }) : "") + Object.entries(porGrupo).map(([g, lista]) => `
       <div class="grupo-lista" style="padding:0"><h3>${esc(UI.grupo(g))}</h3><ul class="lista">${lista.map((a) => `
         <li><a href="#a=${esc(a.id)}"><span class="avatar" style="width:36px;height:36px;font-size:14px">${esc(iniciales(a.nombre))}</span>
         <span class="txt"><b>${esc(a.nombre)}</b><small>${a.nivel ? "Nivel " + esc(a.nivel) : esc(UI.grupo(a.grupo))}</small></span>${UI.chevron}</a></li>`).join("")}</ul></div>`).join("");

@@ -72,10 +72,17 @@
   }
 
   // ---------- captura por atleta ----------
+  // Listas desplegables Grupo/Nivel/Atleta; abajo solo los del grupo o nivel elegido (Manu, 28-nov-2026).
+  const SEL_ITEMS = atletas.map((a) => ({ v: a.id, t: a.nombre, nivel: a.nivel, grupo: UI.grupo(a.grupo) }));
+  const SEL_CLAVE = "pg-competencias-" + SEC;
+  let copaCaptura = null;
+  SELATL.config(SEL_CLAVE, { alElegir: (v) => { const s = document.querySelector(`select[data-selatl-f="atleta"]`); if (s) s.value = ""; const a = atletas.find((x) => x.id === v); if (a && copaCaptura) abrirCaptura(copaCaptura, a); }, alCambiar: () => copaCaptura && vistaCaptura(copaCaptura) });
   function vistaCaptura(copa) {
+    copaCaptura = copa;
     const porGrupo = {};
-    atletas.forEach((a) => (porGrupo[a.grupo] = porGrupo[a.grupo] || []).push(a));
-    $("vista").innerHTML = cabeceraCopa(copa, "captura") + (atletas.length ? Object.entries(porGrupo).map(([g, lista]) => `
+    const ids = new Set(SELATL.filtrados(SEL_CLAVE, SEL_ITEMS).map((x) => x.v));
+    atletas.filter((a) => ids.has(a.id)).forEach((a) => (porGrupo[a.grupo] = porGrupo[a.grupo] || []).push(a));
+    $("vista").innerHTML = cabeceraCopa(copa, "captura") + (atletas.length ? SELATL.html(SEL_CLAVE, SEL_ITEMS, { ordenGrupos: CLUB.grupos.map((g) => g.nombre) }) + Object.entries(porGrupo).map(([g, lista]) => `
       <div class="grupo-lista" style="padding:0"><h3>${esc(UI.grupo(g))}</h3><ul class="lista">${lista.map((a) => {
         const r = resultados.find((x) => x.atletaId === a.id), c = r && E.calcular(r);
         return `<li><a href="#" data-a="${esc(a.id)}"><span class="icono" style="background:var(--${c && c.n ? "verde" : "gris"})">${UI.icono(c && c.n ? "check" : "lapiz")}</span>

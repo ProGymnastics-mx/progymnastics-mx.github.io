@@ -126,6 +126,10 @@ otra vez en la consola; sin eso Firestore la rechaza.
   (`registradoPorNombre`); todo queda en «Pagos registrados» y en el recibo. **Recordatorio** (por atleta) y «Recordar a todos los que
   deben»: `pg_notificaciones` tipo recordatorio/vencido con `periodo`, que la tarea manda por app, correo y WhatsApp; la lista muestra
   «Recordado <fecha y hora>». En celular, Cobrar y Recordatorio van debajo del nombre (Cuota y Pagado se ocultan).
+- **Elegir atleta con listas desplegables** (Manu, 28-nov-2026: «no scroll muy largos»): para staff, Normativos, Reportes, Competencias
+  (captura) y los editores de rutinas GAV (libres y obligatorios) y GAF muestran arriba Grupo, Nivel y Atleta (`js/selector-atletas.js`,
+  `SELATL`, el mismo de la App GAV de AKC); abajo solo se pintan los del grupo o nivel elegido (sin filtro, ninguno) y el filtro se
+  recuerda en el equipo. Elegir en «Atleta» abre al atleta (en el editor, en modo eliminar, pide confirmar). Tutor y atleta ven todo como antes.
 - Textos de usuarios siempre escapados (`UI.esc`) o con `textContent`.
 - Probar en ancho de celular (~390 px) y en impresión. Distinguir lo hecho, lo probado y lo verificado.
 - No exponer contraseñas ni tokens.
